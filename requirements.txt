@@ -7,3 +7,4 @@ gevent
 python-dotenv
 edge-tts-ext
 emoji
+openai
