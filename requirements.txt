@@ -1,0 +1,9 @@
+uvicorn
+fastapi
+cos-python-sdk-v5
+pydantic
+flask
+gevent
+python-dotenv
+edge-tts-ext
+emoji
