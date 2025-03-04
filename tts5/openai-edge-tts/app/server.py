@@ -13,7 +13,7 @@ app = Flask(__name__)
 load_dotenv()
 
 API_KEY = os.getenv('API_KEY', 'your_api_key_here')
-PORT = int(os.getenv('PORT', 5037))
+PORT = int(os.getenv('PORT', 5050))
 
 DEFAULT_VOICE = os.getenv('DEFAULT_VOICE', 'en-US-AvaNeural')
 DEFAULT_RESPONSE_FORMAT = os.getenv('DEFAULT_RESPONSE_FORMAT', 'mp3')
