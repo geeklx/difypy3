@@ -1,6 +1,8 @@
-from edgetts_service import router as router_edgetts
-from fastapi import FastAPI
 import uvicorn
+from fastapi import FastAPI
+
+from edgetts_service import router as router_edgetts
+
 app = FastAPI()
 
 # Include routers from service modules

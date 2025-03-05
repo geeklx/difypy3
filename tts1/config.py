@@ -1,12 +1,11 @@
 import configparser
 import json
-import os
-
+from pathlib import Path
 
 
 def common_config(config_file='config.ini'):
     config = configparser.ConfigParser()
-    config.read(config_file,encoding='utf-8')
+    config.read(config_file, encoding='utf-8')
     config_data = {}
     config_data['region'] = config.get('common', 'region')
     config_data['secret_id'] = config.get('common', 'secret_id')
@@ -14,19 +13,22 @@ def common_config(config_file='config.ini'):
     config_data['bucket'] = config.get('common', 'bucket')
     return config_data
 
+
 # Load 302 config
 def load_302_config(config_file='config.ini'):
     config = configparser.ConfigParser()
-    config.read(config_file,encoding='utf-8')
+    config.read(config_file, encoding='utf-8')
     config_data = {}
     config_data['api_key'] = config.get('302', 'api_key')
     return config_data
+
 
 # Load siliconflow config
 def load_siliconflow_config(config_file='siliconflow/config.json'):
     with open(config_file, 'r', encoding='utf-8') as f:
         config = json.load(f)
     return config
+
 
 # Load difyforgitee config
 def load_difyforgitee_config(config_file='config.ini'):
@@ -42,10 +44,11 @@ def load_difyforgitee_config(config_file='config.ini'):
     config_data['model'] = config.get('AudioService', 'model')
     return config_data
 
+
 # Load jimeng config
 def load_jimeng_config(config_file='config.ini'):
     config = configparser.ConfigParser()
-    config.read(config_file,encoding='utf-8')
+    config.read(config_file, encoding='utf-8')
     config_data = {}
     config_data['image_generation_url'] = config.get('jimeng', 'image_generation_url')
     config_data['audio_generation_url'] = config.get('jimeng', 'audio_generation_url')
@@ -58,6 +61,7 @@ def load_jimeng_config(config_file='config.ini'):
     config_data['response_format'] = config.get('jimeng', 'response_format')
     return config_data
 
+
 # Load bizyair config
 def load_bizyair_config(config_file='config.ini'):
     config = configparser.ConfigParser()
@@ -68,13 +72,18 @@ def load_bizyair_config(config_file='config.ini'):
     config_data['comfyui_endpoit'] = config.get('bizyair', 'comfyui_endpoit')
     return config_data
 
+
 def load_edgetts_config(config_file='config.ini'):
     config = configparser.ConfigParser()
     config.read(config_file, encoding='utf-8')
     config_data = {}
     config_data['openai_api_key'] = config.get('edgetts', 'openai_api_key')
     config_data['openai_base_url'] = config.get('edgetts', 'openai_base_url')
-    config_data['output_path'] = config.get('edgetts', 'output_path')
+    # config_data['output_path'] = config.get('edgetts', 'output_path')
+    current_directory = Path.cwd()
+    path = current_directory / "tmp"
+    print("完整路径:", path)
+    config_data['output_path'] = path
     config_data['port'] = config.get('edgetts', 'port')
     config_data['ip'] = config.get('edgetts', 'ip')
     return config_data
