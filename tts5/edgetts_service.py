@@ -55,7 +55,7 @@ async def generate_tts(request_body: TTSRequest):
         )
         # Save the audio file
         filename, output_path2 = save_audio_file(response.content, output_path)
-        audio_url2 = f"http://192.168.31.116:5052/tts1/{filename}"
+        audio_url2 = f"http://{ip}/tts1/{filename}"
         return {
                 "audio_url": audio_url2,
                 "filename": filename,
