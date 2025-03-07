@@ -47,7 +47,7 @@ path = current_directory / "tmp"
 print("完整路径:", path)
 # output_path = config.get('edgetts', 'output_path')
 output_path = path
-ip = config["ip"]  # Default output path
+ip = config.get('edgetts', 'ip')
 
 client = OpenAI(
     api_key=api_key,
@@ -72,39 +72,12 @@ class Item(BaseModel):
     text_snippet: str
     importance: str
 
-@app.post("/process-data/")
-async def process_data(item: Item):
-    try:
-        logger.info(f"process_data 调用 generate_image API 开始")
-        # 记录图像生成的开始时间
-        start_time_image = time.time()
-        image_url = await generate_image(item.prompt)
-        # 计算图像生成耗时
-        elapsed_time_image = time.time() - start_time_image
-        logger.info(f"process_data 调用 generate_image API 结束，耗时 {elapsed_time_image:.2f} 秒，返回 image_url: {image_url}")
-
-        logger.info(f"process_data 调用 generate_audio API 开始")
-        # 记录音频生成的开始时间
-        start_time_audio = time.time()
-        #audio_url = await generate_audio(item.text_snippet)
-        audio_url = await generate_tts(item.text_snippet)
-        # 计算音频生成耗时
-        elapsed_time_audio = time.time() - start_time_audio
-        logger.info(f"process_data 调用 generate_audio API 结束，耗时 {elapsed_time_audio:.2f} 秒，返回 audio_url: {audio_url}")
-
-        return {
-            "description": item.text_snippet,
-            "image_url": image_url,
-            "audio_url": audio_url,
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
 def generate_timestamp_filenameforaudio(extension='mp3'):
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     random_number = random.randint(1000, 9999)
     filename = f"{timestamp}_{random_number}.{extension}"
     return filename
+
 def save_audio_file(audio_content, output_dir):
     # 生成文件名
     filename = generate_timestamp_filenameforaudio()
@@ -160,7 +133,6 @@ async def generate_image(prompt: str):
     except (KeyError, IndexError) as e:
         raise Exception(f"图像生成 API 响应解析失败: {e}")
 
-
 async def generate_tts(text_snippet: str):
     """
     Generates text-to-speech audio using the edge tts API and uploads it to Tencent Cloud COS.
@@ -178,7 +150,7 @@ async def generate_tts(text_snippet: str):
         )
         # Save the audio file
         filename, output_path2 = save_audio_file(response.content, output_path)
-        audio_url2 = f"http://{ip}/tts1/{filename}"
+        audio_url2 = f"http://{ip}/{filename}"
         return audio_url2
         # Upload to COS
         # etag = upload_cos(region, secret_id, secret_key, bucket, filename, output_path)
@@ -191,26 +163,54 @@ async def generate_tts(text_snippet: str):
         print(f"An error occurred: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-async def generate_audio(text_snippet: str):
-    headers = {"Content-Type": "application/json"}
-    data = {
-        "input": text_snippet,
-        "model": audio_model,
-        "voice": audio_voice,
-    }
+# async def generate_audio(text_snippet: str):
+#     headers = {"Content-Type": "application/json"}
+#     data = {
+#         "input": text_snippet,
+#         "model": audio_model,
+#         "voice": audio_voice,
+#     }
+#     try:
+#         response = requests.post(audio_generation_url, headers=headers, json=data)
+#         response.raise_for_status()
+#         result = response.json()
+#         return result["etag"]
+#     except requests.exceptions.RequestException as e:
+#         raise Exception(f"音频生成 API 请求失败: {e}")
+#     except KeyError as e:
+#         raise Exception(f"音频生成 API 响应解析失败: {e}")
+
+
+@app.post("/process-data/")
+async def process_data(item: Item):
     try:
-        response = requests.post(audio_generation_url, headers=headers, json=data)
-        response.raise_for_status()
-        result = response.json()
-        return result["etag"]
-    except requests.exceptions.RequestException as e:
-        raise Exception(f"音频生成 API 请求失败: {e}")
-    except KeyError as e:
-        raise Exception(f"音频生成 API 响应解析失败: {e}")
+        logger.info(f"process_data 调用 generate_image API 开始")
+        # 记录图像生成的开始时间
+        start_time_image = time.time()
+        image_url = await generate_image(item.prompt)
+        # 计算图像生成耗时
+        elapsed_time_image = time.time() - start_time_image
+        logger.info(f"process_data 调用 generate_image API 结束，耗时 {elapsed_time_image:.2f} 秒，返回 image_url: {image_url}")
 
+        logger.info(f"process_data 调用 generate_audio API 开始")
+        # 记录音频生成的开始时间
+        start_time_audio = time.time()
+        #audio_url = await generate_audio(item.text_snippet)
+        audio_url = await generate_tts(item.text_snippet)
+        # 计算音频生成耗时
+        elapsed_time_audio = time.time() - start_time_audio
+        logger.info(f"process_data 调用 generate_audio API 结束，耗时 {elapsed_time_audio:.2f} 秒，返回 audio_url: {audio_url}")
 
-@app.post("/make_AI_picture_audio/")
-async def make_ai_picture_audio(data: List[Item]):
+        return {
+            "description": item.text_snippet,
+            "image_url": image_url,
+            "audio_url": audio_url,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/make_ai_txt_picture_audio/")
+async def make_ai_txt_picture_audio(data: List[Item]):
     try:
         results = []
         for item in data:
