@@ -1,5 +1,6 @@
 uvicorn
 fastapi
+requests
 cos-python-sdk-v5
 pydantic
 flask

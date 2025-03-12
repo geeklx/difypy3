@@ -209,6 +209,7 @@ async def process_data(item: Item):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# 儿童绘本连读
 @app.post("/make_ai_txt_picture_audio/")
 async def make_ai_txt_picture_audio(data: List[Item]):
     try:
