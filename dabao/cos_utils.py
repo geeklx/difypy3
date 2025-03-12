@@ -11,10 +11,18 @@ from fastapi import HTTPException
 from qcloud_cos import CosConfig
 from qcloud_cos import CosS3Client
 
+# 微软服务
 # openai_api_key='zhouhuizhou'
 openai_api_key1 = 'geekaiapp'
 # openai_base_url='https://edgettsapi.duckcloud.fun/v1'
 openai_base_url1 = 'https://edge-tts.g1cloudflare.workers.dev/v1'
+
+# 阿里大模型服务
+api_key1 = "sk-c59a31cce2c442eaa7fae4790182b5b3"
+base_url1 = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+# model1 = "deepseek-chat"
+model1 = "qwen-max"
+
 
 current_directory = Path.cwd()
 path = current_directory / "tmp"
@@ -49,6 +57,42 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
+
+
+system_prompt = """
+你是一位英语教学专家，请根据用户将提供给你的内容，请你分析内容，并提取其中的关键信息，识别出中文对应的英文写错的部分,以 JSON 的形式输出，输出的 JSON 需遵守以下的格式：
+
+示例输入: 
+{
+    "content": [
+        {
+            "序号": 1,
+            "汉语": "n.哨兵 n./vt.守卫,保卫,看守",
+            "英语": "guard"
+        },
+        {
+            "序号": 2,
+            "汉语": "vt.保护,护卫 n.安全装置",
+            "英语": "safeguard"
+        }
+    ]
+}
+
+JSON 输出示例:
+{
+  "errors": [
+    {
+      "序号": <1>,
+      "汉语": <n.保证(书),保修单 vt.保证,提供(产品)保修单>,
+      "错误英语": <gooe>,
+      "正确英语": <gruarantee>
+    }
+  ]
+}
+"""
+
+
+
 def load_config(config_file):
     with open(config_file, 'r', encoding='utf-8') as file:
         return json.load(file)
@@ -58,7 +102,7 @@ def load_config(config_file):
 # api_url = config["api_url"]
 
 # 智谱AI-提交文生视频任务的函数
-def submit_video_job(prompt: str, with_audio: bool = True):
+def zpai_video_job(prompt: str, with_audio: bool = True):
     headers = {
         "Authorization": f"Bearer {zhipu_api_key}",
         "Content-Type": "application/json",
@@ -90,7 +134,7 @@ def submit_video_job(prompt: str, with_audio: bool = True):
 
 
 # 智谱AI-查询文生视频任务状态的函数
-def zp_check_video_status(task_id: str):
+def zpai_check_video_status(task_id: str):
     # 正确的请求地址
     status_url = f"https://open.bigmodel.cn/api/paas/v4/async-result/{task_id}"
     headers = {
@@ -138,7 +182,7 @@ def zp_check_video_status(task_id: str):
             time.sleep(5)  # 请求失败时也等待 5 秒再重试
 
 
-def sjld_submit_video_job(api_url, auth_token, model, prompt):
+def gjld_submit_video_job(api_url, auth_token, model, prompt):
     submit_url = f"{api_url}/video/submit"
     payload = json.dumps({
         "model": model,

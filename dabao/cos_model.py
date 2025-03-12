@@ -40,4 +40,4 @@ class JMRequest(BaseModel):
     negativePrompt: str = ""
     width: int = 1080
     height: int = 720
-    sample_strength: int = 0.5
+    sample_strength: float = 0.5

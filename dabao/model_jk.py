@@ -1,12 +1,15 @@
+import json
+
 import requests
-from fastapi import FastAPI, HTTPException, APIRouter
+from fastapi import FastAPI, HTTPException, APIRouter, Request
 from openai import OpenAI
 
 from dabao.cos_model import TTSRequest, VideoSubmission, AudioSubmission, VideoRequest, VideoResponse, JMRequest
 # sys.path.append('path/to/dabao')  # 添加模块路径到搜索路径
 from dabao.cos_utils import openai_api_key1, openai_base_url1, port1, ip1, region1, secret_id1, secret_key1, bucket1, \
-    save_audio_file, upload_cos, videomodel, submit_video_job, siliconflow_api_url, siliconflow_auth_token, \
-    audiomodel, voice, logger, output_path1, sjld_submit_video_job, gjld_check_video_status, zp_check_video_status
+    save_audio_file, upload_cos, videomodel, siliconflow_api_url, siliconflow_auth_token, \
+    audiomodel, voice, logger, output_path1, gjld_check_video_status, zpai_check_video_status, \
+    api_key1, base_url1, model1, system_prompt, gjld_submit_video_job, zpai_video_job
 
 app = FastAPI()
 
@@ -25,15 +28,22 @@ secret_id = secret_id1
 secret_key = secret_key1
 bucket = bucket1
 
+# 微软服务
 client = OpenAI(
     api_key=api_key,
     base_url=base_url
 )
 
+# 阿里大模型服务
+client2 = OpenAI(
+    api_key=api_key1,
+    base_url=base_url1
+)
+
 
 # 微软的文生音，并上传到腾讯oss
-@router.post("/edgetts12/")
-async def generate_tts(request_body: TTSRequest):
+@router.post("/edge/tts12/")
+async def generate_tts12(request_body: TTSRequest):
     """
     Generates text-to-speech audio using the edge tts API and uploads it to Tencent Cloud COS.
     """
@@ -70,8 +80,8 @@ async def generate_tts(request_body: TTSRequest):
 
 
 # 微软的文生音1
-@router.post('/edgetts1/')
-async def generate_tts(request_body: TTSRequest):
+@router.post('/edge/tts1/')
+async def generate_tts1(request_body: TTSRequest):
     try:
         data = {
             'model': request_body.model,
@@ -96,12 +106,12 @@ async def generate_tts(request_body: TTSRequest):
 
 
 # 硅基流动-文生视频
-@router.post("/submit-video/")
-async def sjld_submit_video(video_submission: VideoSubmission):
+@router.post("/gjld/video/")
+async def sjld_video(video_submission: VideoSubmission):
     # Use the model from the user input if provided, otherwise use the default from config
     model = video_submission.model if video_submission.model else videomodel
 
-    submit_response = sjld_submit_video_job(siliconflow_api_url, siliconflow_auth_token, model, video_submission.prompt)
+    submit_response = gjld_submit_video_job(siliconflow_api_url, siliconflow_auth_token, model, video_submission.prompt)
     if "error" in submit_response:
         raise HTTPException(status_code=500, detail=submit_response["error"])
 
@@ -119,8 +129,8 @@ async def sjld_submit_video(video_submission: VideoSubmission):
 
 
 # 硅基流动-文生音
-@router.post("/generate-audio/")
-async def generate_audio(audio_Submission: AudioSubmission):
+@router.post("/gjld/audio/")
+async def gjld_audio(audio_Submission: AudioSubmission):
     audiourl = siliconflow_api_url + "/audio/speech"
     audiomodel2 = audio_Submission.model if audio_Submission.model else audiomodel
     voice2 = audio_Submission.voice if audio_Submission.voice else voice
@@ -161,14 +171,14 @@ async def generate_audio(audio_Submission: AudioSubmission):
 
 # 智谱AI-提交文生视频任务的接口
 @router.post("/zhipuai/video/")
-async def submit_video(video_request: VideoRequest):
+async def zpai_video(video_request: VideoRequest):
     """Submits a text-to-video generation job using the ZhipuAI API."""
     try:
-        task_id = submit_video_job(video_request.prompt, video_request.with_audio)
+        task_id = zpai_video_job(video_request.prompt, video_request.with_audio)
         logger.info(f"Video generation task submitted successfully. Task ID: {task_id}")
 
         # 检查任务状态并返回结果
-        status_response = zp_check_video_status(task_id)
+        status_response = zpai_check_video_status(task_id)
         return VideoResponse(**status_response)
 
     except HTTPException as err:
@@ -180,7 +190,7 @@ async def submit_video(video_request: VideoRequest):
 
 # 即梦-文生图的接口
 @router.post("/jimeng/img/")
-async def generate_image(request1: JMRequest):
+async def jm_image(request1: JMRequest):
     headers = {
         "Authorization": f"Bearer {request1.image_api_key}",
         "Content-Type": "application/json",
@@ -197,11 +207,44 @@ async def generate_image(request1: JMRequest):
         response = requests.post(request1.image_generation_url, headers=headers, json=data)
         response.raise_for_status()  # 检查 HTTP 状态码
         result = response.json()
-        return result["data"][0]["url"]
+        return {
+            "url": result["data"][0]["url"]
+        }
     except requests.exceptions.RequestException as e:
         raise Exception(f"图像生成 API 请求失败: {e}")
     except (KeyError, IndexError) as e:
         raise Exception(f"图像生成 API 响应解析失败: {e}")
+
+
+# 单词比对
+@router.post("/dcbd1/")
+async def get_dps123(request: Request):
+    try:
+        data = await request.json()
+        # print(f'data ={data}')
+        text = data.get('content')
+        # print(f'text ={text}')
+        response = client2.chat.completions.create(
+            model=model1,
+            # messages=messages,
+            messages=[
+                {
+                    "role": "system",
+                    "content": system_prompt
+                },
+                {
+                    "role": "user",
+                    "content": json.dumps(text, ensure_ascii=False)
+                }
+            ],
+            response_format={
+                'type': 'json_object'
+            }
+        )
+        # print(json.loads(response.choices[0].message.content))
+        return json.loads(response.choices[0].message.content)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # import uvicorn
 #
