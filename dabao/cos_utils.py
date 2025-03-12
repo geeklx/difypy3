@@ -90,7 +90,7 @@ def submit_video_job(prompt: str, with_audio: bool = True):
 
 
 # 智谱AI-查询文生视频任务状态的函数
-def check_video_status(task_id: str):
+def zp_check_video_status(task_id: str):
     # 正确的请求地址
     status_url = f"https://open.bigmodel.cn/api/paas/v4/async-result/{task_id}"
     headers = {
@@ -138,7 +138,7 @@ def check_video_status(task_id: str):
             time.sleep(5)  # 请求失败时也等待 5 秒再重试
 
 
-def submit_video_job(api_url, auth_token, model, prompt):
+def sjld_submit_video_job(api_url, auth_token, model, prompt):
     submit_url = f"{api_url}/video/submit"
     payload = json.dumps({
         "model": model,
@@ -153,7 +153,7 @@ def submit_video_job(api_url, auth_token, model, prompt):
 
 
 # 硅基流动-根据状态获取结果
-def check_video_status(api_url, auth_token, request_id, timeout=200):
+def gjld_check_video_status(api_url, auth_token, request_id, timeout=200):
     status_url = f"{api_url}/video/status"
     payload = json.dumps({"requestId": request_id})
     headers = {

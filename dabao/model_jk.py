@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import requests
 from fastapi import FastAPI, HTTPException, APIRouter
 from openai import OpenAI
@@ -8,7 +6,7 @@ from dabao.cos_model import TTSRequest, VideoSubmission, AudioSubmission, VideoR
 # sys.path.append('path/to/dabao')  # 添加模块路径到搜索路径
 from dabao.cos_utils import openai_api_key1, openai_base_url1, port1, ip1, region1, secret_id1, secret_key1, bucket1, \
     save_audio_file, upload_cos, videomodel, submit_video_job, siliconflow_api_url, siliconflow_auth_token, \
-    check_video_status, audiomodel, voice, logger, output_path1
+    audiomodel, voice, logger, output_path1, sjld_submit_video_job, gjld_check_video_status, zp_check_video_status
 
 app = FastAPI()
 
@@ -34,7 +32,7 @@ client = OpenAI(
 
 
 # 微软的文生音，并上传到腾讯oss
-@router.post("/edgetts12")
+@router.post("/edgetts12/")
 async def generate_tts(request_body: TTSRequest):
     """
     Generates text-to-speech audio using the edge tts API and uploads it to Tencent Cloud COS.
@@ -72,7 +70,7 @@ async def generate_tts(request_body: TTSRequest):
 
 
 # 微软的文生音1
-@router.post('/edgetts1')
+@router.post('/edgetts1/')
 async def generate_tts(request_body: TTSRequest):
     try:
         data = {
@@ -99,11 +97,11 @@ async def generate_tts(request_body: TTSRequest):
 
 # 硅基流动-文生视频
 @router.post("/submit-video/")
-async def submit_video(video_submission: VideoSubmission):
+async def sjld_submit_video(video_submission: VideoSubmission):
     # Use the model from the user input if provided, otherwise use the default from config
     model = video_submission.model if video_submission.model else videomodel
 
-    submit_response = submit_video_job(siliconflow_api_url, siliconflow_auth_token, model, video_submission.prompt)
+    submit_response = sjld_submit_video_job(siliconflow_api_url, siliconflow_auth_token, model, video_submission.prompt)
     if "error" in submit_response:
         raise HTTPException(status_code=500, detail=submit_response["error"])
 
@@ -111,7 +109,7 @@ async def submit_video(video_submission: VideoSubmission):
     if not request_id:
         raise HTTPException(status_code=500, detail="Failed to get requestId from submit response.")
 
-    status_response = check_video_status(siliconflow_api_url, siliconflow_auth_token, request_id)
+    status_response = gjld_check_video_status(siliconflow_api_url, siliconflow_auth_token, request_id)
     if status_response and status_response.get("status") == "Succeed" and status_response.get("results") and \
             status_response["results"].get("videos") and len(status_response["results"]["videos"]) > 0:
         video_url = status_response['results']['videos'][0]['url']
@@ -170,7 +168,7 @@ async def submit_video(video_request: VideoRequest):
         logger.info(f"Video generation task submitted successfully. Task ID: {task_id}")
 
         # 检查任务状态并返回结果
-        status_response = check_video_status(task_id)
+        status_response = zp_check_video_status(task_id)
         return VideoResponse(**status_response)
 
     except HTTPException as err:
