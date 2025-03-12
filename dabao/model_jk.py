@@ -1,7 +1,11 @@
 import json
+import os
+import subprocess
+import time
 
 import requests
-from fastapi import FastAPI, HTTPException, APIRouter, Request
+from fastapi import FastAPI, HTTPException, APIRouter, Request, Form, UploadFile, File
+from flask import request
 from openai import OpenAI
 
 from dabao.cos_model import TTSRequest, VideoSubmission, AudioSubmission, VideoRequest, VideoResponse, JMRequest
@@ -9,7 +13,7 @@ from dabao.cos_model import TTSRequest, VideoSubmission, AudioSubmission, VideoR
 from dabao.cos_utils import openai_api_key1, openai_base_url1, port1, ip1, region1, secret_id1, secret_key1, bucket1, \
     save_audio_file, upload_cos, videomodel, siliconflow_api_url, siliconflow_auth_token, \
     audiomodel, voice, logger, output_path1, gjld_check_video_status, zpai_check_video_status, \
-    api_key1, base_url1, model1, system_prompt, gjld_submit_video_job, zpai_video_job
+    api_key1, base_url1, model1, system_prompt, gjld_submit_video_job, zpai_video_job, generate_clip
 
 app = FastAPI()
 
@@ -169,7 +173,7 @@ async def gjld_audio(audio_Submission: AudioSubmission):
         raise HTTPException(status_code=response.status_code, detail="请求失败")
 
 
-# 智谱AI-提交文生视频任务的接口
+# 智谱AI-文生视频任务的接口
 @router.post("/zhipuai/video/")
 async def zpai_video(video_request: VideoRequest):
     """Submits a text-to-video generation job using the ZhipuAI API."""
@@ -245,6 +249,64 @@ async def get_dps123(request: Request):
         return json.loads(response.choices[0].message.content)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# bizy绘画-commfyui
+@router.post("/comfyui_bizyairapi/")
+# async def generate_clip_endpoint(request: GenerateClipRequest,file: UploadFile = File(...)):
+async def generate_clip_endpoint(prompt: str = Form(...), seed: int = Form(...), idx: int = Form(...),
+                                 workflowfile: UploadFile = File(...)):
+    try:
+        # logger.info(f"Received request: {request}")
+        logger.info(f"Received request: prompt={prompt}, seed={seed}, idx={idx}, workflowfile={workflowfile.filename}")
+        # 读取上传的文件内容
+        workflow_content = await workflowfile.read()
+        # 将文件内容转换为json
+        workflow_data = json.loads(workflow_content)
+        filename, output_path, etag = generate_clip(
+            prompt,
+            seed,
+            workflow_data,
+            idx
+        )
+        return {
+            "filename": filename,
+            "output_path": output_path,
+            "etag": etag
+        }
+    except Exception as e:
+        logger.error(f"Error occurred: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+marp_path = os.getenv('MARP_PATH')
+# 检查是否获取到了路径
+if marp_path:
+    print(f"Marp 的路径是: {marp_path}")
+else:
+    print("未找到 Marp 的路径，请确保环境变量 MARP_PATH 已设置。")
+
+
+# 保存上传的Markdown内容，并转换成PPT
+@router.post('/pptupload/')
+async def upload_markdown():
+    content = request.get_data(as_text=True)
+    timestamp = str(int(time.time()))
+    md_filename = f"{timestamp}.md"
+    pptx_filename = f"{timestamp}.pptx"
+    # 保存Markdown文件
+    with open(f"data/{md_filename}", 'w', encoding='utf-8') as f:
+        f.write(content)
+    # 使用marp-cli将Markdown转换为PPT
+    try:
+        subprocess.run([marp_path, f'tmp/{md_filename}', '-o', f'tmp/{pptx_filename}'], check=True)
+    except subprocess.CalledProcessError as e:
+        return {
+            'message': 'Failed to convert Markdown to PPT',
+            'error': str(e)
+        }
+    # 返回文件链接
+    return f'Markdown 文件已保存\n预览链接: http://127.0.0.1:5037/tmp/{md_filename} \n下载链接: http://127.0.0.1:5037/tmp/{pptx_filename}?pptx'
 
 # import uvicorn
 #

@@ -10,3 +10,6 @@ edge-tts-ext
 emoji
 openai
 pathlib
+websocket-client
+ipython
+python-multipart

@@ -1,5 +1,7 @@
 以下是基于提供的代码内容编写的符合 `curl` 格式的文档，并支持在 Postman 中直接使用。每个 API 端点都包含了请求方法、URL、请求头、请求体等信息。
 
+---
+
 ### 1. 微软的文生音，并上传到腾讯云 COS
 **Endpoint:** `/edge/tts12/`
 
@@ -33,6 +35,8 @@ curl -X POST "http://<your-server-ip>:<port>/edge/tts12/" \
     "speed": 1.0
 }'
 ```
+
+---
 
 ### 2. 微软的文生音
 **Endpoint:** `/edge/tts1/`
@@ -68,6 +72,8 @@ curl -X POST "http://<your-server-ip>:<port>/edge/tts1/" \
 }'
 ```
 
+---
+
 ### 3. 硅基流动-文生视频
 **Endpoint:** `/gjld/video/`
 
@@ -95,6 +101,8 @@ curl -X POST "http://<your-server-ip>:<port>/gjld/video/" \
     "prompt": "A beautiful sunset over the mountains."
 }'
 ```
+
+---
 
 ### 4. 硅基流动-文生音
 **Endpoint:** `/gjld/audio/`
@@ -136,7 +144,9 @@ curl -X POST "http://<your-server-ip>:<port>/gjld/audio/" \
 }'
 ```
 
-### 5. 智谱AI-提交文生视频任务
+---
+
+### 5. 智谱AI-文生视频
 **Endpoint:** `/zhipuai/video/`
 
 **Method:** `POST`
@@ -163,6 +173,8 @@ curl -X POST "http://<your-server-ip>:<port>/zhipuai/video/" \
     "with_audio": true
 }'
 ```
+
+---
 
 ### 6. 即梦-文生图
 **Endpoint:** `/jimeng/img/`
@@ -202,6 +214,8 @@ curl -X POST "http://<your-server-ip>:<port>/jimeng/img/" \
 }'
 ```
 
+---
+
 ### 7. 单词比对
 **Endpoint:** `/dcbd1/`
 
@@ -228,9 +242,40 @@ curl -X POST "http://<your-server-ip>:<port>/dcbd1/" \
 }'
 ```
 
+---
+
+### 8. Bizy绘画-CommfyUI
+**Endpoint:** `/comfyui_bizyairapi/`
+
+**Method:** `POST`
+
+**URL:** `http://<your-server-ip>:<port>/comfyui_bizyairapi/`
+
+**Headers:**
+- `Content-Type: multipart/form-data`
+
+**Body (Form Data):**
+- `prompt`: A beautiful sunset over the mountains.
+- `seed`: 42
+- `idx`: 1
+- `workflowfile`: (上传文件)
+
+**Curl Command:**
+```bash
+curl -X POST "http://<your-server-ip>:<port>/comfyui_bizyairapi/" \
+-H "Content-Type: multipart/form-data" \
+-F "prompt=A beautiful sunset over the mountains." \
+-F "seed=42" \
+-F "idx=1" \
+-F "workflowfile=@/path/to/your/workflow.json"
+```
+
+---
+
 ### 注意事项：
-- 替换 `<your-server-ip>` 和 `<port>` 为实际的服务器 IP 地址和端口号。
-- 替换 `<your-api-key>` 为实际的 API 密钥。
-- 确保服务器已启动并监听指定的端口。
+1. 替换 `<your-server-ip>` 和 `<port>` 为实际的服务器 IP 地址和端口号。
+2. 替换 `<your-api-key>` 为实际的 API 密钥。
+3. 确保服务器已启动并监听指定的端口。
+4. 对于文件上传的 API（如 `/comfyui_bizyairapi/`），确保文件路径正确。
 
 这些 `curl` 命令可以直接在终端中运行，也可以在 Postman 中导入为请求集合。

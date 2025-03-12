@@ -4,8 +4,11 @@ import logging
 import os
 import random
 import time
+import urllib.parse
+import urllib.request
+import uuid
 from pathlib import Path
-
+import websocket  # NOTE: websocket-client (https://github.com/websocket-client/websocket-client)
 import requests
 from fastapi import HTTPException
 from qcloud_cos import CosConfig
@@ -23,7 +26,6 @@ base_url1 = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 # model1 = "deepseek-chat"
 model1 = "qwen-max"
 
-
 current_directory = Path.cwd()
 path = current_directory / "tmp"
 print("完整路径:", path)
@@ -33,9 +35,9 @@ port1 = 5037
 ip1 = '127.0.0.1'
 
 region1 = 'ap-nanjing'
-secret_id1 = 'x'
-secret_key1 = 'x'
-bucket1 = 'x'
+secret_id1 = 'AKID03BB5nRuAD2d0AF7lCPPBl8HCtDNK4d1'
+secret_key1 = 'EE1by75sSowqZ5NURBrPlutjPt9E9rXD'
+bucket1 = 'dify-1305874767'
 
 audiomodel = 'FunAudioLLM/CosyVoice2-0.5B'
 voice = 'FunAudioLLM/CosyVoice2-0.5B:david'
@@ -47,17 +49,23 @@ siliconflow_auth_token = 'sk-xlnroajavslhhuvfaijqkgqpzzsdqhmmsyzlulvhqhmsrgml'
 zhipu_api_key = "ee6c4107dbed41f59843bf796fa1a08f.XidZ1DF5NOr76MzU"
 zhipu_api_url = "https://open.bigmodel.cn/api/paas/v4"
 
-
 # image_generation_url="http://localhost:8000/v1/images/generations"
-image_generation_url="https://jimeng.duckcloud.fun/v1/images/generations"
+image_generation_url = "https://jimeng.duckcloud.fun/v1/images/generations"
 image_api_key = "1dcca7b8288e820e2eb5fe568d1d7d01"
+
+# 设置工作目录和项目相关的路径
+comfyui_endpoit = "127.0.0.1:8188"
+WORKING_DIR = output_path1
+SageMaker_ComfyUI = WORKING_DIR
+workflowfile = output_path1
+COMFYUI_ENDPOINT = comfyui_endpoit
+
+server_address = COMFYUI_ENDPOINT
+client_id = str(uuid.uuid4())  # 生成一个唯一的客户端ID
 
 # 设置日志
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-
-
 
 system_prompt = """
 你是一位英语教学专家，请根据用户将提供给你的内容，请你分析内容，并提取其中的关键信息，识别出中文对应的英文写错的部分,以 JSON 的形式输出，输出的 JSON 需遵守以下的格式：
@@ -90,7 +98,6 @@ JSON 输出示例:
   ]
 }
 """
-
 
 
 def load_config(config_file):
@@ -259,3 +266,138 @@ def upload_cos(region, secret_id, secret_key, bucket, file_name, base_path):
         return url
     else:
         return None
+
+def upload_cos2(env, file_name, base_path):
+    config = CosConfig(
+        Region=region1,
+        SecretId=secret_id1,
+        SecretKey=secret_key1
+    )
+    client = CosS3Client(config)
+    file_path = os.path.join(base_path, file_name)
+    response = client.upload_file(
+        Bucket=bucket1,
+        LocalFilePath=file_path,
+        Key=file_name,
+        PartSize=10,
+        MAXThread=10,
+        EnableMD5=False
+    )
+    if response['ETag']:
+        url = f"https://{bucket1}.cos.{region1}.myqcloud.com/{file_name}"
+        return url
+    else:
+        return None
+
+# 定义一个函数来显示GIF图片
+def show_gif(fname):
+    import base64
+    from IPython import display
+    with open(fname, 'rb') as fd:
+        b64 = base64.b64encode(fd.read()).decode('ascii')
+    return display.HTML(f'<img src="data:image/gif;base64,{b64}" />')
+
+
+# 定义一个函数向服务器队列发送提示信息
+def queue_prompt(prompt):
+    p = {"prompt": prompt, "client_id": client_id}
+    data = json.dumps(p).encode('utf-8')
+    req = urllib.request.Request(f"http://{server_address}/prompt", data=data)
+    return json.loads(urllib.request.urlopen(req).read())
+
+
+# 定义一个函数来获取图片
+def get_image(filename, subfolder, folder_type):
+    data = {"filename": filename, "subfolder": subfolder, "type": folder_type}
+    url_values = urllib.parse.urlencode(data)
+    with urllib.request.urlopen(f"http://{server_address}/view?{url_values}") as response:
+        return response.read()
+
+
+# 定义一个函数来获取历史记录
+def get_history(prompt_id):
+    with urllib.request.urlopen(f"http://{server_address}/history/{prompt_id}") as response:
+        return json.loads(response.read())
+
+
+# 定义一个函数来获取图片，这涉及到监听WebSocket消息
+def get_images(ws, prompt):
+    prompt_id = queue_prompt(prompt)['prompt_id']
+    logger.info(f"Prompt ID: {prompt_id}")
+    output_images = {}
+    while True:
+        out = ws.recv()
+        if isinstance(out, str):
+            message = json.loads(out)
+            if message['type'] == 'executing':
+                data = message['data']
+                if data['node'] is None and data['prompt_id'] == prompt_id:
+                    logger.info("Execution completed")
+                    break  # 执行完成
+        else:
+            continue  # 预览为二进制数据
+
+    history = get_history(prompt_id)[prompt_id]
+    logger.info(f"History: {history}")
+    for node_id in history['outputs']:
+        node_output = history['outputs'][node_id]
+        # 图片分支
+        if 'images' in node_output:
+            images_output = []
+            for image in node_output['images']:
+                image_data = get_image(image['filename'], image['subfolder'], image['type'])
+                images_output.append(image_data)
+            output_images[node_id] = images_output
+        # 视频分支
+        if 'videos' in node_output:
+            videos_output = []
+            for video in node_output['videos']:
+                video_data = get_image(video['filename'], video['subfolder'], video['type'])
+                videos_output.append(video_data)
+            output_images[node_id] = videos_output
+
+    logger.info("Images retrieved successfully")
+    return output_images
+
+
+# 解析工作流并获取图片
+def parse_worflow(ws, prompt, seed, workflowfile):
+    logger.info(f"Workflow file: {workflowfile}")
+    # with open(workflowfile, 'r', encoding="utf-8") as workflow_api_txt2gif_file:
+    #     prompt_data = json.load(workflow_api_txt2gif_file)
+    # 设置文本提示
+    workflowfile["80"]["inputs"]["text"] = prompt
+    return get_images(ws, workflowfile)
+
+# 生成图像并显示
+def generate_clip(prompt, seed, workflowfile, idx):
+    logger.info(f"Seed: {seed}")
+    ws = websocket.WebSocket()
+    try:
+        ws.connect(f"ws://{server_address}/ws?clientId={client_id}")
+        logger.info("WebSocket connected successfully")
+    except Exception as e:
+        logger.error(f"WebSocket connection failed: {e}")
+        raise
+
+    images = parse_worflow(ws, prompt, seed, workflowfile)
+
+    for node_id in images:
+        for image_data in images[node_id]:
+            # 获取当前时间，并格式化为 YYYYMMDDHHMMSS 的格式
+            timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+            filename=f"{idx}_{seed}_{timestamp}.png"
+            # 使用格式化的时间戳在文件名中
+            GIF_LOCATION = os.path.join(output_path1, filename)
+
+            logger.info(f"Saving image to: {GIF_LOCATION}")
+            with open(GIF_LOCATION, "wb") as binary_file:
+                # 写入二进制文件
+                binary_file.write(image_data)
+
+            show_gif(GIF_LOCATION)
+            # 上传腾讯oss存储
+            etag = upload_cos2('test', filename, output_path1)
+            logger.info(f"{GIF_LOCATION} DONE!!!")
+            logger.info(f"{etag} DONE!!!")
+    return filename,output_path1,etag
