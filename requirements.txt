@@ -13,3 +13,5 @@ pathlib
 websocket-client
 ipython
 python-multipart
+python-docx
+pandas

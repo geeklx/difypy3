@@ -8,7 +8,9 @@ app = Flask(__name__)
 
 # 获取marp的路径os.getenv
 # marp_path = os.getenv('MARP_PATH', '/Users/habhy/.npm-global/bin/marp')
-marp_path = os.getenv('MARP_PATH', 'C:/Users/liang/AppData/Roaming/npm/node_modules/@marp-team/marp-cli/node_modules')
+# marp_path = os.getenv('MARP_PATH', 'C:/Users/liang/AppData/Roaming/npm/node_modules/@marp-team/marp-cli/marp-cli.js')
+marp_path = os.getenv('MARP_PATH', 'C:/Users/liang/AppData/Roaming/npm/node_modules/@marp-team/marp-cli')
+# marp_path = os.getenv('MARP_PATH', 'C:\\Users\liang\AppData\Roaming\npm\node_modules\@marp-team\marp-cli')
 # 检查是否获取到了路径 C:\Users\liang\AppData\Roaming\npm\node_modules\@marp-team\marp-cli\node_modules
 if marp_path:
     print(f"Marp 的路径是: {marp_path}")
@@ -28,9 +30,23 @@ def upload_markdown():
     with open(f"tmp/{md_filename}", 'w', encoding='utf-8') as f:
         f.write(content)
 
+        # 检查文件是否存在
+    md_file = f"tmp/{md_filename}"
+    if not os.path.exists(md_file):
+        print(f"Error: File {md_file} does not exist.")
+    else:
+        print("File exists.")
+    ppt_file = f"tmp/{pptx_filename}"
+    if not os.path.exists(ppt_file):
+        print(f"Error: File {ppt_file} does not exist.")
+    else:
+        print("File exists.")
+
     # 使用marp-cli将Markdown转换为PPT
     try:
-        subprocess.run([marp_path, f'tmp/{md_filename}', '-o', f'tmp/{pptx_filename}'], check=True)
+        subprocess.run([marp_path, f'tmp/{md_filename}', '-o', f'tmp/{pptx_filename}'],
+                       shell=True,
+                       check=True)
     except subprocess.CalledProcessError as e:
         return {
             'message': 'Failed to convert Markdown to PPT',

@@ -2,10 +2,14 @@ import json
 import os
 import subprocess
 import time
+from datetime import datetime
 
 import requests
+from docx import Document
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.shared import Pt
 from fastapi import FastAPI, HTTPException, APIRouter, Request, Form, UploadFile, File
-from flask import request
+from flask import request, jsonify
 from openai import OpenAI
 
 from dabao.cos_model import TTSRequest, VideoSubmission, AudioSubmission, VideoRequest, VideoResponse, JMRequest
@@ -307,6 +311,57 @@ async def upload_markdown():
         }
     # 返回文件链接
     return f'Markdown 文件已保存\n预览链接: http://127.0.0.1:5037/tmp/{md_filename} \n下载链接: http://127.0.0.1:5037/tmp/{pptx_filename}?pptx'
+
+
+# 配置保存文档的目录
+SAVE_DIR = "./tmp/"
+if not os.path.exists(SAVE_DIR):
+    os.makedirs(SAVE_DIR)
+
+# 获取网页信息到word
+@router.post('/generate_doc/')
+async def generate_doc():
+    try:
+        # 获取请求中的JSON数据
+        data = request.json
+        title = data.get('title')
+        content = data.get('content')
+
+        if not title and not content:
+            logger.error("Title or content is required")
+            return jsonify({"error": "Title or content is required"}), 400
+
+        # 生成文档
+        file_name = f"llm_{datetime.now().strftime('%Y%m%d_%H%M%S')}.docx"
+        file_path = os.path.join(SAVE_DIR, file_name)
+        logger.debug(f"File path: {file_path}")
+
+        doc = Document()
+
+        if title:
+            # 添加大标题
+            paragraph = doc.add_heading(title, level=1)
+            paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER  # 居中对齐
+            paragraph.style.font.name = 'FangSong'  # 直接设置整个段落的字体
+            paragraph.style.font.size = Pt(22)  # 二号字体
+
+        if content:
+            # 添加正文
+            paragraph = doc.add_paragraph(content)
+            paragraph.style.font.name = 'FangSong'  # 直接设置整个段落的字体
+            paragraph.style.font.size = Pt(10.5)  # 五号字体
+
+        doc.save(file_path)
+        logger.info(f"Document generated successfully at {file_path}")
+
+        # 在Mac上打开文件
+        subprocess.call(['open', file_path], shell=True)
+
+        return jsonify({"message": "Document generated successfully", "file_path": file_path}), 200
+
+    except Exception as e:
+        logger.error(f"Error generating document: {e}")
+        return jsonify({"error": str(e)}), 500
 
 # import uvicorn
 #
