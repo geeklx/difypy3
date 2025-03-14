@@ -9,7 +9,9 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt
 from fastapi import FastAPI, HTTPException, APIRouter, Request, Form, UploadFile, File
-from flask import request, jsonify
+from fastapi.responses import FileResponse
+from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from openai import OpenAI
 
 from dabao.cos_model import TTSRequest, VideoSubmission, AudioSubmission, VideoRequest, VideoResponse, JMRequest
@@ -293,8 +295,9 @@ else:
 
 # 保存上传的Markdown内容，并转换成PPT
 @router.post('/pptupload/')
-async def upload_markdown():
-    content = request.get_data(as_text=True)
+async def upload_markdown(request: Request):
+    content = await request.body()  # 异步获取请求体
+    content = content.decode('utf-8')  # 将字节转换为字符串
     timestamp = str(int(time.time()))
     md_filename = f"{timestamp}.md"
     pptx_filename = f"{timestamp}.pptx"
@@ -318,18 +321,19 @@ SAVE_DIR = "./tmp/"
 if not os.path.exists(SAVE_DIR):
     os.makedirs(SAVE_DIR)
 
+
 # 获取网页信息到word
 @router.post('/generate_doc/')
-async def generate_doc():
+async def generate_doc(request: Request):
     try:
         # 获取请求中的JSON数据
-        data = request.json
+        data = await request.json()
         title = data.get('title')
         content = data.get('content')
 
         if not title and not content:
             logger.error("Title or content is required")
-            return jsonify({"error": "Title or content is required"}), 400
+            return JSONResponse({"error": "Title or content is required"}, status_code=400)
 
         # 生成文档
         file_name = f"llm_{datetime.now().strftime('%Y%m%d_%H%M%S')}.docx"
@@ -357,11 +361,59 @@ async def generate_doc():
         # 在Mac上打开文件
         subprocess.call(['open', file_path], shell=True)
 
-        return jsonify({"message": "Document generated successfully", "file_path": file_path}), 200
+        return JSONResponse({"message": "Document generated successfully", "file_path": file_path}, status_code=200)
 
     except Exception as e:
         logger.error(f"Error generating document: {e}")
-        return jsonify({"error": str(e)}), 500
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+
+# 上传并处理Markdown文件的路径
+@router.post('/markdown2map/upload/')
+async def upload_markdown2map(request: Request):
+    content = await request.body()
+    content = content.decode('utf-8')
+    time_name = str(int(time.time()))  # 生成时间戳作为文件名
+    md_file_name = time_name + ".md"  # Markdown文件名
+    html_file_name = time_name + ".html"  # HTML文件名
+
+    # 创建markdown和html文件夹，如果它们不存在的话
+    os.makedirs('markdown', exist_ok=True)
+    os.makedirs('static/html', exist_ok=True)
+
+    # 将Markdown内容写入文件
+    with open(f'markdown/{md_file_name}', "w", encoding='utf-8') as f:
+        f.write(content)
+
+    print(f"Markdown file created: markdown/{md_file_name}")
+
+    # 使用subprocess调用markmap-cli将Markdown转换为HTML，并移动到static/html目录
+    try:
+        result = subprocess.run(['npx', 'markmap-cli', f'markdown/{md_file_name}', '--no-open'], capture_output=True,
+                                shell=True,
+                                text=True)
+
+        if result.returncode != 0:
+            raise subprocess.CalledProcessError(result.returncode, result.args, output=result.stdout,
+                                                stderr=result.stderr)
+
+        # 尝试将生成的HTML文件移动到static/html文件夹
+        os.replace(f'markdown/{html_file_name}', f'static/html/{html_file_name}')
+        print(f"HTML file moved to: static/html/{html_file_name}")
+
+        # 返回转换后的HTML文件链接
+        return f'Markdown文件已保存. 点击预览: {request.url_for("get_html", filename=html_file_name)}'
+    except subprocess.CalledProcessError as e:
+        # 如果转换过程中出现错误，返回错误信息
+        return f"Error generating HTML file: {e.output}\n{e.stderr}", 500
+
+# 挂载静态文件目录
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# 提供HTML文件的路径
+@router.post('/html/{filename}')
+async def get_html(filename: str):
+    return FileResponse(f'static/html/{filename}')
 
 # import uvicorn
 #
