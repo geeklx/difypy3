@@ -26,6 +26,15 @@ base_url1 = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 # model1 = "deepseek-chat"
 model1 = "qwen-max"
 
+
+marp_path1 = os.getenv('MARP_PATH')
+# 检查是否获取到了路径
+if marp_path1:
+    print(f"Marp 的路径是: {marp_path1}")
+else:
+    print("未找到 Marp 的路径，请确保环境变量 MARP_PATH 已设置。")
+
+
 current_directory = Path.cwd()
 path = current_directory / "tmp"
 print("完整路径:", path)

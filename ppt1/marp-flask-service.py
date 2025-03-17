@@ -13,7 +13,8 @@ marp_path = os.getenv('MARP_PATH', 'C:/Users/liang/AppData/Roaming/npm/node_modu
 # marp_path = os.getenv('MARP_PATH', 'C:\\Users\liang\AppData\Roaming\npm\node_modules\@marp-team\marp-cli')
 # 检查是否获取到了路径 C:\Users\liang\AppData\Roaming\npm\node_modules\@marp-team\marp-cli\node_modules
 if marp_path:
-    print(f"Marp 的路径是: {marp_path}")
+    # print(f"Marp 的路径是: {marp_path}")
+    print("s")
 else:
     print("未找到 Marp 的路径，请确保环境变量 MARP_PATH 已设置。")
 

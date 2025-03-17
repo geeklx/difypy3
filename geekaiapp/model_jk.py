@@ -1,5 +1,8 @@
 import json
+import sys
 import os
+
+
 import subprocess
 import time
 from datetime import datetime
@@ -14,12 +17,13 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from openai import OpenAI
 
-from dabao.cos_model import TTSRequest, VideoSubmission, AudioSubmission, VideoRequest, VideoResponse, JMRequest
+from geekaiapp.cos_model import TTSRequest, VideoSubmission, AudioSubmission, VideoRequest, VideoResponse, JMRequest
 # sys.path.append('path/to/dabao')  # 添加模块路径到搜索路径
-from dabao.cos_utils import openai_api_key1, openai_base_url1, port1, ip1, region1, secret_id1, secret_key1, bucket1, \
+from geekaiapp.cos_utils import openai_api_key1, openai_base_url1, port1, ip1, region1, secret_id1, secret_key1, \
+    bucket1, \
     save_audio_file, upload_cos, videomodel, siliconflow_api_url, siliconflow_auth_token, \
     audiomodel, voice, logger, output_path1, gjld_check_video_status, zpai_check_video_status, \
-    api_key1, base_url1, model1, system_prompt, gjld_submit_video_job, zpai_video_job, generate_clip
+    api_key1, base_url1, model1, system_prompt, gjld_submit_video_job, zpai_video_job, generate_clip, marp_path1
 
 app = FastAPI()
 
@@ -29,6 +33,7 @@ router = APIRouter()
 api_key = openai_api_key1
 base_url = openai_base_url1
 output_path = output_path1
+marp_path = marp_path1
 port = port1
 ip = ip1
 
@@ -285,12 +290,6 @@ async def generate_clip_endpoint(prompt: str = Form(...), seed: int = Form(...),
         raise HTTPException(status_code=500, detail=str(e))
 
 
-marp_path = os.getenv('MARP_PATH')
-# 检查是否获取到了路径
-if marp_path:
-    print(f"Marp 的路径是: {marp_path}")
-else:
-    print("未找到 Marp 的路径，请确保环境变量 MARP_PATH 已设置。")
 
 
 # 保存上传的Markdown内容，并转换成PPT
@@ -408,14 +407,22 @@ async def upload_markdown2map(request: Request):
         return f"Error generating HTML file: {e.output}\n{e.stderr}", 500
 
 # 挂载静态文件目录
-app.mount("/static", StaticFiles(directory="static"), name="static")
+router.mount("/static", StaticFiles(directory="static"), name="static")
+# 设置默认的 MARP_PATH
+os.environ.setdefault("MARP_PATH", "/app/tmp")
+# 将项目根目录添加到 Python 路径
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # 提供HTML文件的路径
-@router.post('/html/{filename}')
+@router.post('/static/html/{filename}')
 async def get_html(filename: str):
     return FileResponse(f'static/html/{filename}')
 
-# import uvicorn
-#
-# if __name__ == '__main__':
-#     uvicorn.run(app, host='0.0.0.0', port=5036)
+import uvicorn
+from model_jk import router as router_edgetts
+app.include_router(router_edgetts)
+
+if __name__ == '__main__':
+    uvicorn.run(router, host='0.0.0.0', port=5037)
+
+

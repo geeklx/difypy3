@@ -1,0 +1,13 @@
+#version: '3'  # Docker Compose 文件版本
+
+services:
+  geekaiapp:
+    build: .
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: python geekaiapp/model_jk.py
+    ports:
+      - "15001:15001"  # 将容器的 15001 端口映射到主机的 15001 端口
+#    env_file:
+#      - .env
