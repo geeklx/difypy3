@@ -1,281 +1,289 @@
-以下是基于提供的代码内容编写的符合 `curl` 格式的文档，并支持在 Postman 中直接使用。每个 API 端点都包含了请求方法、URL、请求头、请求体等信息。
+# 使用说明文档
 
----
+## 概述
 
-### 1. 微软的文生音，并上传到腾讯云 COS
-**Endpoint:** `/edge/tts12/`
+本文档提供了基于 FastAPI 构建的 API 服务的使用说明。该服务集成了多种功能，包括文本转语音、文本转视频、图像生成、Markdown 转 PPT、网页信息生成 Word 文档等。以下将详细介绍每个接口的使用方法。
 
-**Method:** `POST`
+## 安装与运行
 
-**URL:** `http://<your-server-ip>:<port>/edge/tts12/`
+### 依赖安装
 
-**Headers:**
-- `Content-Type: application/json`
+在运行项目之前，请确保已安装所需的 Python 依赖包。可以通过以下命令安装：
 
-**Body (JSON):**
+```bash
+pip install -r requirements.txt
+```
+
+### 运行服务
+
+在项目根目录下运行以下命令启动服务：
+
+```bash
+python main.py
+```
+
+服务启动后，默认监听 `0.0.0.0` 的 `port` 端口（具体端口号请查看配置文件）。
+
+## API 接口说明
+
+### 1. 微软文本转语音 (TTS)
+
+#### 1.1 生成语音并保存到本地
+
+- **接口路径**: `/edge/tts1/`
+- **请求方法**: `POST`
+- **请求体**:
+
 ```json
 {
-    "model": "tts-1",
-    "input": "Hello, this is a test.",
-    "voice": "alloy",
-    "response_format": "mp3",
-    "speed": 1.0
+  "model": "模型名称",
+  "input": "输入文本",
+  "voice": "语音类型",
+  "response_format": "音频格式",
+  "speed": "语速"
 }
 ```
 
-**Curl Command:**
-```bash
-curl -X POST "http://<your-server-ip>:<port>/edge/tts12/" \
--H "Content-Type: application/json" \
--d '{
-    "model": "tts-1",
-    "input": "Hello, this is a test.",
-    "voice": "alloy",
-    "response_format": "mp3",
-    "speed": 1.0
-}'
-```
+- **响应**:
 
----
-
-### 2. 微软的文生音
-**Endpoint:** `/edge/tts1/`
-
-**Method:** `POST`
-
-**URL:** `http://<your-server-ip>:<port>/edge/tts1/`
-
-**Headers:**
-- `Content-Type: application/json`
-
-**Body (JSON):**
 ```json
 {
-    "model": "tts-1",
-    "input": "Hello, this is a test.",
-    "voice": "alloy",
-    "response_format": "mp3",
-    "speed": 1.0
+  "filename": "文件名",
+  "output_path": "音频文件URL"
 }
 ```
 
-**Curl Command:**
-```bash
-curl -X POST "http://<your-server-ip>:<port>/edge/tts1/" \
--H "Content-Type: application/json" \
--d '{
-    "model": "tts-1",
-    "input": "Hello, this is a test.",
-    "voice": "alloy",
-    "response_format": "mp3",
-    "speed": 1.0
-}'
-```
+#### 1.2 生成语音并上传到腾讯云 COS
 
----
+- **接口路径**: `/edge/tts12/`
+- **请求方法**: `POST`
+- **请求体**: 同上
+- **响应**:
 
-### 3. 硅基流动-文生视频
-**Endpoint:** `/gjld/video/`
-
-**Method:** `POST`
-
-**URL:** `http://<your-server-ip>:<port>/gjld/video/`
-
-**Headers:**
-- `Content-Type: application/json`
-
-**Body (JSON):**
 ```json
 {
-    "model": "video-model",
-    "prompt": "A beautiful sunset over the mountains."
+  "audio_url": "COS音频文件URL",
+  "filename": "文件名",
+  "output_path": "本地音频文件URL",
+  "etag": "COS返回的ETag"
 }
 ```
 
-**Curl Command:**
-```bash
-curl -X POST "http://<your-server-ip>:<port>/gjld/video/" \
--H "Content-Type: application/json" \
--d '{
-    "model": "video-model",
-    "prompt": "A beautiful sunset over the mountains."
-}'
-```
+### 2. 硅基流动文本转视频
 
----
+- **接口路径**: `/gjld/video/`
+- **请求方法**: `POST`
+- **请求体**:
 
-### 4. 硅基流动-文生音
-**Endpoint:** `/gjld/audio/`
-
-**Method:** `POST`
-
-**URL:** `http://<your-server-ip>:<port>/gjld/audio/`
-
-**Headers:**
-- `Content-Type: application/json`
-
-**Body (JSON):**
 ```json
 {
-    "model": "audio-model",
-    "input": "Hello, this is a test.",
-    "voice": "alloy",
-    "response_format": "mp3",
-    "sample_rate": 32000,
-    "stream": true,
-    "speed": 1,
-    "gain": 0
+  "model": "模型名称",
+  "prompt": "生成视频的文本提示"
 }
 ```
 
-**Curl Command:**
-```bash
-curl -X POST "http://<your-server-ip>:<port>/gjld/audio/" \
--H "Content-Type: application/json" \
--d '{
-    "model": "audio-model",
-    "input": "Hello, this is a test.",
-    "voice": "alloy",
-    "response_format": "mp3",
-    "sample_rate": 32000,
-    "stream": true,
-    "speed": 1,
-    "gain": 0
-}'
-```
+- **响应**:
 
----
-
-### 5. 智谱AI-文生视频
-**Endpoint:** `/zhipuai/video/`
-
-**Method:** `POST`
-
-**URL:** `http://<your-server-ip>:<port>/zhipuai/video/`
-
-**Headers:**
-- `Content-Type: application/json`
-
-**Body (JSON):**
 ```json
 {
-    "prompt": "A beautiful sunset over the mountains.",
-    "with_audio": true
+  "video_url": "生成的视频URL"
 }
 ```
 
-**Curl Command:**
-```bash
-curl -X POST "http://<your-server-ip>:<port>/zhipuai/video/" \
--H "Content-Type: application/json" \
--d '{
-    "prompt": "A beautiful sunset over the mountains.",
-    "with_audio": true
-}'
-```
+### 3. 硅基流动文本转语音
 
----
+- **接口路径**: `/gjld/audio/`
+- **请求方法**: `POST`
+- **请求体**:
 
-### 6. 即梦-文生图
-**Endpoint:** `/jimeng/img/`
-
-**Method:** `POST`
-
-**URL:** `http://<your-server-ip>:<port>/jimeng/img/`
-
-**Headers:**
-- `Content-Type: application/json`
-- `Authorization: Bearer <your-api-key>`
-
-**Body (JSON):**
 ```json
 {
-    "model": "image-model",
-    "prompt": "A beautiful sunset over the mountains.",
-    "negativePrompt": "dark, gloomy",
-    "width": 1024,
-    "height": 768,
-    "sample_strength": 0.75
+  "model": "模型名称",
+  "input": "输入文本",
+  "voice": "语音类型"
 }
 ```
 
-**Curl Command:**
-```bash
-curl -X POST "http://<your-server-ip>:<port>/jimeng/img/" \
--H "Content-Type: application/json" \
--H "Authorization: Bearer <your-api-key>" \
--d '{
-    "model": "image-model",
-    "prompt": "A beautiful sunset over the mountains.",
-    "negativePrompt": "dark, gloomy",
-    "width": 1024,
-    "height": 768,
-    "sample_strength": 0.75
-}'
-```
+- **响应**:
 
----
-
-### 7. 单词比对
-**Endpoint:** `/dcbd1/`
-
-**Method:** `POST`
-
-**URL:** `http://<your-server-ip>:<port>/dcbd1/`
-
-**Headers:**
-- `Content-Type: application/json`
-
-**Body (JSON):**
 ```json
 {
-    "content": "Compare these words."
+  "filename": "文件名",
+  "output_path": "音频文件URL"
 }
 ```
 
-**Curl Command:**
-```bash
-curl -X POST "http://<your-server-ip>:<port>/dcbd1/" \
--H "Content-Type: application/json" \
--d '{
-    "content": "Compare these words."
-}'
+### 4. 智谱AI文本转视频
+
+- **接口路径**: `/zhipuai/video/`
+- **请求方法**: `POST`
+- **请求体**:
+
+```json
+{
+  "prompt": "生成视频的文本提示",
+  "with_audio": "是否包含音频"
+}
 ```
 
----
+- **响应**:
 
-### 8. Bizy绘画-CommfyUI
-**Endpoint:** `/comfyui_bizyairapi/`
-
-**Method:** `POST`
-
-**URL:** `http://<your-server-ip>:<port>/comfyui_bizyairapi/`
-
-**Headers:**
-- `Content-Type: multipart/form-data`
-
-**Body (Form Data):**
-- `prompt`: A beautiful sunset over the mountains.
-- `seed`: 42
-- `idx`: 1
-- `workflowfile`: (上传文件)
-
-**Curl Command:**
-```bash
-curl -X POST "http://<your-server-ip>:<port>/comfyui_bizyairapi/" \
--H "Content-Type: multipart/form-data" \
--F "prompt=A beautiful sunset over the mountains." \
--F "seed=42" \
--F "idx=1" \
--F "workflowfile=@/path/to/your/workflow.json"
+```json
+{
+  "task_id": "任务ID",
+  "status": "任务状态",
+  "video_url": "生成的视频URL"
+}
 ```
 
----
+### 5. 即梦文生图
 
-### 注意事项：
-1. 替换 `<your-server-ip>` 和 `<port>` 为实际的服务器 IP 地址和端口号。
-2. 替换 `<your-api-key>` 为实际的 API 密钥。
-3. 确保服务器已启动并监听指定的端口。
-4. 对于文件上传的 API（如 `/comfyui_bizyairapi/`），确保文件路径正确。
+- **接口路径**: `/jimeng/img/`
+- **请求方法**: `POST`
+- **请求体**:
 
-这些 `curl` 命令可以直接在终端中运行，也可以在 Postman 中导入为请求集合。
+```json
+{
+  "image_api_key": "API密钥",
+  "model": "模型名称",
+  "prompt": "生成图像的文本提示",
+  "negativePrompt": "负面提示",
+  "width": "图像宽度",
+  "height": "图像高度",
+  "sample_strength": "采样强度"
+}
+```
+
+- **响应**:
+
+```json
+{
+  "url": "生成的图像URL"
+}
+```
+
+### 6. 单词比对
+
+- **接口路径**: `/dcbd1/`
+- **请求方法**: `POST`
+- **请求体**:
+
+```json
+{
+  "content": [
+    {
+      "序号": 1,
+      "汉语": "中文解释",
+      "英语": "英文单词"
+    }
+  ]
+}
+```
+
+- **响应**:
+
+```json
+{
+  "errors": [
+    {
+      "序号": 1,
+      "汉语": "中文解释",
+      "错误英语": "错误的英文单词",
+      "正确英语": "正确的英文单词"
+    }
+  ]
+}
+```
+
+### 7. BizyAI 绘画 (ComfyUI)
+
+- **接口路径**: `/comfyui_bizyairapi/`
+- **请求方法**: `POST`
+- **请求体**:
+
+```form-data
+prompt: 生成图像的提示
+seed: 随机种子
+idx: 索引
+workflowfile: 工作流文件 (JSON)
+```
+
+- **响应**:
+
+```json
+{
+  "filename": "文件名",
+  "output_path": "生成的图像URL",
+  "etag": "COS返回的ETag"
+}
+```
+
+### 8. Markdown 转 PPT
+
+- **接口路径**: `/pptupload/`
+- **请求方法**: `POST`
+- **请求体**: Markdown 文件内容
+- **响应**:
+
+```text
+Markdown 文件已保存
+预览链接: <Markdown文件URL>
+下载链接: <PPT文件URL>
+```
+
+### 9. 网页信息生成 Word 文档
+
+- **接口路径**: `/generate_doc/`
+- **请求方法**: `POST`
+- **请求体**:
+
+```json
+{
+  "title": "文档标题",
+  "content": "文档内容"
+}
+```
+
+- **响应**:
+
+```json
+{
+  "message": "Document generated successfully",
+  "file_path": "生成的Word文档URL"
+}
+```
+
+### 10. Markdown 转 HTML 思维导图
+
+- **接口路径**: `/markdown2map/upload/`
+- **请求方法**: `POST`
+- **请求体**: Markdown 文件内容
+- **响应**:
+
+```text
+Markdown文件已保存. 点击预览: <HTML文件URL>
+```
+
+### 11. 获取 HTML 文件
+
+- **接口路径**: `/static/html/{filename}`
+- **请求方法**: `GET`
+- **响应**: 返回指定的 HTML 文件内容
+
+## 错误处理
+
+所有接口在发生错误时都会返回 HTTP 500 状态码，并在响应体中包含错误信息。例如：
+
+```json
+{
+  "detail": "错误信息"
+}
+```
+
+## 日志
+
+服务运行时会记录日志，日志级别为 `INFO`，日志信息会输出到控制台。
+
+## 结语
+
+以上是 API 服务的详细使用说明。如有任何问题，请联系开发者。

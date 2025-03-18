@@ -18,8 +18,8 @@ from fastapi.responses import FileResponse
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from openai import OpenAI
-from geekaiapp.cos_model import TTSRequest, VideoSubmission, AudioSubmission, VideoRequest, VideoResponse, JMRequest
-from geekaiapp.cos_utils import save_audio_file, output_path1, upload_cos, tencent_region, tencent_secret_id, \
+from geekaiapp.g_model import TTSRequest, VideoSubmission, AudioSubmission, VideoRequest, VideoResponse, JMRequest
+from geekaiapp.g_utils import save_audio_file, output_path1, upload_cos, tencent_region, tencent_secret_id, \
     tencent_secret_key, tencent_bucket, siliconflow_api_url, siliconflow_auth_token, gjld_submit_video_job, \
     gjld_check_video_status, siliconflow_videomodel, siliconflow_audiomodel, siliconflow_voice, zpai_video_job, \
     zpai_check_video_status, microsoft_api_key, microsoft_base_url, aliyuncs_api_key, aliyuncs_base_url, ip, ip_tts, \
@@ -434,10 +434,10 @@ async def get_html(filename: str):
 
 
 
-import uvicorn
-from g_jiekou import router as router_edgetts
-
-app.include_router(router_edgetts)
-
-if __name__ == '__main__':
-    uvicorn.run(router, host='0.0.0.0', port=port)
+# import uvicorn
+# from g_jiekou import router as router_edgetts
+#
+# app.include_router(router_edgetts)
+#
+# if __name__ == '__main__':
+#     uvicorn.run(router, host='0.0.0.0', port=port)
