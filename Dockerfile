@@ -3,6 +3,8 @@
 #FROM mirrors.cloud.tencent.com/python/python:3.13-slim
 #FROM registry.cn-hangzhou.aliyuncs.com/luyuehm/python:3.13-slim
 FROM crpi-oz87fnf8zm051s5l.cn-hangzhou.personal.cr.aliyuncs.com/geekaiapp/python:3.13-slim
+# 使用官方 Node.js 镜像作为基础镜像
+#FROM node:19.9.0
 
 # 设置工作目录
 WORKDIR /app
@@ -17,7 +19,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # 运行应用程序
-CMD ["python", "geekaiapp/model_jk.py"]
+CMD ["python", "geekaiapp/model_jiekou.py"]
 
 
 #docker-compose up --build

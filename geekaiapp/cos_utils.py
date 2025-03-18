@@ -8,73 +8,102 @@ import urllib.parse
 import urllib.request
 import uuid
 from pathlib import Path
-import websocket  # NOTE: websocket-client (https://github.com/websocket-client/websocket-client)
+
 import requests
+import websocket  # NOTE: websocket-client (https://github.com/websocket-client/websocket-client)
 from fastapi import HTTPException
 from qcloud_cos import CosConfig
 from qcloud_cos import CosS3Client
 
+# 设置日志
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# config = load_config('config.json')
+# api_url = config["api_url"]
+
 # 微软服务
 # openai_api_key='zhouhuizhou'
-openai_api_key1 = 'geekaiapp'
+microsoft_api_key = os.getenv('MICROSOFT_API_KEY', 'geekaiapp')
 # openai_base_url='https://edgettsapi.duckcloud.fun/v1'
-openai_base_url1 = 'https://edge-tts.g1cloudflare.workers.dev/v1'
+microsoft_base_url = os.getenv('MICROSOFT_BASE_URL', 'https://edge-tts.g1cloudflare.workers.dev/v1')
 
 # 阿里大模型服务
-api_key1 = "sk-c59a31cce2c442eaa7fae4790182b5b3"
-base_url1 = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-# model1 = "deepseek-chat"
-model1 = "qwen-max"
+aliyuncs_api_key = os.getenv('ALIYUNCS_API_KEY', 'sk-c59a31cce2c442eaa7fae4790182b5b3')
+aliyuncs_base_url = os.getenv('ALIYUNCS_BASE_URL', 'https://dashscope.aliyuncs.com/compatible-mode/v1')
+aliyuncs_model = os.getenv('ALIYUNCS_MODEL', 'qwen-max')
 
+# 硅基流动
+siliconflow_api_url = os.getenv('SILICONFLOW_API_URL', 'https://api.siliconflow.cn/v1')
+siliconflow_auth_token = os.getenv('SILICONFLOW_AUTH_TOEKN', 'sk-xlnroajavslhhuvfaijqkgqpzzsdqhmmsyzlulvhqhmsrgml')
+siliconflow_audiomodel = os.getenv('SILICONFLOW_AUDIOMODEL', 'FunAudioLLM/CosyVoice2-0.5B')
+siliconflow_voice = os.getenv('SILICONFLOW_VOICE', 'FunAudioLLM/CosyVoice2-0.5B:david')
+siliconflow_videomodel = os.getenv('SILICONFLOW_VIDEOMODEL', 'Lightricks/LTX-Video')
 
-marp_path1 = os.getenv('MARP_PATH')
+# 腾讯oss
+tencent_region = os.getenv('TENCENT_REGION', 'ap-nanjing')
+tencent_secret_id = os.getenv('TENCENT_SECRET_ID', 'AKID03BB5nRuAD2d0AF7lCPPBl8HCtDNK4d1')
+tencent_secret_key = os.getenv('TENCENT_SECRET_KEY', 'EE1by75sSowqZ5NURBrPlutjPt9E9rXD')
+tencent_bucket = os.getenv('TENCENT_BUCKET', 'dify-1305874767')
+
+# 智谱AI
+zhipu_api_key = os.getenv('ZHIPU_API_KEY', 'ee6c4107dbed41f59843bf796fa1a08f.XidZ1DF5NOr76MzU')
+zhipu_api_url = os.getenv('ZHIPU_API_URL', 'https://open.bigmodel.cn/api/paas/v4')
+
+# jimeng
+# image_generation_url="http://localhost:8000/v1/images/generations"
+image_generation_url = os.getenv('IMAGE_GENERATION_URL', 'https://jimeng.duckcloud.fun/v1/images/generations')
+image_api_key = os.getenv('IMAGE_API_KEY', '1dcca7b8288e820e2eb5fe568d1d7d01')
+
+# comfyui设置工作目录和项目相关的路径
+comfyui_endpoit = os.getenv('COMFYUI_ENDPOIT', '127.0.0.1:8188')
+
+#
+port = int(os.getenv('PORT', '15001'))
+ip = os.getenv('IP', 'http://localhost:15001/')
+ip_tts = os.getenv('IP_TTS', 'static/tts')
+ip_img = os.getenv('IP_IMG', 'static/imgs')
+ip_md = os.getenv('IP_MD', 'static/markdown')
+ip_html = os.getenv('IP_HTML', 'static/html')
+
+# if not os.path.exists(SAVE_DIR):
+#     os.makedirs(SAVE_DIR)
+
+#
+# 设置默认的 MARP_PATH
+# os.environ.setdefault("MARP_PATH", "C:/Users/liang/AppData/Roaming/npm/node_modules/@marp-team/marp-cli")
+marp_path = os.getenv('MARP_PATH')
 # 检查是否获取到了路径
-if marp_path1:
-    print(f"Marp 的路径是: {marp_path1}")
+if marp_path:
+    print(f"Marp 的路径是: {marp_path}")
 else:
     print("未找到 Marp 的路径，请确保环境变量 MARP_PATH 已设置。")
 
-
+# 基础配置
 current_directory = Path.cwd()
-path = current_directory / "tmp"
-print("完整路径:", path)
-output_path1 = path
-# output_path1 = 'D:\tmp'
-port1 = 5037
-ip1 = '127.0.0.1'
-
-region1 = 'ap-nanjing'
-secret_id1 = 'AKID03BB5nRuAD2d0AF7lCPPBl8HCtDNK4d1'
-secret_key1 = 'EE1by75sSowqZ5NURBrPlutjPt9E9rXD'
-bucket1 = 'dify-1305874767'
-
-audiomodel = 'FunAudioLLM/CosyVoice2-0.5B'
-voice = 'FunAudioLLM/CosyVoice2-0.5B:david'
-videomodel = 'Lightricks/LTX-Video'
-
-siliconflow_api_url = 'https://api.siliconflow.cn/v1'
-siliconflow_auth_token = 'sk-xlnroajavslhhuvfaijqkgqpzzsdqhmmsyzlulvhqhmsrgml'
-
-zhipu_api_key = "ee6c4107dbed41f59843bf796fa1a08f.XidZ1DF5NOr76MzU"
-zhipu_api_url = "https://open.bigmodel.cn/api/paas/v4"
-
-# image_generation_url="http://localhost:8000/v1/images/generations"
-image_generation_url = "https://jimeng.duckcloud.fun/v1/images/generations"
-image_api_key = "1dcca7b8288e820e2eb5fe568d1d7d01"
+path1 = current_directory / ip_tts
+path2 = current_directory / ip_img
+path3 = current_directory / ip_md
+path4 = current_directory / ip_html
+path5 = current_directory / "marp-cli/marp-cli.js"
+print("完整路径-tts:", path1)
+print("完整路径-imgs:", path2)
+print("完整路径-md:", path3)
+print("完整路径-html:", path4)
+print("完整路径-marp-cli:", path5)
+output_path1 = path1
+output_path2 = path2
+marp_path = path5
 
 # 设置工作目录和项目相关的路径
-comfyui_endpoit = "127.0.0.1:8188"
-WORKING_DIR = output_path1
+comfyui_endpoit = os.getenv('COMFYUI_ENDPOIT', '127.0.0.1:8188')
+WORKING_DIR = output_path2
 SageMaker_ComfyUI = WORKING_DIR
-workflowfile = output_path1
+workflowfile = output_path2
 COMFYUI_ENDPOINT = comfyui_endpoit
 
 server_address = COMFYUI_ENDPOINT
 client_id = str(uuid.uuid4())  # 生成一个唯一的客户端ID
-
-# 设置日志
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 system_prompt = """
 你是一位英语教学专家，请根据用户将提供给你的内容，请你分析内容，并提取其中的关键信息，识别出中文对应的英文写错的部分,以 JSON 的形式输出，输出的 JSON 需遵守以下的格式：
@@ -113,9 +142,6 @@ def load_config(config_file):
     with open(config_file, 'r', encoding='utf-8') as file:
         return json.load(file)
 
-
-# config = load_config('config.json')
-# api_url = config["api_url"]
 
 # 智谱AI-提交文生视频任务的函数
 def zpai_video_job(prompt: str, with_audio: bool = True):
@@ -198,6 +224,7 @@ def zpai_check_video_status(task_id: str):
             time.sleep(5)  # 请求失败时也等待 5 秒再重试
 
 
+# 硅基流动文生音
 def gjld_submit_video_job(api_url, auth_token, model, prompt):
     submit_url = f"{api_url}/video/submit"
     payload = json.dumps({
@@ -236,6 +263,7 @@ def gjld_check_video_status(api_url, auth_token, request_id, timeout=200):
             return None
 
 
+# 随机给名字
 def generate_timestamp_filenameforaudio(extension='mp3'):
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     random_number = random.randint(1000, 9999)
@@ -243,6 +271,7 @@ def generate_timestamp_filenameforaudio(extension='mp3'):
     return filename
 
 
+# 保存文件
 def save_audio_file(audio_content, output_dir):
     # 生成文件名
     filename = generate_timestamp_filenameforaudio()
@@ -254,7 +283,8 @@ def save_audio_file(audio_content, output_dir):
     return filename, output_path
 
 
-def upload_cos(region, secret_id, secret_key, bucket, file_name, base_path):
+# 上传腾讯oss
+def upload_cos(env, region, secret_id, secret_key, bucket, file_name, base_path):
     config = CosConfig(
         Region=region,
         SecretId=secret_id,
@@ -276,27 +306,6 @@ def upload_cos(region, secret_id, secret_key, bucket, file_name, base_path):
     else:
         return None
 
-def upload_cos2(env, file_name, base_path):
-    config = CosConfig(
-        Region=region1,
-        SecretId=secret_id1,
-        SecretKey=secret_key1
-    )
-    client = CosS3Client(config)
-    file_path = os.path.join(base_path, file_name)
-    response = client.upload_file(
-        Bucket=bucket1,
-        LocalFilePath=file_path,
-        Key=file_name,
-        PartSize=10,
-        MAXThread=10,
-        EnableMD5=False
-    )
-    if response['ETag']:
-        url = f"https://{bucket1}.cos.{region1}.myqcloud.com/{file_name}"
-        return url
-    else:
-        return None
 
 # 定义一个函数来显示GIF图片
 def show_gif(fname):
@@ -378,6 +387,7 @@ def parse_worflow(ws, prompt, seed, workflowfile):
     workflowfile["80"]["inputs"]["text"] = prompt
     return get_images(ws, workflowfile)
 
+
 # 生成图像并显示
 def generate_clip(prompt, seed, workflowfile, idx):
     logger.info(f"Seed: {seed}")
@@ -395,9 +405,9 @@ def generate_clip(prompt, seed, workflowfile, idx):
         for image_data in images[node_id]:
             # 获取当前时间，并格式化为 YYYYMMDDHHMMSS 的格式
             timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-            filename=f"{idx}_{seed}_{timestamp}.png"
+            filename = f"{idx}_{seed}_{timestamp}.png"
             # 使用格式化的时间戳在文件名中
-            GIF_LOCATION = os.path.join(output_path1, filename)
+            GIF_LOCATION = os.path.join(output_path2, filename)
 
             logger.info(f"Saving image to: {GIF_LOCATION}")
             with open(GIF_LOCATION, "wb") as binary_file:
@@ -406,7 +416,7 @@ def generate_clip(prompt, seed, workflowfile, idx):
 
             show_gif(GIF_LOCATION)
             # 上传腾讯oss存储
-            etag = upload_cos2('test', filename, output_path1)
+            etag = upload_cos('test', tencent_region, tencent_secret_id, tencent_secret_key, tencent_bucket,filename, output_path2)
             logger.info(f"{GIF_LOCATION} DONE!!!")
             logger.info(f"{etag} DONE!!!")
-    return filename,output_path1,etag
+    return filename, output_path2, etag
