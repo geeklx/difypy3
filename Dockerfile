@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # 运行应用程序
-CMD ["python", "geekaiapp/model_jiekou.py"]
+CMD ["python", "geekaiapp/g_jiekou.py"]
 
 
 #docker-compose up --build

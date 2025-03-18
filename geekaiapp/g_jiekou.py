@@ -176,7 +176,7 @@ async def gjld_audio(audio_Submission: AudioSubmission):
         raise HTTPException(status_code=response.status_code, detail="请求失败")
 
 
-# 智谱AI-文生视频任务的接口
+# g智谱AI-文生视频任务的接口
 @router.post("/zhipuai/video/")
 async def zpai_video(video_request: VideoRequest):
     """Submits a text-to-video generation job using the ZhipuAI API."""
