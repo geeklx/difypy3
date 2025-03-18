@@ -435,7 +435,7 @@ async def get_html(filename: str):
 
 
 import uvicorn
-from model_jiekou import router as router_edgetts
+from g_jiekou import router as router_edgetts
 
 app.include_router(router_edgetts)
 
