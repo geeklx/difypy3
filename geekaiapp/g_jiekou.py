@@ -3,8 +3,6 @@ import os
 import sys
 # 将项目根目录添加到 Python 路径
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-
 import subprocess
 import time
 from datetime import datetime
@@ -13,10 +11,10 @@ import requests
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt
+from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, HTTPException, APIRouter, Request, Form, UploadFile, File
 from fastapi.responses import FileResponse
 from fastapi.responses import JSONResponse
-from fastapi.staticfiles import StaticFiles
 from openai import OpenAI
 from geekaiapp.g_model import TTSRequest, VideoSubmission, AudioSubmission, VideoRequest, VideoResponse, JMRequest
 from geekaiapp.g_utils import save_audio_file, output_path1, upload_cos, tencent_region, tencent_secret_id, \
@@ -28,10 +26,19 @@ from geekaiapp.g_utils import save_audio_file, output_path1, upload_cos, tencent
 
 
 app = FastAPI()
-
 router = APIRouter()
+
+
+
+# 获取当前文件的目录
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# 拼接 static 目录的绝对路径
+static_dir = os.path.join(current_dir, "static")
 # 挂载静态文件目录
-router.mount("/static", StaticFiles(directory="static"), name="static")
+router.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+# 挂载静态文件目录
+# router.mount("/static", StaticFiles(directory="static"), name="static")
 
 # 设置日志
 logging.basicConfig(level=logging.INFO)
@@ -420,7 +427,8 @@ async def upload_markdown2map(request: Request):
         print(f"HTML file moved to: {ip_html}/{html_file_name}")
 
         # 返回转换后的HTML文件链接
-        return f'Markdown文件已保存. 点击预览: {request.url_for("get_html", filename=html_file_name)}'
+        # return f'Markdown文件已保存. 点击预览: {request.url_for("get_html", filename=html_file_name)}'
+        return f'Markdown文件已保存. 点击预览: {ip}{ip_html}/{html_file_name}'
     except subprocess.CalledProcessError as e:
         # 如果转换过程中出现错误，返回错误信息
         return f"Error generating HTML file: {e.output}\n{e.stderr}", 500
@@ -429,15 +437,15 @@ async def upload_markdown2map(request: Request):
 # g提供HTML文件的路径
 @router.post('/static/html/{filename}')
 async def get_html(filename: str):
-    return FileResponse(f'{ip_html}/{filename}')
+    return FileResponse(f'static/html/{filename}')
 
 
 
 
-# import uvicorn
-# from g_jiekou import router as router_edgetts
-#
-# app.include_router(router_edgetts)
-#
-# if __name__ == '__main__':
-#     uvicorn.run(router, host='0.0.0.0', port=port)
+import uvicorn
+from g_jiekou import router as router_edgetts
+
+app.include_router(router_edgetts)
+
+if __name__ == '__main__':
+    uvicorn.run(router, host='0.0.0.0', port=port)
