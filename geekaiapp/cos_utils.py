@@ -408,7 +408,7 @@ def generate_clip(prompt, seed, workflowfile, idx):
             filename = f"{idx}_{seed}_{timestamp}.png"
             # 使用格式化的时间戳在文件名中
             GIF_LOCATION = os.path.join(output_path2, filename)
-
+            img_url = f"{ip}{ip_img}/{filename}"
             logger.info(f"Saving image to: {GIF_LOCATION}")
             with open(GIF_LOCATION, "wb") as binary_file:
                 # 写入二进制文件
@@ -419,4 +419,4 @@ def generate_clip(prompt, seed, workflowfile, idx):
             etag = upload_cos('test', tencent_region, tencent_secret_id, tencent_secret_key, tencent_bucket,filename, output_path2)
             logger.info(f"{GIF_LOCATION} DONE!!!")
             logger.info(f"{etag} DONE!!!")
-    return filename, output_path2, etag
+    return filename, img_url, etag
