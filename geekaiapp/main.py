@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 
-from model_jk import router as router_edgetts
+from g_jiekou import router as router_edgetts
 
 app = FastAPI()
 
