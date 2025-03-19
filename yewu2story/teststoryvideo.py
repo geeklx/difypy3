@@ -2,12 +2,23 @@ import time
 from typing import Optional, Dict, Any
 
 import requests
-
-
+#
+# {
+#     "story_prompt": "小马过河",
+#     "segments": "3",
+#     "language": "zh-CN",
+#     "voice_name": "zh-CN-XiaoxiaoNeural",
+#     "voice_rate": "1.0",
+#     "resolution": "1024*768",
+#     "text_llm_provider": "siliconflow",
+#     "image_llm_provider": "siliconflow",
+#     "text_llm_model": "internlm3-latest",
+#     "image_llm_model": "black-forest-labs/FLUX.1-schnell"
+# }
 class StoryVideoClient:
-    def __init__(self, base_url: str = "http://192.168.1.3:8085", api_token: str = None):
+    def __init__(self, base_url: str = "http://localhost:15003", api_token: str = None):
         self.base_url = base_url.rstrip('/')
-        self.api_token = "zhouhui-1258720957"
+        self.api_token = "g-1258720957"
 
     async def generate_video(self,
                              story_prompt: Optional[str] = None,

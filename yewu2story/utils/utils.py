@@ -11,7 +11,7 @@ from uuid import uuid4
 import urllib3
 from loguru import logger
 
-from geekaiapp.story.models import const
+from yewu2story.models import const
 
 urllib3.disable_warnings()
 

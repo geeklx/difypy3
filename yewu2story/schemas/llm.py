@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
-from typing import List, Dict, Any
-from geekaiapp.story.models.const import Language
+from typing import List
+from yewu2story.models.const import Language
 from typing import Optional
 
 class StoryGenerationRequest(BaseModel):

@@ -20,16 +20,16 @@ from moviepy.video.tools.subtitles import SubtitlesClip
 from qcloud_cos import CosConfig
 from qcloud_cos import CosS3Client
 
-from geekaiapp.story.schemas.llm import StoryGenerationRequest
-from geekaiapp.story.schemas.video import VideoGenerateRequest, StoryScene
-from geekaiapp.story.services.llm import llm_service
-from geekaiapp.story.services.voice import generate_voice
-from geekaiapp.story.utils import utils
+from yewu2story.schemas.llm import StoryGenerationRequest
+from yewu2story.schemas.video import VideoGenerateRequest, StoryScene
+from yewu2story.services.llm import llm_service
+from yewu2story.services.voice import generate_voice
+from yewu2story.utils import utils
 
 # 读取配置文件中的API密钥
 config = configparser.ConfigParser()
 # config.read('f:\\work\\code\\2024pythontest\\story\\config.ini', encoding='utf-8')
-config.read('./../config.ini',encoding='utf-8')
+config.read('./config.ini', encoding='utf-8')
 # linux  (linux下的路径)
 # config.read('config.ini', encoding='utf-8')
 # Tencent Cloud COS configuration
@@ -97,12 +97,14 @@ def wrap_text(text, max_width, font="Arial", fontsize=60):
     return result, height
 
 
-async def create_video_with_scenes(task_dir: str, scenes: List[StoryScene], voice_name: str, voice_rate: float,
-                                   test_mode: bool = False) -> str:
+async def create_video_with_scenes(task_dir: str, task_id: str, scenes: List[StoryScene], voice_name: str,
+                                   voice_rate: float,
+                                   test_mode: bool = False):
     """创建带有场景的视频
 
     Args:
         task_dir (str): 任务目录
+        task_id (str): 任务目录id
         scenes (List[StoryScene]): 场景列表
         voice_name (str): 语音名称
         voice_rate (float): 语音速率
@@ -229,7 +231,7 @@ async def create_video_with_scenes(task_dir: str, scenes: List[StoryScene], voic
 
     logger.info(f"Writing video to {video_file}")
     final_clip.write_videofile(video_file, fps=24, codec='libx264', audio_codec='aac')
-
+    local_url = f"http://localhost:15003/tasks/{task_id}/{video_filename}"
     # 上传视频到腾讯云COS
     logger.info("Uploading video to Tencent COS")
     try:
@@ -260,7 +262,9 @@ async def create_video_with_scenes(task_dir: str, scenes: List[StoryScene], voic
         if response.get('ETag'):
             video_url = f"https://{bucket}.cos.{region}.myqcloud.com/videos/{video_filename}"
             logger.info(f"Video uploaded successfully: {video_url}")
-            return video_url
+            return {
+                "video_url": video_url, "local_url": local_url
+            }
         else:
             logger.error("Failed to upload video to COS: No ETag in response")
             return None
@@ -268,7 +272,9 @@ async def create_video_with_scenes(task_dir: str, scenes: List[StoryScene], voic
         logger.error(f"Error uploading video to COS: {str(e)}")
         return None
 
-    return video_file
+    return {
+        "video_url": video_file, "local_url": local_url
+    }
 
 
 async def generate_video(request: VideoGenerateRequest):
@@ -316,6 +322,7 @@ async def generate_video(request: VideoGenerateRequest):
             story_data["scenes"] = [scene.model_dump() for scene in scenes]
             task_id = str(int(time.time()))
             task_dir = utils.task_dir(task_id)
+            logger.info(f"本地路径：{task_dir}")
             os.makedirs(task_dir, exist_ok=True)
             story_file = os.path.join(task_dir, "story.json")
             for i, scene in enumerate(story_list, 1):
@@ -334,7 +341,7 @@ async def generate_video(request: VideoGenerateRequest):
                 json.dump(story_data, f, ensure_ascii=False, indent=2)
         # return ""
         # 生成视频
-        return await create_video_with_scenes(task_dir, scenes, request.voice_name, request.voice_rate,
+        return await create_video_with_scenes(task_dir, task_id, scenes, request.voice_name, request.voice_rate,
                                               request.test_mode)
     except Exception as e:
         logger.error(f"Failed to generate video: {e}")

@@ -10,9 +10,9 @@ from dashscope import ImageSynthesis
 from loguru import logger
 from openai import OpenAI
 
-from geekaiapp.story.exceptions import LLMResponseValidationError
-from geekaiapp.story.models.const import LANGUAGE_NAMES, Language
-from geekaiapp.story.schemas.llm import (
+from yewu2story.errors.exceptions import LLMResponseValidationError
+from yewu2story.models.const import LANGUAGE_NAMES, Language
+from yewu2story.schemas.llm import (
     StoryGenerationRequest,
 )
 
@@ -20,7 +20,7 @@ from geekaiapp.story.schemas.llm import (
 config = configparser.ConfigParser()
 # windows (windows下的路径)
 # config.read('f:\\work\\code\\2024pythontest\\story\\config.ini', encoding='utf-8')
-config.read('./../config.ini',encoding='utf-8')
+config.read('./config.ini',encoding='utf-8')
 # linux  (linux下的路径)
 # config.read('config.ini', encoding='utf-8')
 

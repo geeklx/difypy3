@@ -4,7 +4,7 @@ from typing import Any, List, Optional, Union, Dict
 
 import pydantic
 from pydantic import BaseModel, Field
-from geekaiapp.story.models.const import Language
+from yewu2story.models.const import Language
 
 # 忽略 Pydantic 的特定警告
 warnings.filterwarnings(
@@ -286,7 +286,7 @@ class BgmUploadResponse(BaseResponse):
         }
 
 
-from geekaiapp.story.models.const import StoryType, ImageStyle
+from yewu2story.models.const import ImageStyle
 
 class StoryScene(BaseModel):
     """故事场景"""
