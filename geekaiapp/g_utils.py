@@ -12,6 +12,7 @@ from pathlib import Path
 import requests
 import websocket  # NOTE: websocket-client (https://github.com/websocket-client/websocket-client)
 from fastapi import HTTPException
+from openai import OpenAI
 from qcloud_cos import CosConfig
 from qcloud_cos import CosS3Client
 
@@ -51,8 +52,8 @@ zhipu_api_key = os.getenv('ZHIPU_API_KEY', 'ee6c4107dbed41f59843bf796fa1a08f.Xid
 zhipu_api_url = os.getenv('ZHIPU_API_URL', 'https://open.bigmodel.cn/api/paas/v4')
 
 # jimeng
-# image_generation_url="http://localhost:8000/v1/images/generations"
-image_generation_url = os.getenv('IMAGE_GENERATION_URL', 'https://jimeng.duckcloud.fun/v1/images/generations')
+image_generation_url="http://localhost:8000/v1/images/generations"
+# image_generation_url = os.getenv('IMAGE_GENERATION_URL', 'https://jimeng.duckcloud.fun/v1/images/generations')
 image_api_key = os.getenv('IMAGE_API_KEY', '1dcca7b8288e820e2eb5fe568d1d7d01')
 
 # comfyui设置工作目录和项目相关的路径
@@ -416,7 +417,65 @@ def generate_clip(prompt, seed, workflowfile, idx):
 
             show_gif(GIF_LOCATION)
             # 上传腾讯oss存储
-            etag = upload_cos('test', tencent_region, tencent_secret_id, tencent_secret_key, tencent_bucket,filename, output_path2)
+            etag = upload_cos('test', tencent_region, tencent_secret_id, tencent_secret_key, tencent_bucket, filename,
+                              output_path2)
             logger.info(f"{GIF_LOCATION} DONE!!!")
             logger.info(f"{etag} DONE!!!")
     return filename, img_url, etag
+
+
+# 绘本故事图片
+async def generate_image(prompt: str):
+    headers = {
+        "Authorization": f"Bearer {image_api_key}",
+        "Content-Type": "application/json",
+    }
+    data = {
+        "model": "jimeng-2.1",
+        "prompt": prompt,
+        "negativePrompt": "",
+        "width": 1024,
+        "height": 1024,
+        "sample_strength": 0.5,
+    }
+    try:
+        response = requests.post(image_generation_url, headers=headers, json=data)
+        response.raise_for_status()  # 检查 HTTP 状态码
+        result = response.json()
+        return result["data"][0]["url"]
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"图像生成 API 请求失败: {e}")
+    except (KeyError, IndexError) as e:
+        raise Exception(f"图像生成 API 响应解析失败: {e}")
+
+
+# 绘本故事音频
+async def generate_tts(text_snippet: str, client: OpenAI):
+    """
+    Generates text-to-speech audio using the edge tts API and uploads it to Tencent Cloud COS.
+    """
+    try:
+        data = {
+            'model': 'tts-1',
+            'input': text_snippet,
+            'voice': 'zh-CN-XiaoxiaoNeural',
+            'response_format': 'mp3',
+            'speed': '1.0',
+        }
+        response = client.audio.speech.create(
+            **data
+        )
+        # Save the audio file
+        filename, output_path2 = save_audio_file(response.content, output_path1)
+        audio_url = f"{ip}{ip_tts}/{filename}"
+        return audio_url
+        # Upload to COS
+        # etag = upload_cos(region, secret_id, secret_key, bucket, filename, output_path)
+        # if etag:
+        #     audio_url = f"https://{bucket}.cos.{region}.myqcloud.com/{filename}"
+        #     return audio_url
+        # else:
+        #     raise HTTPException(status_code=500, detail="Failed to upload audio to COS")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

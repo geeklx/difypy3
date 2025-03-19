@@ -19,6 +19,12 @@ class TTSRequest(BaseModel):
     speed: float = 1.0
     response_format: str = "mp3"
 
+class Item1(BaseModel):
+    description: str
+    prompt: str
+    text_snippet: str
+    importance: str
+
 
 # 定义 Pydantic 模型用于请求体验证
 class VideoRequest(BaseModel):

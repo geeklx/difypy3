@@ -1,8 +1,13 @@
 import json
 import os
 import sys
+from pathlib import Path
+from typing import List
+
 # 将项目根目录添加到 Python 路径
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
 import subprocess
 import time
 from datetime import datetime
@@ -13,32 +18,32 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, HTTPException, APIRouter, Request, Form, UploadFile, File
+from fastapi.routing import APIRoute, Mount
 from fastapi.responses import FileResponse
 from fastapi.responses import JSONResponse
 from openai import OpenAI
-from geekaiapp.g_model import TTSRequest, VideoSubmission, AudioSubmission, VideoRequest, VideoResponse, JMRequest
+from geekaiapp.g_model import TTSRequest, VideoSubmission, AudioSubmission, VideoRequest, VideoResponse, JMRequest, \
+    Item1
 from geekaiapp.g_utils import save_audio_file, output_path1, upload_cos, tencent_region, tencent_secret_id, \
     tencent_secret_key, tencent_bucket, siliconflow_api_url, siliconflow_auth_token, gjld_submit_video_job, \
     gjld_check_video_status, siliconflow_videomodel, siliconflow_audiomodel, siliconflow_voice, zpai_video_job, \
     zpai_check_video_status, microsoft_api_key, microsoft_base_url, aliyuncs_api_key, aliyuncs_base_url, ip, ip_tts, \
-    aliyuncs_model, generate_clip, marp_path, ip_md, ip_html, port
+    aliyuncs_model, generate_clip, marp_path, ip_md, ip_html, port, generate_image, generate_tts
 
+app = FastAPI(debug=True)
+# 使用绝对路径
+static_path = Path(__file__).parent / "static"
+# 先挂载静态文件
+app.mount("/static", StaticFiles(directory="static"), name="static")
+# app.mount("/static", StaticFiles(directory=static_path), name="static")
 
-
-app = FastAPI()
+# 再挂载 APIRouter
 router = APIRouter()
+# 示例路由
+@router.get('/hello')
+def say_hello():
+    return {"message": "Hello from APIRouter!"}
 
-
-
-# 获取当前文件的目录
-current_dir = os.path.dirname(os.path.abspath(__file__))
-# 拼接 static 目录的绝对路径
-static_dir = os.path.join(current_dir, "static")
-# 挂载静态文件目录
-router.mount("/static", StaticFiles(directory=static_dir), name="static")
-
-# 挂载静态文件目录
-# router.mount("/static", StaticFiles(directory="static"), name="static")
 
 # 设置日志
 logging.basicConfig(level=logging.INFO)
@@ -58,7 +63,7 @@ client2 = OpenAI(
 
 
 # g微软的文生音1
-@router.post('/edge/tts1/')
+@router.post('/edge/tts1')
 async def generate_tts1(request_body: TTSRequest):
     try:
         data = {
@@ -83,7 +88,7 @@ async def generate_tts1(request_body: TTSRequest):
 
 
 # g微软的文生音，并上传到腾讯oss
-@router.post("/edge/tts12/")
+@router.post("/edge/tts12")
 async def generate_tts12(request_body: TTSRequest):
     """
     Generates text-to-speech audio using the edge tts API and uploads it to Tencent Cloud COS.
@@ -121,7 +126,7 @@ async def generate_tts12(request_body: TTSRequest):
 
 
 # 硅基流动-文生视频
-@router.post("/gjld/video/")
+@router.post("/gjld/video")
 async def sjld_video(video_submission: VideoSubmission):
     # Use the model from the user input if provided, otherwise use the default from config
     model = video_submission.model if video_submission.model else siliconflow_videomodel
@@ -144,7 +149,7 @@ async def sjld_video(video_submission: VideoSubmission):
 
 
 # g硅基流动-文生音
-@router.post("/gjld/audio/")
+@router.post("/gjld/audio")
 async def gjld_audio(audio_Submission: AudioSubmission):
     audiourl = siliconflow_api_url + "/audio/speech"
     audiomodel2 = audio_Submission.model if audio_Submission.model else siliconflow_audiomodel
@@ -184,7 +189,7 @@ async def gjld_audio(audio_Submission: AudioSubmission):
 
 
 # g智谱AI-文生视频任务的接口
-@router.post("/zhipuai/video/")
+@router.post("/zhipuai/video")
 async def zpai_video(video_request: VideoRequest):
     """Submits a text-to-video generation job using the ZhipuAI API."""
     try:
@@ -203,7 +208,7 @@ async def zpai_video(video_request: VideoRequest):
 
 
 # g即梦-文生图的接口 https://github.com/LLM-Red-Team/jimeng-free-api
-@router.post("/jimeng/img/")
+@router.post("/jimeng/img")
 async def jm_image(request1: JMRequest):
     headers = {
         "Authorization": f"Bearer {request1.image_api_key}",
@@ -264,7 +269,7 @@ JSON 输出示例:
 
 
 # g单词比对
-@router.post("/dcbd1/")
+@router.post("/dcbd1")
 async def get_dps123(request: Request):
     try:
         data = await request.json()
@@ -295,7 +300,7 @@ async def get_dps123(request: Request):
 
 
 # bizy绘画-commfyui
-@router.post("/comfyui_bizyairapi/")
+@router.post("/comfyui_bizyairapi")
 # async def generate_clip_endpoint(request: GenerateClipRequest,file: UploadFile = File(...)):
 async def generate_clip_endpoint(prompt: str = Form(...), seed: int = Form(...), idx: int = Form(...),
                                  workflowfile: UploadFile = File(...)):
@@ -323,7 +328,7 @@ async def generate_clip_endpoint(prompt: str = Form(...), seed: int = Form(...),
 
 
 # x保存上传的Markdown内容，并转换成PPT
-@router.post('/pptupload/')
+@router.post('/pptupload')
 async def upload_markdown(request: Request):
     content = await request.body()  # 异步获取请求体
     content = content.decode('utf-8')  # 将字节转换为字符串
@@ -348,7 +353,7 @@ async def upload_markdown(request: Request):
 
 
 # g获取网页信息到word
-@router.post('/generate_doc/')
+@router.post('/generate_doc')
 async def generate_doc(request: Request):
     try:
         # 获取请求中的JSON数据
@@ -394,7 +399,7 @@ async def generate_doc(request: Request):
 
 
 # g上传并处理Markdown文件的路径
-@router.post('/markdown2map/upload/')
+@router.post('/markdown2map/upload')
 async def upload_markdown2map(request: Request):
     content = await request.body()
     content = content.decode('utf-8')
@@ -440,12 +445,59 @@ async def get_html(filename: str):
     return FileResponse(f'static/html/{filename}')
 
 
+@router.post("/process-data")
+async def process_data(item: Item1):
+    try:
+        logger.info(f"process_data 调用 generate_image API 开始")
+        # 记录图像生成的开始时间
+        start_time_image = time.time()
+        image_url = await generate_image(item.prompt)
+        # 计算图像生成耗时
+        elapsed_time_image = time.time() - start_time_image
+        logger.info(f"process_data 调用 generate_image API 结束，耗时 {elapsed_time_image:.2f} 秒，返回 image_url: {image_url}")
+
+        logger.info(f"process_data 调用 generate_audio API 开始")
+        # 记录音频生成的开始时间
+        start_time_audio = time.time()
+        #audio_url = await generate_audio(item.text_snippet)
+        audio_url = await generate_tts(item.text_snippet,client)
+        # 计算音频生成耗时
+        elapsed_time_audio = time.time() - start_time_audio
+        logger.info(f"process_data 调用 generate_audio API 结束，耗时 {elapsed_time_audio:.2f} 秒，返回 audio_url: {audio_url}")
+
+        return {
+            "description": item.text_snippet,
+            "image_url": image_url,
+            "audio_url": audio_url,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# g儿童绘本连读1
+@router.post("/make_ai_txt_picture_audio")
+async def make_ai_txt_picture_audio(data: List[Item1]):
+    try:
+        results = []
+        for item in data:
+            result = await process_data(item)
+            results.append(result)
+        return results
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-import uvicorn
-from g_jiekou import router as router_edgetts
 
-app.include_router(router_edgetts)
+
+
+app.include_router(router, prefix="/api")
+
+# 打印所有路由
+for route in app.routes:
+    if isinstance(route, APIRoute):  # 检查是否为路由
+        print(f"Path: {route.path}, Methods: {route.methods}")
+    elif isinstance(route, Mount):  # 检查是否为挂载点
+        print(f"Mount: {route.path} -> {route.name}")
 
 if __name__ == '__main__':
-    uvicorn.run(router, host='0.0.0.0', port=port)
+    import uvicorn
+    uvicorn.run(app, host='0.0.0.0', port=port)
