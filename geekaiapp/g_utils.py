@@ -28,6 +28,7 @@ logger = logging.getLogger(__name__)
 microsoft_api_key = os.getenv('MICROSOFT_API_KEY', 'geekaiapp')
 # openai_base_url='https://edgettsapi.duckcloud.fun/v1'
 microsoft_base_url = os.getenv('MICROSOFT_BASE_URL', 'https://edge-tts.g1cloudflare.workers.dev/v1')
+# microsoft_base_url = os.getenv('MICROSOFT_BASE_URL', 'https://g1.geekaiapp.icu/v1')
 
 # 阿里大模型服务
 aliyuncs_api_key = os.getenv('ALIYUNCS_API_KEY', 'sk-c59a31cce2c442eaa7fae4790182b5b3')

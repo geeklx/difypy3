@@ -2,7 +2,7 @@
 #FROM python:3.13-slim
 #FROM mirrors.cloud.tencent.com/python/python:3.13-slim
 #FROM registry.cn-hangzhou.aliyuncs.com/luyuehm/python:3.13-slim
-FROM crpi-oz87fnf8zm051s5l.cn-hangzhou.personal.cr.aliyuncs.com/geekaiapp/python:3.13-slim
+FROM crpi-e3ns1qhr61atprr9.cn-hangzhou.personal.cr.aliyuncs.com/geekaiapp2/python:3.13-slim
 # 使用官方 Node.js 镜像作为基础镜像
 #FROM node:19.9.0
 

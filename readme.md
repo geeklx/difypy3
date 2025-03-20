@@ -138,7 +138,7 @@ python main.py
 
 ### 5. 即梦文生图
 
-- **接口路径**: `/jimeng/img/`
+- **接口路径**: `/api/jimeng/img/`
 - **请求方法**: `POST`
 - **请求体**:
 
