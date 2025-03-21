@@ -31,9 +31,9 @@ microsoft_base_url = os.getenv('MICROSOFT_BASE_URL', 'https://edge-tts.g1cloudfl
 # microsoft_base_url = os.getenv('MICROSOFT_BASE_URL', 'https://g1.geekaiapp.icu/v1')
 
 # 阿里大模型服务
-aliyuncs_api_key = os.getenv('ALIYUNCS_API_KEY', 'sk-c59a31cce2c442eaa7fae4790182b5b3')
-aliyuncs_base_url = os.getenv('ALIYUNCS_BASE_URL', 'https://dashscope.aliyuncs.com/compatible-mode/v1')
-aliyuncs_model = os.getenv('ALIYUNCS_MODEL', 'qwen-max')
+ai_api_key = os.getenv('ALIYUNCS_API_KEY', 'sk-c59a31cce2c442eaa7fae4790182b5b3')
+ai_base_url = os.getenv('ALIYUNCS_BASE_URL', 'https://dashscope.aliyuncs.com/compatible-mode/v1')
+ai_model = os.getenv('ALIYUNCS_MODEL', 'qwen-max')
 
 # 硅基流动
 siliconflow_api_url = os.getenv('SILICONFLOW_API_URL', 'https://api.siliconflow.cn/v1')
@@ -138,6 +138,37 @@ JSON 输出示例:
   ]
 }
 """
+
+
+system_prompt2 = """
+你是一位代码编程专家，请根据用户将提供给你的内容，请你分析内容，提取其中的关键信息，以 JSON 的形式输出，输出的 JSON 需遵守以下的格式：
+
+示例输入:
+{
+    "content": [
+        {
+            "序号": 1,
+            "汉语": "n.哨兵 n./vt.守卫,保卫,看守",
+            "英语": "guard"
+        },
+        {
+            "序号": 2,
+            "汉语": "vt.保护,护卫 n.安全装置",
+            "英语": "safeguard"
+        }
+    ]
+}
+
+JSON 输出示例:
+{
+"name": <候选人姓名>,
+"email": <候选人邮箱地址>,
+"code": <候选人分数（1-100）>,
+"txt": <[候选人资格和适合程度的简要概述]\n[提供 2-3 句话的总体建议，例如优先考虑哪些候选人进行面试或对候选人库的任何一般性观察]>
+}
+"""
+
+
 
 
 def load_config(config_file):

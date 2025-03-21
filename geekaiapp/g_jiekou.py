@@ -27,8 +27,9 @@ from geekaiapp.g_model import TTSRequest, VideoSubmission, AudioSubmission, Vide
 from geekaiapp.g_utils import save_audio_file, output_path1, upload_cos, tencent_region, tencent_secret_id, \
     tencent_secret_key, tencent_bucket, siliconflow_api_url, siliconflow_auth_token, gjld_submit_video_job, \
     gjld_check_video_status, siliconflow_videomodel, siliconflow_audiomodel, siliconflow_voice, zpai_video_job, \
-    zpai_check_video_status, microsoft_api_key, microsoft_base_url, aliyuncs_api_key, aliyuncs_base_url, ip, ip_tts, \
-    aliyuncs_model, generate_clip, marp_path, ip_md, ip_html, port, generate_image, generate_tts
+    zpai_check_video_status, microsoft_api_key, microsoft_base_url, ai_api_key, ai_base_url, ip, ip_tts, \
+    ai_model, generate_clip, marp_path, ip_md, ip_html, port, generate_image, generate_tts, system_prompt, \
+    system_prompt2
 
 app = FastAPI(debug=True)
 # 使用绝对路径
@@ -55,10 +56,10 @@ client = OpenAI(
     base_url=microsoft_base_url
 )
 
-# 阿里大模型服务
+# 硅基流动大模型服务
 client2 = OpenAI(
-    api_key=aliyuncs_api_key,
-    base_url=aliyuncs_base_url
+    api_key=ai_api_key,
+    base_url=ai_base_url
 )
 
 
@@ -235,39 +236,6 @@ async def jm_image(request1: JMRequest):
         raise Exception(f"图像生成 API 响应解析失败: {e}")
 
 
-system_prompt = """
-你是一位英语教学专家，请根据用户将提供给你的内容，请你分析内容，并提取其中的关键信息，识别出中文对应的英文写错的部分,以 JSON 的形式输出，输出的 JSON 需遵守以下的格式：
-
-示例输入:
-{
-    "content": [
-        {
-            "序号": 1,
-            "汉语": "n.哨兵 n./vt.守卫,保卫,看守",
-            "英语": "guard"
-        },
-        {
-            "序号": 2,
-            "汉语": "vt.保护,护卫 n.安全装置",
-            "英语": "safeguard"
-        }
-    ]
-}
-
-JSON 输出示例:
-{
-  "errors": [
-    {
-      "序号": <1>,
-      "汉语": <n.保证(书),保修单 vt.保证,提供(产品)保修单>,
-      "错误英语": <gooe>,
-      "正确英语": <gruarantee>
-    }
-  ]
-}
-"""
-
-
 # g单词比对
 @router.post("/dcbd1")
 async def get_dps123(request: Request):
@@ -277,7 +245,7 @@ async def get_dps123(request: Request):
         text = data.get('content')
         # print(f'text ={text}')
         response = client2.chat.completions.create(
-            model=aliyuncs_model,
+            model=ai_model,
             # messages=messages,
             messages=[
                 {
@@ -487,6 +455,34 @@ async def make_ai_txt_picture_audio(data: List[Item1]):
 
 
 
+# json格式化输出
+@router.post("/json1")
+async def get_json1(request: Request):
+    try:
+        data = await request.json()
+        # print(f'data ={data}')
+        # text = data.get('content')
+        # print(f'text ={text}')
+        response = client2.chat.completions.create(
+            model=ai_model,
+            messages=[
+                {
+                    "role": "system",
+                    "content": system_prompt2
+                },
+                {
+                    "role": "user",
+                    "content": json.dumps(data, ensure_ascii=False)
+                }
+            ],
+            response_format={
+                'type': 'json_object'
+            }
+        )
+        print(json.loads(response.choices[0].message.content))
+        return json.loads(response.choices[0].message.content)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 app.include_router(router, prefix="/api")

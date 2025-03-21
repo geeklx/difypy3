@@ -22,5 +22,6 @@ numpy== 2.2.3
 moviepy== 2.1.2
 decorator== 5.2.1
 imageio-ffmpeg== 0.6.0
-Pillow== 10.4.0
+Pillow== 11.1.0
+google-genai==1.7.0
 

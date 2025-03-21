@@ -31,7 +31,7 @@ bucket = config.get('common', 'bucket')
 # output_path = config.get('html', 'output_path', fallback='html_output')
 current_directory = Path.cwd()
 path1 = current_directory / 'html_output'
-print("完整路径-tts:", path1)
+print("完整路径-html_output:", path1)
 output_path = path1
 
 # 确保输出目录存在

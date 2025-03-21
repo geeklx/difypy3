@@ -56,3 +56,20 @@ def main(json_html: str, apikey: str, apiurl: str, strtype: str) -> dict:
         return {
             "error": f"Error: {str(e)}"
         }
+
+
+def main(arg1: str) -> dict:
+    # 将输入字符串转换为表格格式
+    import json
+    data = json.loads(arg1)
+    str1 = data['name']
+    str2 = data['email']
+    str3 = data['code']
+    str4 = data['txt']
+    table = [[str1, str2, str3, str4, ""]]
+    # 将表格转换为字符串形式的嵌套列表，并添加转义字符
+    result_str = str(table).replace("'", '"')  # 将单引号替换为双引号
+    # 返回结果
+    return {
+        "result": result_str,
+    }
