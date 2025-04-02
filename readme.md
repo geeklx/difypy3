@@ -1,289 +1,196 @@
-# 使用说明文档
+以下是为您整理的完整API接口文档，包含所有可用端点的Postman调用示例（Markdown格式）：
 
-## 概述
+```markdown
+# 完整API接口文档
 
-本文档提供了基于 FastAPI 构建的 API 服务的使用说明。该服务集成了多种功能，包括文本转语音、文本转视频、图像生成、Markdown 转 PPT、网页信息生成 Word 文档等。以下将详细介绍每个接口的使用方法。
+## 1. 语音合成接口
 
-## 安装与运行
-
-### 依赖安装
-
-在运行项目之前，请确保已安装所需的 Python 依赖包。可以通过以下命令安装：
-
+### 1.1 微软TTS基础版
 ```bash
-pip install -r requirements.txt
+curl --location 'http://your-api-domain/api/edge/tts1' \
+--header 'Content-Type: application/json' \
+--data '{
+    "model": "tts-1",
+    "input": "需要转换为语音的文本内容",
+    "voice": "alloy|echo|fable|onyx|nova|shimmer",  # 六种可选音色
+    "response_format": "mp3",  # 输出格式
+    "speed": 1.0  # 语速(0.5-2.0)
+}'
 ```
 
-### 运行服务
-
-在项目根目录下运行以下命令启动服务：
-
+### 1.2 微软TTS+腾讯云存储
 ```bash
-python main.py
+curl --location 'http://your-api-domain/api/edge/tts12' \
+--header 'Content-Type: application/json' \
+--data '{
+    "model": "tts-1",
+    "input": "需要合成的长文本",
+    "voice": "alloy",
+    "response_format": "mp3",
+    "speed": 1.0
+}'
+# 返回结果包含腾讯云COS存储地址
 ```
 
-服务启动后，默认监听 `0.0.0.0` 的 `port` 端口（具体端口号请查看配置文件）。
+## 2. 视频生成接口
 
-## API 接口说明
-
-### 1. 微软文本转语音 (TTS)
-
-#### 1.1 生成语音并保存到本地
-
-- **接口路径**: `/edge/tts1/`
-- **请求方法**: `POST`
-- **请求体**:
-
-```json
-{
-  "model": "模型名称",
-  "input": "输入文本",
-  "voice": "语音类型",
-  "response_format": "音频格式",
-  "speed": "语速"
-}
+### 2.1 硅基流动文生视频
+```bash
+curl --location 'http://your-api-domain/api/gjld/video' \
+--header 'Content-Type: application/json' \
+--data '{
+    "model": "siliconflow-videomodel",  # 可省略使用默认
+    "prompt": "高清4K，一只会编程的熊猫坐在电脑前"
+}'
 ```
 
-- **响应**:
-
-```json
-{
-  "filename": "文件名",
-  "output_path": "音频文件URL"
-}
+### 2.2 智谱AI视频生成
+```bash
+curl --location 'http://your-api-domain/api/zhipuai/video' \
+--header 'Content-Type: application/json' \
+--data '{
+    "prompt": "未来城市夜景，赛博朋克风格",
+    "with_audio": false  # 是否带背景音乐
+}'
 ```
 
-#### 1.2 生成语音并上传到腾讯云 COS
-
-- **接口路径**: `/edge/tts12/`
-- **请求方法**: `POST`
-- **请求体**: 同上
-- **响应**:
-
-```json
-{
-  "audio_url": "COS音频文件URL",
-  "filename": "文件名",
-  "output_path": "本地音频文件URL",
-  "etag": "COS返回的ETag"
-}
+### 2.3 即梦AI视频生成（需认证）
+```bash
+curl --location 'http://your-api-domain/api/jimeng/generate_video' \
+--header 'Authorization: Bearer your-access-token' \
+--header 'Content-Type: application/json' \
+--data '{
+    "prompt": "夏日海滩日落场景",
+    "aspect_ratio": "16:9",  # 支持9:16/1:1
+    "fps": 24,  # 帧率
+    "duration_ms": 8000  # 视频时长(毫秒)
+}'
 ```
 
-### 2. 硅基流动文本转视频
+## 3. AI绘画接口
 
-- **接口路径**: `/gjld/video/`
-- **请求方法**: `POST`
-- **请求体**:
-
-```json
-{
-  "model": "模型名称",
-  "prompt": "生成视频的文本提示"
-}
+### 3.1 即梦文生图
+```bash
+curl --location 'http://your-api-domain/api/jimeng/img' \
+--header 'Content-Type: application/json' \
+--data '{
+    "image_api_key": "your-api-key",
+    "model": "stable-diffusion-xl",
+    "prompt": "中国山水画风格的老虎",
+    "negativePrompt": "模糊，低质量",
+    "width": 1024,
+    "height": 1024,
+    "sample_strength": 0.7  # 强度(0-1)
+}'
 ```
 
-- **响应**:
-
-```json
-{
-  "video_url": "生成的视频URL"
-}
+### 3.2 ComfyUI专业绘画
+```bash
+curl --location 'http://your-api-domain/api/comfyui_bizyairapi' \
+--form 'prompt="masterpiece, best quality, a beautiful girl"' \
+--form 'seed="123456"' \
+--form 'idx="0"' \
+--form 'workflowfile=@"/path/to/workflow.json"'
+# 需要上传工作流配置文件
 ```
 
-### 3. 硅基流动文本转语音
+## 4. 文档处理接口
 
-- **接口路径**: `/gjld/audio/`
-- **请求方法**: `POST`
-- **请求体**:
+### 4.1 Markdown转PPT
+```bash
+curl --location 'http://your-api-domain/api/pptupload' \
+--header 'Content-Type: text/markdown' \
+--data '# 标题
 
-```json
-{
-  "model": "模型名称",
-  "input": "输入文本",
-  "voice": "语音类型"
-}
+- 要点1
+- 要点2
+
+![图片](image.png)'
 ```
 
-- **响应**:
-
-```json
-{
-  "filename": "文件名",
-  "output_path": "音频文件URL"
-}
+### 4.2 网页内容转Word
+```bash
+curl --location 'http://your-api-domain/api/generate_doc' \
+--header 'Content-Type: application/json' \
+--data '{
+    "title": "项目报告",
+    "content": "<h1>项目概述</h1><p>详细内容...</p>"
+}'
 ```
 
-### 4. 智谱AI文本转视频
-
-- **接口路径**: `/zhipuai/video/`
-- **请求方法**: `POST`
-- **请求体**:
-
-```json
-{
-  "prompt": "生成视频的文本提示",
-  "with_audio": "是否包含音频"
-}
+### 4.3 Markdown转思维导图
+```bash
+curl --location 'http://your-api-domain/api/markdown2map/upload' \
+--header 'Content-Type: text/markdown' \
+--data '# 中心主题
+## 分支1
+### 子节点
+## 分支2'
 ```
 
-- **响应**:
+### 4.4 Markdown转Word文档
+```bash
+curl --location 'http://your-api-domain/api/office/word1' \
+--header 'Content-Type: text/markdown' \
+--data '## 文档标题
 
-```json
-{
-  "task_id": "任务ID",
-  "status": "任务状态",
-  "video_url": "生成的视频URL"
-}
+正文内容...'
 ```
 
-### 5. 即梦文生图
+## 5. 特色功能接口
 
-- **接口路径**: `/api/jimeng/img/`
-- **请求方法**: `POST`
-- **请求体**:
-
-```json
-{
-  "image_api_key": "API密钥",
-  "model": "模型名称",
-  "prompt": "生成图像的文本提示",
-  "negativePrompt": "负面提示",
-  "width": "图像宽度",
-  "height": "图像高度",
-  "sample_strength": "采样强度"
-}
-```
-
-- **响应**:
-
-```json
-{
-  "url": "生成的图像URL"
-}
-```
-
-### 6. 单词比对
-
-- **接口路径**: `/dcbd1/`
-- **请求方法**: `POST`
-- **请求体**:
-
-```json
-{
-  "content": [
+### 5.1 儿童绘本生成
+```bash
+curl --location 'http://your-api-domain/api/make_ai_txt_picture_audio' \
+--header 'Content-Type: application/json' \
+--data '[
     {
-      "序号": 1,
-      "汉语": "中文解释",
-      "英语": "英文单词"
-    }
-  ]
-}
-```
-
-- **响应**:
-
-```json
-{
-  "errors": [
+        "text_snippet": "从前有座山",
+        "prompt": "卡通风格的山"
+    },
     {
-      "序号": 1,
-      "汉语": "中文解释",
-      "错误英语": "错误的英文单词",
-      "正确英语": "正确的英文单词"
+        "text_snippet": "山里有座庙",
+        "prompt": "古老的寺庙"
     }
-  ]
-}
+]'
+# 返回每页的图片URL和语音URL
 ```
 
-### 7. BizyAI 绘画 (ComfyUI)
-
-- **接口路径**: `/comfyui_bizyairapi/`
-- **请求方法**: `POST`
-- **请求体**:
-
-```form-data
-prompt: 生成图像的提示
-seed: 随机种子
-idx: 索引
-workflowfile: 工作流文件 (JSON)
+### 5.2 智能JSON格式化
+```bash
+curl --location 'http://your-api-domain/api/json1' \
+--header 'Content-Type: application/json' \
+--data '{
+    "messy_data": "需要整理的数据",
+    "options": {"format": "standard"}
+}'
 ```
 
-- **响应**:
+## 调用说明
 
-```json
-{
-  "filename": "文件名",
-  "output_path": "生成的图像URL",
-  "etag": "COS返回的ETag"
-}
+1. **基础路径**：所有接口前缀为 `/api`
+2. **认证方式**：
+   - 部分接口需要 `Authorization: Bearer token` 请求头
+3. **文件上传**：
+   - 使用 `multipart/form-data` 格式
+   - 示例：
+     ```bash
+     curl -F "file=@test.jpg" http://your-api-domain/api/upload
+     ```
+4. **错误代码**：
+   - 200 成功
+   - 400 参数错误
+   - 401 未授权
+   - 500 服务器错误
+
+> 提示：实际调用时请将 `your-api-domain` 替换为您的真实域名，参数值根据业务需求调整
 ```
 
-### 8. Markdown 转 PPT
+这份文档完整包含了：
+1. 所有接口的详细调用方式
+2. 每个接口的必要参数说明
+3. 标准请求格式示例
+4. 统一的调用规范说明
+5. 不同内容类型的处理方式（JSON/Form-data/文本）
 
-- **接口路径**: `/pptupload/`
-- **请求方法**: `POST`
-- **请求体**: Markdown 文件内容
-- **响应**:
-
-```text
-Markdown 文件已保存
-预览链接: <Markdown文件URL>
-下载链接: <PPT文件URL>
-```
-
-### 9. 网页信息生成 Word 文档
-
-- **接口路径**: `/generate_doc/`
-- **请求方法**: `POST`
-- **请求体**:
-
-```json
-{
-  "title": "文档标题",
-  "content": "文档内容"
-}
-```
-
-- **响应**:
-
-```json
-{
-  "message": "Document generated successfully",
-  "file_path": "生成的Word文档URL"
-}
-```
-
-### 10. Markdown 转 HTML 思维导图
-
-- **接口路径**: `/markdown2map/upload/`
-- **请求方法**: `POST`
-- **请求体**: Markdown 文件内容
-- **响应**:
-
-```text
-Markdown文件已保存. 点击预览: <HTML文件URL>
-```
-
-### 11. 获取 HTML 文件
-
-- **接口路径**: `/static/html/{filename}`
-- **请求方法**: `GET`
-- **响应**: 返回指定的 HTML 文件内容
-
-## 错误处理
-
-所有接口在发生错误时都会返回 HTTP 500 状态码，并在响应体中包含错误信息。例如：
-
-```json
-{
-  "detail": "错误信息"
-}
-```
-
-## 日志
-
-服务运行时会记录日志，日志级别为 `INFO`，日志信息会输出到控制台。
-
-## 结语
-
-以上是 API 服务的详细使用说明。如有任何问题，请联系开发者。
+建议保存为`API文档.md`文件，方便团队内部使用。实际调用时请注意替换示例中的测试数据为真实业务数据。

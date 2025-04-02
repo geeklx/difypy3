@@ -426,6 +426,19 @@ async def get_html(filename: str):
     return FileResponse(f'../static/html/{filename}')
 
 
+# g儿童绘本连读1
+@router.post("/make_ai_txt_picture_audio")
+async def make_ai_txt_picture_audio(data: List[Item1]):
+    try:
+        results = []
+        for item in data:
+            result = await process_data(item)
+            results.append(result)
+        return results
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.post("/process-data")
 async def process_data(item: Item1):
     try:
@@ -453,19 +466,6 @@ async def process_data(item: Item1):
             "image_url": image_url,
             "audio_url": audio_url,
         }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-# g儿童绘本连读1
-@router.post("/make_ai_txt_picture_audio")
-async def make_ai_txt_picture_audio(data: List[Item1]):
-    try:
-        results = []
-        for item in data:
-            result = await process_data(item)
-            results.append(result)
-        return results
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
