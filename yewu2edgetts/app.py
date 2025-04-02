@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse, FileResponse, Response
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -7,14 +7,15 @@ import edge_tts
 import asyncio
 import uuid
 import os
-from typing import List, Optional
-import json
+from typing import Optional
 from mutagen.mp3 import MP3
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 import logging
 from functools import lru_cache
 import shutil
+
+from geekaiapp.g_utils import baseurl, ip_tts
 
 logging.basicConfig(
     level=logging.INFO,
@@ -40,6 +41,14 @@ app.add_middleware(
 # 配置静态文件服务
 os.makedirs("static/audio", exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# 获取当前文件的绝对路径
+# current_dir = os.path.dirname(os.path.abspath(__file__))
+# static_dir = os.path.join(current_dir, "..", "static")
+# app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+ooutput1 = baseurl / ip_tts
+print("完整路径-g_jiekou1", ooutput1)
 
 # 添加根路径处理
 @app.get("/")

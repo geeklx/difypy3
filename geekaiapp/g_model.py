@@ -25,6 +25,12 @@ class Item1(BaseModel):
     text_snippet: str
     importance: str
 
+class VideoRequest2(BaseModel):
+    prompt: str
+    aspect_ratio: str = "16:9"
+    duration_ms: int = 5000
+    fps: int = 24
+
 
 # 定义 Pydantic 模型用于请求体验证
 class VideoRequest(BaseModel):

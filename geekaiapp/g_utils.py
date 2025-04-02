@@ -11,7 +11,7 @@ from pathlib import Path
 
 import requests
 import websocket  # NOTE: websocket-client (https://github.com/websocket-client/websocket-client)
-from fastapi import HTTPException
+from fastapi import HTTPException, Header
 from openai import OpenAI
 from qcloud_cos import CosConfig
 from qcloud_cos import CosS3Client
@@ -27,8 +27,8 @@ logger = logging.getLogger(__name__)
 # openai_api_key='zhouhuizhou'
 microsoft_api_key = os.getenv('MICROSOFT_API_KEY', 'geekaiapp')
 # openai_base_url='https://edgettsapi.duckcloud.fun/v1'
-microsoft_base_url = os.getenv('MICROSOFT_BASE_URL', 'https://edge-tts.g1cloudflare.workers.dev/v1')
-# microsoft_base_url = os.getenv('MICROSOFT_BASE_URL', 'https://g1.geekaiapp.icu/v1')
+# microsoft_base_url = os.getenv('MICROSOFT_BASE_URL', 'https://edge-tts.g1cloudflare.workers.dev/v1')
+microsoft_base_url = os.getenv('MICROSOFT_BASE_URL', 'https://g4.geekaiapp.icu/v1')
 
 # 阿里大模型服务
 ai_api_key = os.getenv('ALIYUNCS_API_KEY', 'sk-c59a31cce2c442eaa7fae4790182b5b3')
@@ -53,23 +53,37 @@ zhipu_api_key = os.getenv('ZHIPU_API_KEY', 'ee6c4107dbed41f59843bf796fa1a08f.Xid
 zhipu_api_url = os.getenv('ZHIPU_API_URL', 'https://open.bigmodel.cn/api/paas/v4')
 
 # jimeng
-image_generation_url="http://localhost:8000/v1/images/generations"
+image_generation_url = "http://localhost:8000/v1/images/generations"
 # image_generation_url = os.getenv('IMAGE_GENERATION_URL', 'https://jimeng.duckcloud.fun/v1/images/generations')
 image_api_key = os.getenv('IMAGE_API_KEY', '1dcca7b8288e820e2eb5fe568d1d7d01')
-
-# comfyui设置工作目录和项目相关的路径
-comfyui_endpoit = os.getenv('COMFYUI_ENDPOIT', '127.0.0.1:8188')
+jimeng_cookie = os.getenv('JIMENG_COOKIE',
+                          '_tea_utm_cache_513695={%22utm_source%22:%22aigc%22%2C%22utm_medium%22:%22aitools%22%2C%22utm_campaign%22:%22null%22%2C%22utm_content%22:%22hw_jm_aigc%22}; s_v_web_id=verify_m6sp8jq7_GvlvHTf0_6Tto_4HhE_9hXT_QTvpTIKjQINy; _tea_utm_cache_2018={%22utm_source%22:%22aigc%22%2C%22utm_medium%22:%22aitools%22%2C%22utm_campaign%22:%22null%22%2C%22utm_content%22:%22hw_jm_aigc%22}; fpk1=e25c352638e5c3853f824097b233161e8420bd4fd0cc6196d04de342147d28c86c8f2c791b5b0bd7121f6b813b750f49; passport_csrf_token=73984862c81ebb6283f3c72e1e7c4374; passport_csrf_token_default=73984862c81ebb6283f3c72e1e7c4374; n_mh=9W8N-rCI2hHkh4_ypK0jtwSCbLvpXyAXJg5USgpyWj8; sid_guard=3f7bdce9c0ade617679566a804eb0ca5%7C1738807761%7C5184000%7CMon%2C+07-Apr-2025+02%3A09%3A21+GMT; uid_tt=ec537e44d7373b4199d88d973ceaf446; uid_tt_ss=ec537e44d7373b4199d88d973ceaf446; sid_tt=3f7bdce9c0ade617679566a804eb0ca5; sessionid=3f7bdce9c0ade617679566a804eb0ca5; sessionid_ss=3f7bdce9c0ade617679566a804eb0ca5; is_staff_user=false; sid_ucp_v1=1.0.0-KGVkZDhkOGFmMTBlNzdiOWEyYzBiODQ0Y2RhNjlmMGZjY2NmMDVmMGQKHQiUpbLthgMQ0bOQvQYYn60fIAww_77H3QU4CEAmGgJsZiIgM2Y3YmRjZTljMGFkZTYxNzY3OTU2NmE4MDRlYjBjYTU; ssid_ucp_v1=1.0.0-KGVkZDhkOGFmMTBlNzdiOWEyYzBiODQ0Y2RhNjlmMGZjY2NmMDVmMGQKHQiUpbLthgMQ0bOQvQYYn60fIAww_77H3QU4CEAmGgJsZiIgM2Y3YmRjZTljMGFkZTYxNzY3OTU2NmE4MDRlYjBjYTU; store-region=cn-sd; store-region-src=uid; user_spaces_idc={"6978791533491257632":"lf"}; dm_auid=XApD3A/sZyrF4TvjREKyDA==; uifid_temp=3d5c832fc871287d7ad4963d32df5aca8803a3d2a91cbed0592bf979487355215edb8231b06c1056da65f080a2cb45a4e3aee068a2dcc1bd2dc74b7ee56a4fd07edf81ee6db4c4025fa8dfdc9eeb02c6; uifid=3d5c832fc871287d7ad4963d32df5aca8803a3d2a91cbed0592bf979487355217c437e2a0398d2c0cb9dd5538b7e186bd532024c0d169c6d0c07f288e6e4617c36daccb83f9fb734dd7926e3d56eaff5aac861ffd0a995410a0b80cc2775f931d734edbc64e0b8cf98e66aebbddacf0d9780c183885b92aa1acf665e62b021de1c33416a17143f9973fc238cd7ecf18cc5dc1b0078c29608ac86965dd365613c9a453cfa5ee6f205a2bb6bd925ea8859; ttwid=1|pK3gR8xSUa8okchHBAjXbcO05e7GzLa-4u2iRoCO9q8|1743571318|8c688599e09d19beaead48428fbf9cbf0187b896376828e72f75c55281d87a59; _tea_web_id=7468122294507046438; _uetsid=68f4b6200f8211f08bd275effb726747; _uetvid=580687a0e42f11ef82a2e1047d20e072; odin_tt=679162d19ee53d4d0a962e94c8735a5d363ab99fbdfcc616c2e4b8c5356feba0b155202c0207c4b2af768726774aac94a107079ece80178faa8862565002c607')
+jimeng_sign = os.getenv('JIMENG_SIGN',
+                        '_tea_utm_cache_513695={%22utm_source%22:%22aigc%22%2C%22utm_medium%22:%22aitools%22%2C%22utm_campaign%22:%22null%22%2C%22utm_content%22:%22hw_jm_aigc%22}; s_v_web_id=verify_m6sp8jq7_GvlvHTf0_6Tto_4HhE_9hXT_QTvpTIKjQINy; _tea_utm_cache_2018={%22utm_source%22:%22aigc%22%2C%22utm_medium%22:%22aitools%22%2C%22utm_campaign%22:%22null%22%2C%22utm_content%22:%22hw_jm_aigc%22}; fpk1=e25c352638e5c3853f824097b233161e8420bd4fd0cc6196d04de342147d28c86c8f2c791b5b0bd7121f6b813b750f49; passport_csrf_token=73984862c81ebb6283f3c72e1e7c4374; passport_csrf_token_default=73984862c81ebb6283f3c72e1e7c4374; n_mh=9W8N-rCI2hHkh4_ypK0jtwSCbLvpXyAXJg5USgpyWj8; sid_guard=3f7bdce9c0ade617679566a804eb0ca5%7C1738807761%7C5184000%7CMon%2C+07-Apr-2025+02%3A09%3A21+GMT; uid_tt=ec537e44d7373b4199d88d973ceaf446; uid_tt_ss=ec537e44d7373b4199d88d973ceaf446; sid_tt=3f7bdce9c0ade617679566a804eb0ca5; sessionid=3f7bdce9c0ade617679566a804eb0ca5; sessionid_ss=3f7bdce9c0ade617679566a804eb0ca5; is_staff_user=false; sid_ucp_v1=1.0.0-KGVkZDhkOGFmMTBlNzdiOWEyYzBiODQ0Y2RhNjlmMGZjY2NmMDVmMGQKHQiUpbLthgMQ0bOQvQYYn60fIAww_77H3QU4CEAmGgJsZiIgM2Y3YmRjZTljMGFkZTYxNzY3OTU2NmE4MDRlYjBjYTU; ssid_ucp_v1=1.0.0-KGVkZDhkOGFmMTBlNzdiOWEyYzBiODQ0Y2RhNjlmMGZjY2NmMDVmMGQKHQiUpbLthgMQ0bOQvQYYn60fIAww_77H3QU4CEAmGgJsZiIgM2Y3YmRjZTljMGFkZTYxNzY3OTU2NmE4MDRlYjBjYTU; store-region=cn-sd; store-region-src=uid; user_spaces_idc={"6978791533491257632":"lf"}; dm_auid=XApD3A/sZyrF4TvjREKyDA==; uifid_temp=3d5c832fc871287d7ad4963d32df5aca8803a3d2a91cbed0592bf979487355215edb8231b06c1056da65f080a2cb45a4e3aee068a2dcc1bd2dc74b7ee56a4fd07edf81ee6db4c4025fa8dfdc9eeb02c6; uifid=3d5c832fc871287d7ad4963d32df5aca8803a3d2a91cbed0592bf979487355217c437e2a0398d2c0cb9dd5538b7e186bd532024c0d169c6d0c07f288e6e4617c36daccb83f9fb734dd7926e3d56eaff5aac861ffd0a995410a0b80cc2775f931d734edbc64e0b8cf98e66aebbddacf0d9780c183885b92aa1acf665e62b021de1c33416a17143f9973fc238cd7ecf18cc5dc1b0078c29608ac86965dd365613c9a453cfa5ee6f205a2bb6bd925ea8859; ttwid=1|pK3gR8xSUa8okchHBAjXbcO05e7GzLa-4u2iRoCO9q8|1743571318|8c688599e09d19beaead48428fbf9cbf0187b896376828e72f75c55281d87a59; _tea_web_id=7468122294507046438; _uetsid=68f4b6200f8211f08bd275effb726747; _uetvid=580687a0e42f11ef82a2e1047d20e072; odin_tt=679162d19ee53d4d0a962e94c8735a5d363ab99fbdfcc616c2e4b8c5356feba0b155202c0207c4b2af768726774aac94a107079ece80178faa8862565002c607')
 
 #
+valid_tokens1 = ["sk-geekaiapp", "geekaiapp"]
+
+
+# 基础配置
 port = int(os.getenv('PORT', '15001'))
 ip = os.getenv('IP', 'http://localhost:15001/')
 ip_tts = os.getenv('IP_TTS', 'static/tts')
 ip_img = os.getenv('IP_IMG', 'static/imgs')
 ip_md = os.getenv('IP_MD', 'static/markdown')
 ip_html = os.getenv('IP_HTML', 'static/html')
+ip_video = os.getenv('IP_VIDEO', 'static/video')
+ip_comfyui = os.getenv('IP_COMFYUI', 'static/comfyui')
+
+# current_dir = os.path.dirname(os.path.abspath(__file__))
+# static_dir = os.path.join(current_dir, "static")
 
 # if not os.path.exists(SAVE_DIR):
 #     os.makedirs(SAVE_DIR)
+
+# 清理临时文件
+# if os.path.exists(md_file_path):
+#     os.remove(md_file_path)
 
 #
 # 设置默认的 MARP_PATH
@@ -83,25 +97,27 @@ else:
 
 # 基础配置
 current_directory = Path.cwd()
-path1 = current_directory / ip_tts
-path2 = current_directory / ip_img
-path3 = current_directory / ip_md
-path4 = current_directory / ip_html
-path5 = current_directory / "marp-cli/marp-cli.js"
-print("完整路径-tts:", path1)
-print("完整路径-imgs:", path2)
-print("完整路径-md:", path3)
-print("完整路径-html:", path4)
-print("完整路径-marp-cli:", path5)
-output_path1 = path1
-output_path2 = path2
-marp_path = path5
+# baseurl = current_directory / 'static/'
+print("完整路径-current_directory", current_directory)
+# path1 = current_directory / ip_tts
+# path2 = current_directory / ip_img
+# path3 = current_directory / ip_md
+# path4 = current_directory / ip_html
+# path5 = current_directory / "marp-cli/marp-cli.js"
+# print("完整路径-tts:", path1)
+# print("完整路径-imgs:", path2)
+# print("完整路径-md:", path3)
+# print("完整路径-html:", path4)
+# print("完整路径-marp-cli:", path5)
+# output_path1 = path1
+# output_path2 = path2
+# marp_path = path5
 
 # 设置工作目录和项目相关的路径
 comfyui_endpoit = os.getenv('COMFYUI_ENDPOIT', '127.0.0.1:8188')
-WORKING_DIR = output_path2
+WORKING_DIR = current_directory / ip_comfyui
 SageMaker_ComfyUI = WORKING_DIR
-workflowfile = output_path2
+workflowfile = current_directory / ip_comfyui
 COMFYUI_ENDPOINT = comfyui_endpoit
 
 server_address = COMFYUI_ENDPOINT
@@ -139,7 +155,6 @@ JSON 输出示例:
 }
 """
 
-
 system_prompt2 = """
 你是一位代码编程专家，请根据用户将提供给你的内容，请你分析内容，提取其中的关键信息，以 JSON 的形式输出，输出的 JSON 需遵守以下的格式：
 
@@ -167,8 +182,6 @@ JSON 输出示例:
 "txt": <[候选人资格和适合程度的简要概述]\n[提供 2-3 句话的总体建议，例如优先考虑哪些候选人进行面试或对候选人库的任何一般性观察]>
 }
 """
-
-
 
 
 def load_config(config_file):
@@ -440,7 +453,7 @@ def generate_clip(prompt, seed, workflowfile, idx):
             timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
             filename = f"{idx}_{seed}_{timestamp}.png"
             # 使用格式化的时间戳在文件名中
-            GIF_LOCATION = os.path.join(output_path2, filename)
+            GIF_LOCATION = os.path.join(current_directory / ip_img, filename)
             img_url = f"{ip}{ip_img}/{filename}"
             logger.info(f"Saving image to: {GIF_LOCATION}")
             with open(GIF_LOCATION, "wb") as binary_file:
@@ -450,7 +463,7 @@ def generate_clip(prompt, seed, workflowfile, idx):
             show_gif(GIF_LOCATION)
             # 上传腾讯oss存储
             etag = upload_cos('test', tencent_region, tencent_secret_id, tencent_secret_key, tencent_bucket, filename,
-                              output_path2)
+                              current_directory / ip_img)
             logger.info(f"{GIF_LOCATION} DONE!!!")
             logger.info(f"{etag} DONE!!!")
     return filename, img_url, etag
@@ -498,7 +511,7 @@ async def generate_tts(text_snippet: str, client: OpenAI):
             **data
         )
         # Save the audio file
-        filename, output_path2 = save_audio_file(response.content, output_path1)
+        filename, output_path2 = save_audio_file(response.content, current_directory / ip_tts)
         audio_url = f"{ip}{ip_tts}/{filename}"
         return audio_url
         # Upload to COS
@@ -511,3 +524,44 @@ async def generate_tts(text_snippet: str, client: OpenAI):
     except Exception as e:
         print(f"An error occurred: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+def verify_auth_token(authorization: str = Header(None)):
+    """验证 Authorization Header 中的 Bearer Token"""
+    if not authorization:
+        raise HTTPException(status_code=401, detail="Missing Authorization Header")
+
+    scheme, _, token = authorization.partition(" ")
+    if scheme.lower() != "bearer":
+        raise HTTPException(status_code=401, detail="Invalid Authorization Scheme")
+
+    # 从配置文件读取有效token列表
+    # valid_tokens = json.loads(valid_tokens1)
+    if token not in valid_tokens1:
+        raise HTTPException(status_code=403, detail="Invalid or Expired Token")
+
+    return token
+
+
+# 修改视频生成接口，添加鉴权依赖
+# 添加新的辅助函数
+def generate_timestamp_filename_for_video(extension='mp4'):
+    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    random_number = random.randint(1000, 9999)
+    filename = f"video_{timestamp}_{random_number}.{extension}"
+    return filename
+
+
+def download_video(url, output_path):
+    response = requests.get(url, stream=True)
+    response.raise_for_status()
+
+    filename = generate_timestamp_filename_for_video()
+    file_path = os.path.join(output_path, filename)
+
+    with open(file_path, 'wb') as file:
+        for chunk in response.iter_content(chunk_size=8192):
+            if chunk:
+                file.write(chunk)
+
+    return filename, file_path

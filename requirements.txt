@@ -33,3 +33,4 @@ Werkzeug==3.1.3
 audioop-lts==0.1.0
 srt==3.5.0
 zstandard==0.23.0
+Spire.Doc==13.1.0

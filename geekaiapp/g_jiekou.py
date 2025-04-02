@@ -1,12 +1,12 @@
 import json
 import os
 import sys
+import uuid
 from pathlib import Path
 from typing import List
 
 # 将项目根目录添加到 Python 路径
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 
 import subprocess
 import time
@@ -17,29 +17,41 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt
 from fastapi.staticfiles import StaticFiles
-from fastapi import FastAPI, HTTPException, APIRouter, Request, Form, UploadFile, File
+from fastapi import FastAPI, HTTPException, APIRouter, Request, Form, UploadFile, File, Depends
 from fastapi.routing import APIRoute, Mount
 from fastapi.responses import FileResponse
 from fastapi.responses import JSONResponse
 from openai import OpenAI
 from geekaiapp.g_model import TTSRequest, VideoSubmission, AudioSubmission, VideoRequest, VideoResponse, JMRequest, \
-    Item1
-from geekaiapp.g_utils import save_audio_file, output_path1, upload_cos, tencent_region, tencent_secret_id, \
+    Item1, VideoRequest2
+from geekaiapp.g_utils import save_audio_file, upload_cos, tencent_region, tencent_secret_id, \
     tencent_secret_key, tencent_bucket, siliconflow_api_url, siliconflow_auth_token, gjld_submit_video_job, \
     gjld_check_video_status, siliconflow_videomodel, siliconflow_audiomodel, siliconflow_voice, zpai_video_job, \
     zpai_check_video_status, microsoft_api_key, microsoft_base_url, ai_api_key, ai_base_url, ip, ip_tts, \
     ai_model, generate_clip, marp_path, ip_md, ip_html, port, generate_image, generate_tts, system_prompt, \
-    system_prompt2
+    system_prompt2, current_directory, verify_auth_token, jimeng_cookie, jimeng_sign, download_video, ip_video
 
 app = FastAPI(debug=True)
+
 # 使用绝对路径
 static_path = Path(__file__).parent / "static"
 # 先挂载静态文件
-app.mount("/static", StaticFiles(directory="static"), name="static")
-# app.mount("/static", StaticFiles(directory=static_path), name="static")
+app.mount("/static", StaticFiles(directory=static_path), name="static")
+
+# 获取当前文件的绝对路径
+# current_dir = os.path.dirname(os.path.abspath(__file__))
+# static_dir = os.path.join(current_dir, "..", "static")
+# app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+# ooutput1 = baseurl / ip_tts
+# ooutput2 = current_dir+'/static/{ip_tts}'
+# print("完整路径-g_jiekou1", ooutput1)
+# print("完整路径-g_jiekou2", ooutput2)
 
 # 再挂载 APIRouter
 router = APIRouter()
+
+
 # 示例路由
 @router.get('/hello')
 def say_hello():
@@ -77,7 +89,7 @@ async def generate_tts1(request_body: TTSRequest):
         response = client.audio.speech.create(
             **data
         )
-        filename, output_path = save_audio_file(response.content, output_path1)
+        filename, output_path = save_audio_file(response.content, current_directory / ip_tts)
         audio_url = f"{ip}{ip_tts}/{filename}"
         return {
             "filename": filename,
@@ -106,11 +118,11 @@ async def generate_tts12(request_body: TTSRequest):
             **data
         )
         # Save the audio file
-        filename, output_path2 = save_audio_file(response.content, output_path1)
+        filename, output_path2 = save_audio_file(response.content, current_directory / ip_tts)
         audio_url = f"{ip}{ip_tts}/{filename}"
         # Upload to COS
         etag = upload_cos('text1', tencent_region, tencent_secret_id, tencent_secret_key, tencent_bucket, filename,
-                          output_path1)
+                          current_directory / ip_tts)
         if etag:
             audio_url2 = f"https://{tencent_bucket}.cos.{tencent_region}.myqcloud.com/{filename}"
             return {
@@ -172,7 +184,7 @@ async def gjld_audio(audio_Submission: AudioSubmission):
     response = requests.post(audiourl, headers=headers, json=data)
 
     if response.status_code == 200:
-        filename, output_path2 = save_audio_file(response.content, output_path1)
+        filename, output_path2 = save_audio_file(response.content, current_directory / ip_tts)
         audio_url = f"{ip}{ip_tts}/{filename}"
         return {
             "filename": filename,
@@ -267,7 +279,8 @@ async def get_dps123(request: Request):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# bizy绘画-commfyui
+# g绘画-commfyui-bizy
+# docker run -d -p 8188:8188 -v "D:/tmp/20250118/models:/app/models" -v "D:/tmp/20250118/input:/app/input" -v "D:/tmp/20250118/img:/app/temp" -v "D:/tmp/20250118/temp:/app/output/temp" -v "D:/tmp/20250118/output:/app/output" -v "D:/tmp/20250118/user:/app/user"  --name comfyui-container2 wwwzhouhui569/comfyui_bizyair:v0.4.0
 @router.post("/comfyui_bizyairapi")
 # async def generate_clip_endpoint(request: GenerateClipRequest,file: UploadFile = File(...)):
 async def generate_clip_endpoint(prompt: str = Form(...), seed: int = Form(...), idx: int = Form(...),
@@ -366,7 +379,7 @@ async def generate_doc(request: Request):
         return JSONResponse({"error": str(e)}, status_code=500)
 
 
-# g上传并处理Markdown文件的路径
+# g把markdown2思维导图
 @router.post('/markdown2map/upload')
 async def upload_markdown2map(request: Request):
     content = await request.body()
@@ -376,8 +389,8 @@ async def upload_markdown2map(request: Request):
     html_file_name = time_name + ".html"  # HTML文件名
 
     # 创建markdown和html文件夹，如果它们不存在的话
-    os.makedirs('static/markdown', exist_ok=True)
-    os.makedirs('static/html', exist_ok=True)
+    os.makedirs('../static/markdown', exist_ok=True)
+    os.makedirs('../static/html', exist_ok=True)
 
     # 将Markdown内容写入文件
     with open(f'{ip_md}/{md_file_name}', "w", encoding='utf-8') as f:
@@ -410,7 +423,7 @@ async def upload_markdown2map(request: Request):
 # g提供HTML文件的路径
 @router.post('/static/html/{filename}')
 async def get_html(filename: str):
-    return FileResponse(f'static/html/{filename}')
+    return FileResponse(f'../static/html/{filename}')
 
 
 @router.post("/process-data")
@@ -422,16 +435,18 @@ async def process_data(item: Item1):
         image_url = await generate_image(item.prompt)
         # 计算图像生成耗时
         elapsed_time_image = time.time() - start_time_image
-        logger.info(f"process_data 调用 generate_image API 结束，耗时 {elapsed_time_image:.2f} 秒，返回 image_url: {image_url}")
+        logger.info(
+            f"process_data 调用 generate_image API 结束，耗时 {elapsed_time_image:.2f} 秒，返回 image_url: {image_url}")
 
         logger.info(f"process_data 调用 generate_audio API 开始")
         # 记录音频生成的开始时间
         start_time_audio = time.time()
-        #audio_url = await generate_audio(item.text_snippet)
-        audio_url = await generate_tts(item.text_snippet,client)
+        # audio_url = await generate_audio(item.text_snippet)
+        audio_url = await generate_tts(item.text_snippet, client)
         # 计算音频生成耗时
         elapsed_time_audio = time.time() - start_time_audio
-        logger.info(f"process_data 调用 generate_audio API 结束，耗时 {elapsed_time_audio:.2f} 秒，返回 audio_url: {audio_url}")
+        logger.info(
+            f"process_data 调用 generate_audio API 结束，耗时 {elapsed_time_audio:.2f} 秒，返回 audio_url: {audio_url}")
 
         return {
             "description": item.text_snippet,
@@ -440,6 +455,7 @@ async def process_data(item: Item1):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 # g儿童绘本连读1
 @router.post("/make_ai_txt_picture_audio")
@@ -452,7 +468,6 @@ async def make_ai_txt_picture_audio(data: List[Item1]):
         return results
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 
 # json格式化输出
@@ -485,6 +500,225 @@ async def get_json1(request: Request):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# 获取当前程序运行目录并创建必要的目录
+current_dir = os.path.dirname(os.path.abspath(__file__))
+temp_dir = os.path.join(current_dir, 'temp')
+output_dir = os.path.join(current_dir, 'static')
+os.makedirs(temp_dir, exist_ok=True)
+os.makedirs(output_dir, exist_ok=True)
+
+
+# g把md to word
+@router.post("/office/word1")
+async def convert_md_to_docx(request: Request):
+    from spire.doc import Document, FileFormat
+    logger.info('Received request for /convert')
+    content = await request.body()
+    if not content:
+        logger.error('No content part in the request')
+        return JSONResponse(content={"error": "No content part"}, status_code=400)
+
+    content = content.decode('utf-8')
+    if content == '':
+        logger.error('No content provided')
+        return JSONResponse(content={"error": "No content provided"}, status_code=400)
+
+    # 从请求的内容中读取
+    mdfile_name = str(int(time.time())) + ".md"
+    md_file_path = os.path.join(temp_dir, mdfile_name)
+    with open(md_file_path, 'w', encoding='utf-8') as f:
+        f.write(content)
+    print(md_file_path)
+
+    # 创建文档实例
+    doc = Document()
+
+    # 从上传的文件加载Markdown内容
+    doc.LoadFromFile(md_file_path, FileFormat.Markdown)
+
+    # 将Markdown文件转换为Word文档并保存
+    file_name = str(int(time.time())) + ".docx"
+    output_path = os.path.join(output_dir, file_name)
+    doc.SaveToFile(output_path, FileFormat.Docx)
+
+    # 释放资源
+    doc.Dispose()
+
+    # 清理临时文件
+    if os.path.exists(md_file_path):
+        os.remove(md_file_path)
+
+    # 返回文件的下载链接
+    base_url = str(request.base_url)
+    download_url = base_url + 'office/word/download/' + os.path.basename(output_path)
+    print(download_url)
+    # return {"download_url": download_url}
+    return f'文件已保存. 点击预览: {ip}static/{file_name}'
+
+
+@router.get("/office/word/download/{filename}")
+async def download_file(filename: str):
+    file_path = os.path.join(output_dir, filename)
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="File not found")
+    return FileResponse(file_path, filename=filename)
+
+
+# g即梦文生视频1
+@router.post("/jimeng/generate_video")
+async def generate_video(request: VideoRequest2, auth_token: str = Depends(verify_auth_token)):
+    try:
+        logger.info(f"generate_video API 调用开始，提示词: {request.prompt}")
+        start_time = time.time()
+
+        # 从配置文件中获取视频API相关配置
+        # video_api_cookie = config.get('video_api', 'cookie')
+        # video_api_sign = config.get('video_api', 'sign')
+        video_api_cookie = jimeng_cookie
+        video_api_sign = jimeng_sign
+
+        # 初始化视频生成API相关配置
+        video_api_headers = {
+            'accept': 'application/json, text/plain, */*',
+            'accept-language': 'zh-CN,zh;q=0.9',
+            'app-sdk-version': '48.0.0',
+            'appid': '513695',
+            'appvr': '5.8.0',
+            'content-type': 'application/json',
+            'cookie': video_api_cookie,
+            'device-time': str(int(time.time())),
+            'lan': 'zh-Hans',
+            'loc': 'cn',
+            'origin': 'https://jimeng.jianying.com',
+            'pf': '7',
+            'priority': 'u=1, i',
+            'referer': 'https://jimeng.jianying.com/ai-tool/video/generate',
+            'sec-ch-ua': '"Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            'sign': video_api_sign,
+            'sign-ver': '1',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
+        }
+        video_api_base = "https://jimeng.jianying.com/mweb/v1"
+
+        # 生成唯一的submit_id
+        submit_id = str(uuid.uuid4())
+
+        # 准备请求数据
+        generate_video_payload = {
+            "submit_id": submit_id,
+            "task_extra": "{\"promptSource\":\"custom\",\"originSubmitId\":\"0340110f-5a94-42a9-b737-f4518f90361f\",\"isDefaultSeed\":1,\"originTemplateId\":\"\",\"imageNameMapping\":{},\"isUseAiGenPrompt\":false,\"batchNumber\":1}",
+            "http_common_info": {"aid": 513695},
+            "input": {
+                "video_aspect_ratio": request.aspect_ratio,
+                "seed": 2934141961,
+                "video_gen_inputs": [
+                    {
+                        "prompt": request.prompt,
+                        "fps": request.fps,
+                        "duration_ms": request.duration_ms,
+                        "video_mode": 2,
+                        "template_id": ""
+                    }
+                ],
+                "priority": 0,
+                "model_req_key": "dreamina_ic_generate_video_model_vgfm_lite"
+            },
+            "mode": "workbench",
+            "history_option": {},
+            "commerce_info": {
+                "resource_id": "generate_video",
+                "resource_id_type": "str",
+                "resource_sub_type": "aigc",
+                "benefit_type": "basic_video_operation_vgfm_lite"
+            },
+            "client_trace_data": {}
+        }
+
+        # 发送生成视频请求
+        generate_video_url = f"{video_api_base}/generate_video?aid=513695"
+        logger.info(f"发送视频生成请求...")
+
+        response = requests.post(generate_video_url, headers=video_api_headers, json=generate_video_payload)
+        if response.status_code != 200:
+            raise HTTPException(status_code=500, detail=f"视频生成请求失败，状态码：{response.status_code}")
+
+        response_data = response.json()
+        if not response_data or "data" not in response_data or "aigc_data" not in response_data["data"]:
+            raise HTTPException(status_code=500, detail="视频生成接口返回格式错误")
+
+        task_id = response_data["data"]["aigc_data"]["task"]["task_id"]
+        logger.info(f"视频生成任务已创建，任务ID: {task_id}")
+
+        # 轮询检查视频生成状态
+        mget_generate_task_url = f"{video_api_base}/mget_generate_task?aid=513695"
+        mget_generate_task_payload = {"task_id_list": [task_id]}
+
+        # 最多尝试30次，每次间隔2秒
+        for attempt in range(30):
+            time.sleep(2)
+            logger.info(f"检查视频状态，第 {attempt + 1} 次尝试...")
+
+            response = requests.post(mget_generate_task_url, headers=video_api_headers, json=mget_generate_task_payload)
+            if response.status_code != 200:
+                logger.warning(f"状态检查失败，状态码：{response.status_code}")
+                continue
+
+            response_data = response.json()
+            if not response_data or "data" not in response_data or "task_map" not in response_data["data"]:
+                logger.warning("状态检查返回格式错误")
+                continue
+
+            task_data = response_data["data"]["task_map"].get(task_id)
+            if not task_data:
+                logger.warning(f"未找到任务 {task_id} 的状态信息")
+                continue
+
+            task_status = task_data.get("status")
+            logger.info(f"任务状态: {task_status}")
+
+            if task_status == 50:  # 视频生成完成
+                if "item_list" in task_data and task_data["item_list"] and "video" in task_data["item_list"][0]:
+                    video_data = task_data["item_list"][0]["video"]
+                    if "transcoded_video" in video_data and "origin" in video_data["transcoded_video"]:
+                        video_url = video_data["transcoded_video"]["origin"]["video_url"]
+                        elapsed_time = time.time() - start_time
+                        logger.info(f"视频生成成功，耗时 {elapsed_time:.2f} 秒，URL: {video_url}")
+
+                        # 下载视频到本地
+                        try:
+                            filename, file_path = download_video(video_url, current_directory / ip_video)
+                            logger.info(f"视频已下载到本地: {ip}{ip_video}/{filename}")
+
+                            # 上传到腾讯 COS
+                            cos_url = upload_cos('test', tencent_region, tencent_secret_id, tencent_secret_key,
+                                                 tencent_bucket, filename,
+                                                 current_directory / ip_video)
+                            if cos_url:
+                                logger.info(f"视频已上传到 COS: {cos_url}")
+                                # 删除本地文件
+                                # os.remove(file_path)
+                                local_url = f"{ip}{ip_video}/{filename}"
+                                return {"video_url": cos_url, "local_url": local_url, "task_id": task_id}
+                            else:
+                                raise HTTPException(status_code=500, detail="上传视频到 COS 失败")
+                        except Exception as e:
+                            logger.error(f"处理视频文件失败: {str(e)}")
+                            raise HTTPException(status_code=500, detail=f"处理视频文件失败: {str(e)}")
+
+                raise HTTPException(status_code=500, detail="视频生成完成但未找到下载地址")
+
+        raise HTTPException(status_code=500, detail="视频生成超时")
+
+    except Exception as e:
+        logger.error(f"视频生成失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 app.include_router(router, prefix="/api")
 
 # 打印所有路由
@@ -496,4 +730,5 @@ for route in app.routes:
 
 if __name__ == '__main__':
     import uvicorn
+
     uvicorn.run(app, host='0.0.0.0', port=port)
