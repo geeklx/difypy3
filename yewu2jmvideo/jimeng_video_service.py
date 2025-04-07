@@ -7,9 +7,9 @@ from pathlib import Path
 
 import requests
 from fastapi import FastAPI, HTTPException, Depends
-from pydantic import BaseModel
 from starlette.staticfiles import StaticFiles
 
+from geekaiapp.g_model import VideoRequest2
 from geekaiapp.g_utils import ip, upload_cos, ip_video, verify_auth_token, download_video, jimeng_cookie, jimeng_sign, \
     tencent_region, tencent_secret_id, tencent_secret_key, tencent_bucket
 
@@ -54,16 +54,9 @@ if not os.path.exists(video_output_path):
     logger.info(f"创建视频输出目录: {video_output_path}")
 
 
-class VideoRequest(BaseModel):
-    prompt: str
-    aspect_ratio: str = "16:9"
-    duration_ms: int = 5000
-    fps: int = 24
-
-
 # 修改 generate_video 函数中的返回部分
 @app.post("/jimeng/generate_video/")
-async def generate_video(request: VideoRequest, auth_token: str = Depends(verify_auth_token)):
+async def generate_video(request: VideoRequest2, auth_token: str = Depends(verify_auth_token)):
     try:
         logger.info(f"generate_video API 调用开始，提示词: {request.prompt}")
         start_time = time.time()
