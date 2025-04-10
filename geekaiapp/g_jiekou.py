@@ -17,7 +17,7 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt
 from fastapi.staticfiles import StaticFiles
-from fastapi import FastAPI, HTTPException, APIRouter, Request, Form, UploadFile, File, Depends
+from fastapi import FastAPI, HTTPException, APIRouter, Request, Form, UploadFile, File, Depends, Header
 from fastapi.routing import APIRoute, Mount
 from fastapi.responses import FileResponse
 from fastapi.responses import JSONResponse
@@ -30,6 +30,8 @@ from geekaiapp.g_utils import save_audio_file, upload_cos, tencent_region, tence
     zpai_check_video_status, microsoft_api_key, microsoft_base_url, ai_api_key, ai_base_url, ip, ip_tts, \
     ai_model, generate_clip, marp_path, ip_md, ip_html, port, generate_image, generate_tts, system_prompt, \
     system_prompt2, current_directory, verify_auth_token, jimeng_cookie, jimeng_sign, download_video, ip_video
+from fastapi_mcp import add_mcp_server
+
 
 app = FastAPI(debug=True)
 
@@ -703,7 +705,13 @@ async def generate_video(request: VideoRequest2, auth_token: str = Depends(verif
                                 # 删除本地文件
                                 # os.remove(file_path)
                                 local_url = f"{ip}{ip_video}/{filename}"
-                                return {"video_url": cos_url, "local_url": local_url, "task_id": task_id}
+                                # return {"video_url": cos_url, "local_url": local_url, "task_id": task_id}
+                                return {
+                                    "video_url": cos_url,
+                                    "local_url": local_url,
+                                    "task_id": task_id,
+                                    "markdown": f"<video controls><source src='{cos_url}' type='video/mp4'>视频预览</video>"
+                                }
                             else:
                                 raise HTTPException(status_code=500, detail="上传视频到 COS 失败")
                         except Exception as e:
@@ -719,6 +727,51 @@ async def generate_video(request: VideoRequest2, auth_token: str = Depends(verif
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# 修改 MCP 服务器配置
+mcp_server = add_mcp_server(
+    app,
+    mount_path="/mcp",
+    name="Jimeng Video MCP",
+    description="集成了智能视频生成功能的 MCP 服务",
+    base_url="http://localhost:15123"
+)
+
+
+# 添加自定义 MCP 工具
+@mcp_server.tool()
+async def generate_video_mcp(
+        prompt: str,
+        aspect_ratio: str = "16:9",
+        duration_ms: int = 5000,
+        fps: int = 24,
+        authorization: str = Header(...)
+) -> dict:
+    """
+    生成一个基于文本提示的 AI 视频。
+
+    Args:
+        prompt: 用于生成视频的文本提示词
+        aspect_ratio: 视频宽高比，默认为 "16:9"
+        duration_ms: 视频时长（毫秒），默认为 5000
+        fps: 视频帧率，默认为 24
+        authorization: Bearer token 用于认证（必填）
+
+    Returns:
+        dict: 包含以下字段的字典：
+            - video_url: 生成视频的 URL
+            - task_id: 任务 ID
+            - markdown: 视频预览的 markdown 代码
+    """
+    request = VideoRequest2(
+        prompt=prompt,
+        aspect_ratio=aspect_ratio,
+        duration_ms=duration_ms,
+        fps=fps
+    )
+    return await generate_video(request, auth_token=verify_auth_token(authorization))
+
+
+
 app.include_router(router, prefix="/api")
 
 # 打印所有路由
@@ -731,4 +784,6 @@ for route in app.routes:
 if __name__ == '__main__':
     import uvicorn
 
-    uvicorn.run(app, host='0.0.0.0', port=port)
+    # uvicorn.run(app, host='0.0.0.0', port=port)
+    # 修改启动配置 # 禁用热重载以避免初始化问题
+    uvicorn.run(app, host="0.0.0.0", port=port, log_level="info", reload=False)
