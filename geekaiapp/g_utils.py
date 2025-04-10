@@ -65,6 +65,8 @@ jimeng_sign = os.getenv('JIMENG_SIGN',
 valid_tokens1 = ["sk-geekaiapp", "geekaiapp"]
 
 
+product_serial = os.getenv('product_serial', '9ec0216f0796254c92dbc2be605a11bb')
+
 # 基础配置
 port = int(os.getenv('PORT', '15001'))
 ip = os.getenv('IP', 'http://localhost:15001/')
@@ -565,3 +567,24 @@ def download_video(url, output_path):
                 file.write(chunk)
 
     return filename, file_path
+
+def download_image(url, output_path):
+    response = requests.get(url, stream=True)
+    response.raise_for_status()
+
+    filename = generate_timestamp_filename_for_image()
+    file_path = os.path.join(output_path, filename)
+
+    with open(file_path, 'wb') as file:
+        for chunk in response.iter_content(chunk_size=8192):
+            if chunk:
+                file.write(chunk)
+
+    return filename, file_path
+
+
+def generate_timestamp_filename_for_image(extension='jpg'):
+    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    random_number = random.randint(1000, 9999)
+    filename = f"faceswap_{timestamp}_{random_number}.{extension}"
+    return filename

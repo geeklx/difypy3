@@ -20,6 +20,7 @@ COPY . .
 
 # 运行应用程序
 CMD ["python", "geekaiapp/g_jiekou.py"]
+#CMD ["python", "geekaiapp/jimeng_video_service.py"]
 
 
 #docker-compose up --build
