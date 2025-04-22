@@ -3,6 +3,9 @@ import configparser
 import datetime
 import logging
 import os
+import sys
+# 将项目根目录添加到 Python 路径
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import random
 import time
 from io import BytesIO
@@ -25,13 +28,16 @@ config = configparser.ConfigParser()
 # windows (windows下的路径)
 # config.read('F:\\work\\code\\2024pythontest\\makehtml\\config.ini', encoding='utf-8')
 config.read('config.ini', encoding='utf-8')
-
-
 # Tencent Cloud COS configuration
-region = config.get('common', 'region')
-secret_id = config.get('common', 'secret_id')
-secret_key = config.get('common', 'secret_key')
-bucket = config.get('common', 'bucket')
+# region = config.get('common', 'region')
+# secret_id = config.get('common', 'secret_id')
+# secret_key = config.get('common', 'secret_key')
+# bucket = config.get('common', 'bucket')
+
+region = 'ap-nanjing'
+secret_id = 'AKID03BB5nRuAD2d0AF7lCPPBl8HCtDNK4d1'
+secret_key = 'EE1by75sSowqZ5NURBrPlutjPt9E9rXD'
+bucket = 'dify-1305874767'
 
 # 设置输出路径
 # output_path = config.get('google', 'output_path', fallback='picture_output')
@@ -257,4 +263,4 @@ def main2(json_data: str) -> str:
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=15009)
+    uvicorn.run(app, host="0.0.0.0", port=15101)

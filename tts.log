@@ -1,0 +1,2474 @@
+2025-04-22 08:19:14,104 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:19:14,354 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:19:14,463 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:19:14,588 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:19:14,703 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:22:18,083 - ERROR - [app.py:729] - Error in request logging: File at path index.html does not exist.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 147, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:22:18,089 - ERROR - [app.py:747] - Unexpected error: File at path index.html does not exist. - Path: / - Client: 172.21.0.1
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 174, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    |     await response(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    |     raise RuntimeError(f"File at path {self.path} does not exist.")
+    | RuntimeError: File at path index.html does not exist.
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:22:18,932 - ERROR - [app.py:735] - HTTP error: 404 - Favicon not found - Path: /favicon.ico - Client: 172.21.0.1
+2025-04-22 08:22:18,933 - INFO - [app.py:722] - 172.21.0.1:52186 - "GET /favicon.ico HTTP/1.1" 404 - 0.00s
+2025-04-22 08:22:33,308 - ERROR - [app.py:729] - Error in request logging: File at path index.html does not exist.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 147, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:22:33,315 - ERROR - [app.py:747] - Unexpected error: File at path index.html does not exist. - Path: / - Client: 172.21.0.1
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 174, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    |     await response(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    |     raise RuntimeError(f"File at path {self.path} does not exist.")
+    | RuntimeError: File at path index.html does not exist.
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:22:33,375 - ERROR - [app.py:735] - HTTP error: 404 - Favicon not found - Path: /favicon.ico - Client: 172.21.0.1
+2025-04-22 08:22:33,376 - INFO - [app.py:722] - 172.21.0.1:48810 - "GET /favicon.ico HTTP/1.1" 404 - 0.00s
+2025-04-22 08:23:20,300 - ERROR - [app.py:729] - Error in request logging: File at path index.html does not exist.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 147, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:23:20,309 - ERROR - [app.py:747] - Unexpected error: File at path index.html does not exist. - Path: / - Client: 172.21.0.1
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 174, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    |     await response(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    |     raise RuntimeError(f"File at path {self.path} does not exist.")
+    | RuntimeError: File at path index.html does not exist.
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:24:14,099 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:24:14,340 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:24:14,454 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:24:14,582 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:24:14,696 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:25:19,307 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:25:19,509 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:25:19,745 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:25:19,821 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:25:20,078 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:28:03,237 - INFO - [app.py:722] - 172.21.0.1:41334 - "GET /api/audio/user_zps8i25i2 HTTP/1.1" 200 - 0.03s
+2025-04-22 08:28:03,991 - INFO - [app.py:722] - 172.21.0.1:41318 - "GET /api/voices HTTP/1.1" 200 - 0.77s
+2025-04-22 08:28:09,524 - ERROR - [app.py:729] - Error in request logging: File at path index.html does not exist.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 147, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:28:09,531 - ERROR - [app.py:747] - Unexpected error: File at path index.html does not exist. - Path: / - Client: 172.21.0.1
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 174, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    |     await response(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    |     raise RuntimeError(f"File at path {self.path} does not exist.")
+    | RuntimeError: File at path index.html does not exist.
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:28:18,494 - INFO - [app.py:722] - 172.21.0.1:33386 - "GET /api/audio/user_zps8i25i2 HTTP/1.1" 200 - 0.01s
+2025-04-22 08:28:18,495 - INFO - [app.py:722] - 172.21.0.1:33374 - "GET /api/voices HTTP/1.1" 200 - 0.00s
+2025-04-22 08:28:37,859 - ERROR - [app.py:729] - Error in request logging: File at path index.html does not exist.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 147, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:28:37,863 - ERROR - [app.py:747] - Unexpected error: File at path index.html does not exist. - Path: / - Client: 172.21.0.1
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 174, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    |     await response(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    |     raise RuntimeError(f"File at path {self.path} does not exist.")
+    | RuntimeError: File at path index.html does not exist.
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:29:08,961 - ERROR - [app.py:729] - Error in request logging: File at path index.html does not exist.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 147, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:29:08,966 - ERROR - [app.py:747] - Unexpected error: File at path index.html does not exist. - Path: / - Client: 172.21.0.1
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 174, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    |     await response(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    |     raise RuntimeError(f"File at path {self.path} does not exist.")
+    | RuntimeError: File at path index.html does not exist.
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:29:09,059 - ERROR - [app.py:735] - HTTP error: 404 - Favicon not found - Path: /favicon.ico - Client: 172.21.0.1
+2025-04-22 08:29:09,060 - INFO - [app.py:722] - 172.21.0.1:44100 - "GET /favicon.ico HTTP/1.1" 404 - 0.00s
+2025-04-22 08:30:19,302 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:30:19,530 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:30:19,739 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:30:19,821 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:30:20,070 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:30:20,671 - INFO - [app.py:722] - 172.21.0.1:43244 - "GET /api/audio/user_zps8i25i2 HTTP/1.1" 200 - 0.01s
+2025-04-22 08:30:20,672 - INFO - [app.py:722] - 172.21.0.1:43230 - "GET /api/voices HTTP/1.1" 200 - 0.01s
+2025-04-22 08:30:28,978 - INFO - [app.py:384] - Starting audio generation for user user_zps8i25i2
+2025-04-22 08:30:30,185 - INFO - [app.py:722] - 172.21.0.1:59408 - "POST /api/generate HTTP/1.1" 200 - 1.21s
+2025-04-22 08:30:30,222 - INFO - [app.py:722] - 172.21.0.1:59408 - "GET /static/audio/user_zps8i25i2_afb0b686-81c7-46cf-826a-1869df3962e3.mp3 HTTP/1.1" 206 - 0.02s
+2025-04-22 08:30:30,365 - ERROR - [app.py:735] - HTTP error: 404 - Favicon not found - Path: /favicon.ico - Client: 172.21.0.1
+2025-04-22 08:30:30,365 - INFO - [app.py:722] - 172.21.0.1:59408 - "GET /favicon.ico HTTP/1.1" 404 - 0.00s
+2025-04-22 08:30:33,431 - INFO - [app.py:722] - 172.21.0.1:59408 - "DELETE /api/audio/user_zps8i25i2_afb0b686-81c7-46cf-826a-1869df3962e3 HTTP/1.1" 200 - 0.00s
+2025-04-22 08:30:37,972 - ERROR - [app.py:729] - Error in request logging: File at path index.html does not exist.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 147, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:37,979 - ERROR - [app.py:747] - Unexpected error: File at path index.html does not exist. - Path: / - Client: 172.21.0.1
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 174, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    |     await response(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    |     raise RuntimeError(f"File at path {self.path} does not exist.")
+    | RuntimeError: File at path index.html does not exist.
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:41,669 - ERROR - [app.py:729] - Error in request logging: File at path index.html does not exist.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 147, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:41,675 - ERROR - [app.py:747] - Unexpected error: File at path index.html does not exist. - Path: / - Client: 172.21.0.1
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 174, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    |     await response(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    |     raise RuntimeError(f"File at path {self.path} does not exist.")
+    | RuntimeError: File at path index.html does not exist.
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:46,126 - ERROR - [app.py:729] - Error in request logging: File at path index.html does not exist.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 147, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:46,131 - ERROR - [app.py:747] - Unexpected error: File at path index.html does not exist. - Path: / - Client: 172.21.0.1
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 174, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    |     await response(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    |     raise RuntimeError(f"File at path {self.path} does not exist.")
+    | RuntimeError: File at path index.html does not exist.
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:47,740 - ERROR - [app.py:729] - Error in request logging: File at path index.html does not exist.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 147, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:47,745 - ERROR - [app.py:747] - Unexpected error: File at path index.html does not exist. - Path: / - Client: 172.21.0.1
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 174, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    |     await response(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    |     raise RuntimeError(f"File at path {self.path} does not exist.")
+    | RuntimeError: File at path index.html does not exist.
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:47,807 - ERROR - [app.py:729] - Error in request logging: File at path index.html does not exist.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 147, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:47,814 - ERROR - [app.py:747] - Unexpected error: File at path index.html does not exist. - Path: / - Client: 172.21.0.1
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 174, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    |     await response(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    |     raise RuntimeError(f"File at path {self.path} does not exist.")
+    | RuntimeError: File at path index.html does not exist.
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:48,157 - ERROR - [app.py:729] - Error in request logging: File at path index.html does not exist.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 147, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:48,163 - ERROR - [app.py:747] - Unexpected error: File at path index.html does not exist. - Path: / - Client: 172.21.0.1
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 174, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    |     await response(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    |     raise RuntimeError(f"File at path {self.path} does not exist.")
+    | RuntimeError: File at path index.html does not exist.
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:48,303 - ERROR - [app.py:729] - Error in request logging: File at path index.html does not exist.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 147, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:48,309 - ERROR - [app.py:747] - Unexpected error: File at path index.html does not exist. - Path: / - Client: 172.21.0.1
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 174, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    |     await response(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    |     raise RuntimeError(f"File at path {self.path} does not exist.")
+    | RuntimeError: File at path index.html does not exist.
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:54,779 - ERROR - [app.py:729] - Error in request logging: File at path index.html does not exist.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 147, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:30:54,785 - ERROR - [app.py:747] - Unexpected error: File at path index.html does not exist. - Path: / - Client: 172.21.0.1
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 174, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    |     await response(scope, receive, send)
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    |     raise RuntimeError(f"File at path {self.path} does not exist.")
+    | RuntimeError: File at path index.html does not exist.
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yewu2edgetts/app.py", line 730, in log_requests
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/app/yewu2edgetts/app.py", line 720, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 153, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 74, in app
+    await response(scope, receive, send)
+  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 346, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path index.html does not exist.
+2025-04-22 08:33:50,850 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:33:50,854 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:33:51,348 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:33:51,369 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:33:51,825 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:34:18,221 - INFO - [app.py:722] - 172.21.0.1:44800 - "GET / HTTP/1.1" 200 - 0.00s
+2025-04-22 08:34:18,408 - INFO - [app.py:722] - 172.21.0.1:44814 - "GET /api/audio/user_zps8i25i2 HTTP/1.1" 200 - 0.01s
+2025-04-22 08:34:19,525 - INFO - [app.py:722] - 172.21.0.1:44800 - "GET /api/voices HTTP/1.1" 200 - 1.15s
+2025-04-22 08:34:31,180 - INFO - [app.py:722] - 172.21.0.1:53672 - "GET / HTTP/1.1" 200 - 0.00s
+2025-04-22 08:34:31,346 - INFO - [app.py:722] - 172.21.0.1:53672 - "GET /api/voices HTTP/1.1" 200 - 0.01s
+2025-04-22 08:34:31,347 - INFO - [app.py:722] - 172.21.0.1:53678 - "GET /api/audio/user_dh2ur4di8 HTTP/1.1" 200 - 0.01s
+2025-04-22 08:34:36,980 - INFO - [app.py:722] - 172.21.0.1:44566 - "GET / HTTP/1.1" 200 - 0.00s
+2025-04-22 08:34:38,150 - INFO - [app.py:722] - 172.21.0.1:44566 - "GET /api/voices HTTP/1.1" 200 - 0.00s
+2025-04-22 08:34:38,155 - INFO - [app.py:722] - 172.21.0.1:44566 - "GET /api/audio/user_w0qz2axg8 HTTP/1.1" 200 - 0.00s
+2025-04-22 08:34:46,549 - INFO - [app.py:722] - 172.21.0.1:35546 - "HEAD / HTTP/1.1" 405 - 0.00s
+2025-04-22 08:34:49,323 - INFO - [app.py:722] - 172.21.0.1:35546 - "GET / HTTP/1.1" 200 - 0.01s
+2025-04-22 08:34:50,203 - ERROR - [app.py:735] - HTTP error: 404 - Favicon not found - Path: /favicon.ico - Client: 172.21.0.1
+2025-04-22 08:34:50,205 - INFO - [app.py:722] - 172.21.0.1:35546 - "GET /favicon.ico HTTP/1.1" 404 - 0.00s
+2025-04-22 08:34:57,262 - INFO - [app.py:722] - 172.21.0.1:54648 - "GET / HTTP/1.1" 200 - 0.00s
+2025-04-22 08:34:57,418 - INFO - [app.py:722] - 172.21.0.1:54648 - "HEAD / HTTP/1.1" 405 - 0.00s
+2025-04-22 08:34:58,284 - INFO - [app.py:722] - 172.21.0.1:54648 - "GET / HTTP/1.1" 200 - 0.00s
+2025-04-22 08:34:59,955 - INFO - [app.py:722] - 172.21.0.1:54648 - "GET /api/audio/user_9c32aol8a HTTP/1.1" 200 - 0.00s
+2025-04-22 08:34:59,957 - INFO - [app.py:722] - 172.21.0.1:54650 - "GET /api/voices HTTP/1.1" 200 - 0.00s
+2025-04-22 08:35:00,219 - ERROR - [app.py:735] - HTTP error: 404 - Favicon not found - Path: /favicon.ico - Client: 172.21.0.1
+2025-04-22 08:35:00,222 - INFO - [app.py:722] - 172.21.0.1:54650 - "GET /favicon.ico HTTP/1.1" 404 - 0.00s
+2025-04-22 08:35:00,424 - INFO - [app.py:722] - 172.21.0.1:54650 - "GET /api/audio/user_m7wwo11dh HTTP/1.1" 200 - 0.01s
+2025-04-22 08:35:00,425 - ERROR - [app.py:735] - HTTP error: 404 - Favicon not found - Path: /favicon.ico - Client: 172.21.0.1
+2025-04-22 08:35:00,426 - INFO - [app.py:722] - 172.21.0.1:54648 - "GET /favicon.ico HTTP/1.1" 404 - 0.00s
+2025-04-22 08:35:00,585 - INFO - [app.py:722] - 172.21.0.1:54648 - "GET /api/voices HTTP/1.1" 200 - 0.00s
+2025-04-22 08:35:08,606 - INFO - [app.py:722] - 172.21.0.1:57538 - "GET /api/voices HTTP/1.1" 200 - 0.00s
+2025-04-22 08:35:12,341 - INFO - [app.py:384] - Starting audio generation for user user_m7wwo11dh
+2025-04-22 08:35:13,750 - INFO - [app.py:722] - 172.21.0.1:57538 - "POST /api/generate HTTP/1.1" 200 - 1.46s
+2025-04-22 08:35:14,272 - INFO - [app.py:722] - 172.21.0.1:57538 - "GET /static/audio/user_m7wwo11dh_b4efe617-7f03-45f2-9ce6-28c700e59dab.mp3 HTTP/1.1" 200 - 0.01s
+2025-04-22 08:35:45,537 - INFO - [app.py:722] - 172.21.0.1:41570 - "HEAD / HTTP/1.1" 405 - 0.00s
+2025-04-22 08:35:53,780 - INFO - [app.py:722] - 172.21.0.1:58298 - "GET / HTTP/1.1" 200 - 0.00s
+2025-04-22 08:36:04,898 - INFO - [app.py:722] - 172.21.0.1:44174 - "GET /api/voices HTTP/1.1" 200 - 0.00s
+2025-04-22 08:36:04,905 - ERROR - [app.py:735] - HTTP error: 404 - Favicon not found - Path: /favicon.ico - Client: 172.21.0.1
+2025-04-22 08:36:04,907 - INFO - [app.py:722] - 172.21.0.1:44176 - "GET /favicon.ico HTTP/1.1" 404 - 0.00s
+2025-04-22 08:36:04,919 - INFO - [app.py:722] - 172.21.0.1:44188 - "GET /api/audio/user_hib5zoygk HTTP/1.1" 200 - 0.01s
+2025-04-22 08:38:50,871 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:38:50,880 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:38:51,466 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:38:51,480 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:38:51,870 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:43:50,867 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:43:50,878 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:43:51,472 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:43:51,487 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:43:51,876 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:45:32,133 - INFO - [app.py:722] - 172.21.0.1:41572 - "GET / HTTP/1.1" 200 - 0.00s
+2025-04-22 08:45:33,053 - INFO - [app.py:722] - 172.21.0.1:41572 - "GET / HTTP/1.1" 200 - 0.00s
+2025-04-22 08:45:34,002 - ERROR - [app.py:735] - HTTP error: 404 - Favicon not found - Path: /favicon.ico - Client: 172.21.0.1
+2025-04-22 08:45:34,003 - INFO - [app.py:722] - 172.21.0.1:41572 - "GET /favicon.ico HTTP/1.1" 404 - 0.00s
+2025-04-22 08:48:50,871 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:48:50,880 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:48:51,477 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:48:51,491 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:48:51,881 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:53:50,875 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:53:50,878 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:53:51,476 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:53:51,489 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:53:51,887 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:58:50,888 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:58:50,896 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:58:51,480 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:58:51,494 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 08:58:51,900 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:03:50,880 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:03:50,903 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:03:50,917 - INFO - [app.py:703] - Cleaned up: user_zps8i25i2_afb0b686-81c7-46cf-826a-1869df3962e3.mp3 (26.2KB)
+2025-04-22 09:03:50,923 - INFO - [app.py:703] - Cleaned up: user_zps8i25i2_afb0b686-81c7-46cf-826a-1869df3962e3.srt (0.1KB)
+2025-04-22 09:03:50,923 - INFO - [app.py:708] - Cleanup completed: removed 2 files, freed 0.0MB
+2025-04-22 09:03:50,929 - ERROR - [app.py:692] - Error getting file info for user_zps8i25i2_afb0b686-81c7-46cf-826a-1869df3962e3.mp3: [Errno 2] No such file or directory: 'static/audio/user_zps8i25i2_afb0b686-81c7-46cf-826a-1869df3962e3.mp3'
+2025-04-22 09:03:50,931 - ERROR - [app.py:692] - Error getting file info for user_zps8i25i2_afb0b686-81c7-46cf-826a-1869df3962e3.srt: [Errno 2] No such file or directory: 'static/audio/user_zps8i25i2_afb0b686-81c7-46cf-826a-1869df3962e3.srt'
+2025-04-22 09:03:51,474 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:03:51,485 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:03:51,900 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:08:50,909 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:08:50,916 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:08:51,078 - INFO - [app.py:703] - Cleaned up: user_m7wwo11dh_b4efe617-7f03-45f2-9ce6-28c700e59dab.mp3 (19.7KB)
+2025-04-22 09:08:51,120 - INFO - [app.py:703] - Cleaned up: user_m7wwo11dh_b4efe617-7f03-45f2-9ce6-28c700e59dab.srt (0.0KB)
+2025-04-22 09:08:51,128 - INFO - [app.py:708] - Cleanup completed: removed 2 files, freed 0.0MB
+2025-04-22 09:08:51,148 - ERROR - [app.py:705] - Error deleting file user_m7wwo11dh_b4efe617-7f03-45f2-9ce6-28c700e59dab.mp3: [Errno 2] No such file or directory: 'static/audio/user_m7wwo11dh_b4efe617-7f03-45f2-9ce6-28c700e59dab.mp3'
+2025-04-22 09:08:51,232 - ERROR - [app.py:705] - Error deleting file user_m7wwo11dh_b4efe617-7f03-45f2-9ce6-28c700e59dab.srt: [Errno 2] No such file or directory: 'static/audio/user_m7wwo11dh_b4efe617-7f03-45f2-9ce6-28c700e59dab.srt'
+2025-04-22 09:08:51,481 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:08:51,485 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:08:51,899 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:13:51,122 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:13:51,218 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:13:51,518 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:13:51,525 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:13:51,960 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:18:51,112 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:18:51,205 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:18:51,508 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:18:51,515 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:18:51,959 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:23:51,102 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:23:51,195 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:23:51,498 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:23:51,504 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:23:51,950 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:28:51,092 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:28:51,186 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:28:51,491 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:28:51,495 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:28:51,938 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:33:51,084 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:33:51,178 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:33:51,485 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:33:51,487 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:33:51,932 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:38:51,077 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:38:51,168 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:38:51,474 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:38:51,474 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:38:51,931 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:43:51,070 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:43:51,172 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:43:51,464 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:43:51,464 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:43:51,927 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:48:51,065 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:48:51,164 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:48:51,458 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:48:51,459 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:48:51,920 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:53:51,059 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:53:51,155 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:53:51,449 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:53:51,451 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:53:51,914 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:58:51,053 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:58:51,153 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:58:51,443 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:58:51,445 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 09:58:51,906 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:03:51,044 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:03:51,146 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:03:51,431 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:03:51,433 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:03:51,895 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:08:51,035 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:08:51,140 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:08:51,423 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:08:51,424 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:08:51,894 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:12:33,720 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:12:34,608 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:12:34,892 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:12:35,132 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:12:35,184 - INFO - [app.py:673] - Starting cleanup check...
+2025-04-22 10:12:35,637 - INFO - [app.py:673] - Starting cleanup check...

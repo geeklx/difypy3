@@ -19,8 +19,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # 运行应用程序
-CMD ["python", "geekaiapp/g_jiekou.py"]
+#CMD ["python", "geekaiapp/g_jiekou.py"]
 #CMD ["python", "geekaiapp/jimeng_video_service.py"]
+# 将启动脚本复制到容器中
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
+# 使用CMD运行启动脚本
+CMD ["/start.sh"]
 
+#pip install -r requirements.txt
 #docker-compose up --build

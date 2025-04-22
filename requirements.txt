@@ -35,3 +35,4 @@ srt==3.5.0
 zstandard==0.23.0
 fastapi_mcp==0.1.8
 spire-doc==13.3.8
+pydub==0.25.0
