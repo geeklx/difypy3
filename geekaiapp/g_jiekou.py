@@ -32,7 +32,6 @@ from geekaiapp.g_utils import save_audio_file, upload_cos, tencent_region, tence
     ai_model, generate_clip, marp_path, ip_md, ip_html, port, generate_image, generate_tts, system_prompt, \
     system_prompt2, current_directory, verify_auth_token, jimeng_cookie, jimeng_sign, download_video, ip_video, \
     product_serial, ip_img, download_image
-from fastapi_mcp import add_mcp_server
 
 
 app = FastAPI(debug=True)
