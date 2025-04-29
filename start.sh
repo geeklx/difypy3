@@ -4,5 +4,6 @@ python geekaiapp/jimeng_video_service.py &
 python yewu2edgetts/app.py &
 python yewu2googleimgtxt/image-generation-server.py &
 python yewu2story/videostart.py &
-python yewu2videoaddsrt/app.py &
+#python yewu2videoaddsrt/app.py &
+#python db1/score_api.py &
 wait  # 等待所有后台进程完成

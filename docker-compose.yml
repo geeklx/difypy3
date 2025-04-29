@@ -78,13 +78,23 @@ services:
       - "15103:15103"
     env_file:
       - .env
-  yewu2videoaddsrt:
-    build: .
-    volumes:
-      - .:/app
-    working_dir: /app
-    #    command: python geekaiapp/g_jiekou.py
-    ports:
-      - "15104:15104"
-    env_file:
-      - .env
+#  yewu2videoaddsrt:
+#    build: .
+#    volumes:
+#      - .:/app
+#    working_dir: /app
+#    #    command: python geekaiapp/g_jiekou.py
+#    ports:
+#      - "15104:15104"
+#    env_file:
+#      - .env
+#  db1student:
+#    build: .
+#    volumes:
+#      - .:/app
+#    working_dir: /app
+#    #    command: python geekaiapp/g_jiekou.py
+#    ports:
+#      - "15105:15105"
+#    env_file:
+#      - .env

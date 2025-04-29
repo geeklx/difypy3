@@ -165,6 +165,40 @@ def main(arg1: str) -> dict:
         return {"error": f"发生未知错误: {str(e)}"}
 
 
+def main(arg1: str) -> dict:
+    import json
+    arg = arg1.replace("```json", "")
+    arg2 = arg.replace("```", "")
+    str2 = json.loads(arg2)
+    table = [[str2]]
+    result_str = str(table).replace("'", '"')
+    return {
+        "result": result_str,
+    }
+
+
+def main(arg1: str) -> dict:
+    import json
+    arg = arg1.replace("```json", "")
+    arg2 = arg.replace("```", "")
+    str2 = json.loads(arg2)
+    table = [str2]
+    result_str = str(table).replace("'", '"')
+    return {
+        "result": result_str,
+    }
+
+
+def main11(arg1: str) -> dict:
+    arg1 = "```json\n{\n  \"始发站\": \"南京南\",\n  \"终点站\": \"北京南\",\n  \"车次\": \"G124\",\n  \"出发时间\": \"2015年07月10日 10:21\",\n  \"票价\": \"¥435.5\",\n  \"身份证号\": \"3412261995********\",\n  \"姓名\": \"曹云\"\n}\n```"
+    table = [[arg1]]
+    result_str = str(table).replace("'", '"')
+    result_str = result_str.replace("\\n", "\n")
+    return {
+        "result": result_str,
+    }
+
+
 if __name__ == "__main__":
     import uvicorn
 
