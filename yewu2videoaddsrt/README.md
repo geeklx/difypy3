@@ -10,7 +10,7 @@
 - 制作视频总结
 - 支持三步反思法翻译SRT字幕
 - 支持音视频转录为SRT字幕
-
+ 
 ## 界面
 
 ![image](https://github.com/user-attachments/assets/aeb39f4f-9eb0-4c5d-b776-386a67b99a22)
