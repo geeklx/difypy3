@@ -1,0 +1,1480 @@
+app:
+  description: AI-发票mcp
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: AI-发票mcp
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: package
+  value:
+    plugin_unique_identifier: langgenius/tongyi:0.0.18@ca40ec06ff35ca611fa5fdf99a15eeb007a9fe3bd725c9ff6d0436469ab0edc9
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/feishu_spreadsheet:0.0.1@6b4da2c3bcab1aace954e92a8120bf09692951bc68c993debbd64cfb398fd30d
+kind: app
+version: 0.2.0
+workflow:
+  conversation_variables: []
+  environment_variables:
+  - description: ''
+    id: 558390c7-08a3-406c-b4be-641f661e1748
+    name: huifu1
+    selector:
+    - env
+    - huifu1
+    value: 未识别出正确的发票信息，请重新输入
+    value_type: string
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: if-else
+      id: 1745471160570-source-1745471652624-target
+      selected: false
+      source: '1745471160570'
+      sourceHandle: source
+      target: '1745471652624'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: end
+      id: 1745471652624-false-1745471857077-target
+      selected: false
+      source: '1745471652624'
+      sourceHandle: 'false'
+      target: '1745471857077'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 1745471652624-true-1745471998023-target
+      selected: false
+      source: '1745471652624'
+      sourceHandle: 'true'
+      target: '1745471998023'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 1745471652624-b97c6784-b66a-47fd-a22e-95f95c8d1643-17454721029580-target
+      selected: false
+      source: '1745471652624'
+      sourceHandle: b97c6784-b66a-47fd-a22e-95f95c8d1643
+      target: '17454721029580'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 1745471652624-c6b132c0-485b-4a15-a33d-132e29d7778e-17454721074650-target
+      selected: false
+      source: '1745471652624'
+      sourceHandle: c6b132c0-485b-4a15-a33d-132e29d7778e
+      target: '17454721074650'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 1745471652624-7c432d4c-5f03-498a-b86e-8988a85946fd-17454721141260-target
+      selected: false
+      source: '1745471652624'
+      sourceHandle: 7c432d4c-5f03-498a-b86e-8988a85946fd
+      target: '17454721141260'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 1745471652624-cb529fab-e2e4-4bab-bb39-e403342c88b0-17454721183140-target
+      selected: false
+      source: '1745471652624'
+      sourceHandle: cb529fab-e2e4-4bab-bb39-e403342c88b0
+      target: '17454721183140'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 1745471652624-446368a8-bf62-4874-a5d7-f8755d34680a-17454724608450-target
+      selected: false
+      source: '1745471652624'
+      sourceHandle: 446368a8-bf62-4874-a5d7-f8755d34680a
+      target: '17454724608450'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 1745471652624-80b7546b-535a-4023-9536-c0c35d68bb50-17454724638700-target
+      selected: false
+      source: '1745471652624'
+      sourceHandle: 80b7546b-535a-4023-9536-c0c35d68bb50
+      target: '17454724638700'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 1745471998023-source-1745472765185-target
+      source: '1745471998023'
+      sourceHandle: source
+      target: '1745472765185'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 17454721029580-source-1745472765185-target
+      source: '17454721029580'
+      sourceHandle: source
+      target: '1745472765185'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 17454721074650-source-1745472765185-target
+      source: '17454721074650'
+      sourceHandle: source
+      target: '1745472765185'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 17454721141260-source-1745472765185-target
+      source: '17454721141260'
+      sourceHandle: source
+      target: '1745472765185'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 17454721183140-source-1745472765185-target
+      source: '17454721183140'
+      sourceHandle: source
+      target: '1745472765185'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 17454724608450-source-1745472765185-target
+      source: '17454724608450'
+      sourceHandle: source
+      target: '1745472765185'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 17454724638700-source-1745472765185-target
+      source: '17454724638700'
+      sourceHandle: source
+      target: '1745472765185'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: code
+      id: 1745473006246-source-1745473055687-target
+      source: '1745473006246'
+      sourceHandle: source
+      target: '1745473055687'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: tool
+      id: 1745473055687-source-1745473034959-target
+      source: '1745473055687'
+      sourceHandle: source
+      target: '1745473034959'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: end
+      id: 1745473034959-source-1745473216611-target
+      source: '1745473034959'
+      sourceHandle: source
+      target: '1745473216611'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1745466092013-source-1745471160570-target
+      source: '1745466092013'
+      sourceHandle: source
+      target: '1745471160570'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: code
+      id: 1745472895676-source-1745478567101-target
+      source: '1745472895676'
+      sourceHandle: source
+      target: '1745478567101'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: variable-aggregator
+        targetType: llm
+      id: 1745472765185-source-1745489885495-target
+      source: '1745472765185'
+      sourceHandle: source
+      target: '1745489885495'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: code
+      id: 1745489885495-source-1745472895676-target
+      source: '1745489885495'
+      sourceHandle: source
+      target: '1745472895676'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1745478567101-source-1745495955745-target
+      source: '1745478567101'
+      sourceHandle: source
+      target: '1745495955745'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: tool
+      id: 1745495955745-source-1745473006246-target
+      source: '1745495955745'
+      sourceHandle: source
+      target: '1745473006246'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: filefile
+          max_length: 48
+          options: []
+          required: true
+          type: file
+          variable: file
+      height: 90
+      id: '1745466092013'
+      position:
+        x: 30
+        y: 431
+      positionAbsolute:
+        x: 30
+        y: 431
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1745466092013'
+          - file
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-vl-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - role: system
+          text: '# Role: 发票识别专家
+
+
+            ## Profile
+
+            - 专长: 发票类型识别、图像分析、文字识别
+
+            - 经验: 多年处理各类发票和票据的经验
+
+            - 技能: 精准识别不同类型发票的特征
+
+
+            ## Goals
+
+            - 根据用户上传的发票图像准确识别发票类型
+
+            - 返回对应的发票类型代码
+
+
+            ## Rules
+
+            - 仔细分析发票上的所有视觉和文字信息
+
+            - 只返回指定的发票类型代码,不做其他解释
+
+            - 如果无法确定发票类型,返回 "无法识别"
+
+
+            ## Workflows
+
+            1. 接收用户上传的发票图像
+
+            2. 分析图像中的关键信息和特征
+
+            3. 对比不同类型发票的特征
+
+            4. 确定发票类型
+
+            5. 返回对应的类型代码
+
+
+            ## Output Format
+
+            发票类型代码:
+
+            - 0: 增值税电子发票
+
+            - 1: 电子发票(全电发票)
+
+            - 2: 增值税普通发票-卷票
+
+            - 3: 火车票
+
+            - 4: 新版火车票-铁路电子客票
+
+            - 5: 定额发票
+
+            - 6: 出租车发票
+
+
+            ## Examples
+
+            用户: [上传增值税电子普通发票图像]
+
+            特征: 电子版式,有"增值税电子普通发票"字样,含二维码,有密码区,有 "税局监制"字样
+
+            AI: 0
+
+
+            用户: [上传电子发票(普通发票)或电子发票(增值税专用发票)图像]
+
+            特征: 电子版式,有"电子发票"字样,发票号码长度有20位
+
+            AI: 1
+
+
+            用户: [上传增值税普通发票发票联图像]
+
+            特征: 纸质卷式,较窄,有"增值税普通发票"字样,通常为红色或蓝色
+
+            AI: 2
+
+
+            用户: [上传火车票图像]
+
+            特征: 磁性票,较小,包含乘车日期、车次、座位等信息
+
+            AI: 3
+
+
+            用户: [上传新版火车票-铁路电子客票图像]
+
+            特征: 电子版式,有"电子发票(铁路电子客票)"标志,包含乘车日期、车次、座位等信息，有发票号码，发票号码长度20位
+
+            AI: 4
+
+
+            用户: [上传定额发票图像]
+
+            特征: 小型纸质票据,预先印制金额,通常用于小额交易
+
+            AI: 5
+
+
+            用户: [上传出租车发票图像]
+
+            特征: 纸质卷式,较窄,有"通用机打发票字样"字样,有“车号”、“工号”、“单价”、“里程”、“等候”等字样
+
+            AI: 6
+
+
+            用户: [上传模糊不清的图像]
+
+            特征: 图像模糊,无法辨识关键信息
+
+            AI: 无法识别'
+        selected: false
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1745466092013'
+            - file
+          enabled: true
+      height: 90
+      id: '1745471160570'
+      position:
+        x: 334
+        y: 431
+      positionAbsolute:
+        x: 334
+        y: 431
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: contains
+            id: 2091e3c0-8f1b-43a9-a5f5-6a5375a5b5a7
+            value: '0'
+            varType: string
+            variable_selector:
+            - '1745471160570'
+            - text
+          id: 'true'
+          logical_operator: and
+        - case_id: b97c6784-b66a-47fd-a22e-95f95c8d1643
+          conditions:
+          - comparison_operator: contains
+            id: e90a4fc1-ff24-453b-86b8-022c51abf5b9
+            value: '1'
+            varType: string
+            variable_selector:
+            - '1745471160570'
+            - text
+          logical_operator: and
+        - case_id: c6b132c0-485b-4a15-a33d-132e29d7778e
+          conditions:
+          - comparison_operator: contains
+            id: 85a12fcb-14e9-42b1-b997-ea5575a1d608
+            value: '2'
+            varType: string
+            variable_selector:
+            - '1745471160570'
+            - text
+          logical_operator: and
+        - case_id: 7c432d4c-5f03-498a-b86e-8988a85946fd
+          conditions:
+          - comparison_operator: contains
+            id: c9387ddc-915c-4493-a1ce-0076c1cab8de
+            value: '3'
+            varType: string
+            variable_selector:
+            - '1745471160570'
+            - text
+          logical_operator: and
+        - case_id: cb529fab-e2e4-4bab-bb39-e403342c88b0
+          conditions:
+          - comparison_operator: contains
+            id: 0c741628-9caa-4576-b8ef-9eb6af960493
+            value: '4'
+            varType: string
+            variable_selector:
+            - '1745471160570'
+            - text
+          logical_operator: and
+        - case_id: 446368a8-bf62-4874-a5d7-f8755d34680a
+          conditions:
+          - comparison_operator: contains
+            id: 4c029bba-dc89-47cd-899c-d3a936e5158e
+            value: '5'
+            varType: string
+            variable_selector:
+            - '1745471160570'
+            - text
+          logical_operator: and
+        - case_id: 80b7546b-535a-4023-9536-c0c35d68bb50
+          conditions:
+          - comparison_operator: contains
+            id: 085326ff-cf83-48cb-96b7-6077ec37e0af
+            value: '6'
+            varType: string
+            variable_selector:
+            - '1745471160570'
+            - text
+          logical_operator: and
+        - case_id: 3a1fcb0b-d6a8-4a8d-8ae5-a0dec18b0868
+          conditions:
+          - comparison_operator: contains
+            id: 21ae20e8-4d89-4a31-bd0f-cf4013a25a72
+            value: '100'
+            varType: string
+            variable_selector:
+            - '1745471160570'
+            - text
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 462
+      id: '1745471652624'
+      position:
+        x: 638
+        y: 431
+      positionAbsolute:
+        x: 638
+        y: 431
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - env
+          - huifu1
+          variable: 回复
+        selected: false
+        title: 结束
+        type: end
+      height: 90
+      id: '1745471857077'
+      position:
+        x: 942
+        y: 431
+      positionAbsolute:
+        x: 942
+        y: 431
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1745466092013'
+          - file
+        desc: 增值税专用发票普通发票提取模型
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-vl-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 6e817c47-8e17-47f4-b4a5-091ae57f5f44
+          role: system
+          text: 请提取这张照片的内容，其中内容格式‘机器编号’、‘发票代码’、‘发票号码’、‘开票日期’、‘校 验 码’、‘购买方名称’、‘购买方纳税人识别号’、‘购买方地
+            址、电 话’、‘开户行及账号’、‘货物或应税劳务、服务名称’、‘规格型号’、‘单 位’、‘数 量’、‘单 价’、‘金 额’、‘税率’、‘税
+            额’、‘价税合计（大写）’、‘价税合计（小写）’、‘销售方名称’、‘销售方纳税人识别号’、‘销售方地 址、电 话’、‘销售方地 址、电 话’、‘开户行及账号’、‘备注’、‘收款人’、‘复核’、‘开票人’
+            字段返回信息，返回的结果信息以json格式返回
+        selected: false
+        title: 增值税专用发票普通发票
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1745466092013'
+            - file
+          enabled: true
+      height: 118
+      id: '1745471998023'
+      position:
+        x: 942
+        y: 561
+      positionAbsolute:
+        x: 942
+        y: 561
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1745466092013'
+          - file
+        desc: 电子发票(全电发票)提取模型
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-vl-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 6e817c47-8e17-47f4-b4a5-091ae57f5f44
+          role: system
+          text: 请提取这张照片的内容，其中内容格式‘发票号码’、‘开票日期’、‘购买方信息名称’、‘购买方统一社会信用代码/纳税人识别号’、‘销售方信息名称’、‘销售方统一社会信用代码/纳税人识别号’、‘项目名称’、‘规格型号’、‘单
+            位’、‘数 量’、‘单 价’、‘金 额’、‘税率/征收率’、‘税 额’、‘合计’、‘价税合计（大写）’、‘价税合计（小写）’、‘备 注’ 字段返回信息，返回的结果信息以json格式返回
+        selected: false
+        title: 电子发票(全电发票)
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1745466092013'
+            - file
+          enabled: true
+      height: 118
+      id: '17454721029580'
+      position:
+        x: 942
+        y: 719
+      positionAbsolute:
+        x: 942
+        y: 719
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1745466092013'
+          - file
+        desc: 增值税专用发票普通发票提取模型
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-vl-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 6e817c47-8e17-47f4-b4a5-091ae57f5f44
+          role: system
+          text: 请提取这张照片的内容，其中内容格式‘发票代码’、'发票号码’、'机打号码’、‘机器编号’、‘销售方名称’、‘纳税人识别号’、‘开票日期’、‘收款员’、‘购买方名称’、‘纳税人识别号’、‘项目’、‘单价’、‘数量’、‘金额’、‘合计金额（小写）’、‘合计金额（大写）’、‘校验码’字段返回信息，返回的结果信息以json格式返回
+        selected: false
+        title: 增值税普通发票-卷票
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1745466092013'
+            - file
+          enabled: true
+      height: 118
+      id: '17454721074650'
+      position:
+        x: 942
+        y: 877
+      positionAbsolute:
+        x: 942
+        y: 877
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1745466092013'
+          - file
+        desc: 火车票提取模型
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-vl-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 6e817c47-8e17-47f4-b4a5-091ae57f5f44
+          role: system
+          text: 请提取这张照片的内容，其中内容格式‘始发站’、‘终点站’、‘车次’、‘出发时间’、‘票价’、‘身份证号’、‘姓名’字段返回信息，返回的结果信息以json格式返回
+        selected: false
+        title: 火车票
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1745466092013'
+            - file
+          enabled: true
+      height: 118
+      id: '17454721141260'
+      position:
+        x: 942
+        y: 1035
+      positionAbsolute:
+        x: 942
+        y: 1035
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1745466092013'
+          - file
+        desc: 新版火车票-铁路电子客票提取模型
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-vl-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 6e817c47-8e17-47f4-b4a5-091ae57f5f44
+          role: system
+          text: 请提取这张照片的内容，其中内容格式‘发票号码’、'开票日期’、'‘出发时间’、‘始发站’、‘终点站’、‘车次’、‘票价’、‘身份证号’、‘姓名’、‘电子客票号’、‘购买方名称’、‘统一社会信用代码’字段返回信息，返回的结果信息以json格式返回
+        selected: false
+        title: 新版火车票-铁路电子客票
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1745466092013'
+            - file
+          enabled: true
+      height: 118
+      id: '17454721183140'
+      position:
+        x: 942
+        y: 1193
+      positionAbsolute:
+        x: 942
+        y: 1193
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1745466092013'
+          - file
+        desc: 定额发票提取模型
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-vl-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 6e817c47-8e17-47f4-b4a5-091ae57f5f44
+          role: system
+          text: 请提取这张照片的内容，其中内容格式‘发票代码’、'发票号码’、'金额’字段返回信息，返回的结果信息以json格式返回
+        selected: false
+        title: 定额发票
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1745466092013'
+            - file
+          enabled: true
+      height: 118
+      id: '17454724608450'
+      position:
+        x: 942
+        y: 1351
+      positionAbsolute:
+        x: 942
+        y: 1351
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1745466092013'
+          - file
+        desc: 出租车发票提取模型
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-vl-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 6e817c47-8e17-47f4-b4a5-091ae57f5f44
+          role: system
+          text: 请提取这张照片的内容，其中内容格式‘发票代码’、'发票号码’、'单位’、'车号’、'工号’、'日期’、'时间’、'单价’、'里程’、'等候’、'金额’等字段返回信息，返回的结果信息以json格式返回
+        selected: false
+        title: 出租车发票
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1745466092013'
+            - file
+          enabled: true
+      height: 118
+      id: '17454724638700'
+      position:
+        x: 942
+        y: 1509
+      positionAbsolute:
+        x: 942
+        y: 1509
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        output_type: string
+        selected: false
+        title: 变量聚合器
+        type: variable-aggregator
+        variables:
+        - - '1745471998023'
+          - text
+        - - '17454721029580'
+          - text
+        - - '17454721074650'
+          - text
+        - - '17454721141260'
+          - text
+        - - '17454721183140'
+          - text
+        - - '17454724608450'
+          - text
+        - - '17454724638700'
+          - text
+      height: 240
+      id: '1745472765185'
+      position:
+        x: 1246
+        y: 1049
+      positionAbsolute:
+        x: 1246
+        y: 1049
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "def main(arg1: str) -> dict:\n    import json\n    data = json.loads(arg1)\n\
+          \    str1 = data['text']\n    table = [[str1]]\n    result_str = str(table).replace(\"\
+          '\", '\"')\n    return {\n        \"result\": result_str,\n    }\n\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: llm大语言模型转换飞书输入
+        type: code
+        variables:
+        - value_selector:
+          - '1745489885495'
+          - text
+          variable: arg1
+      height: 54
+      id: '1745472895676'
+      position:
+        x: 1854
+        y: 1049
+      positionAbsolute:
+        x: 1854
+        y: 1049
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The title of the spreadsheet
+            ja_JP: The title of the spreadsheet
+            pt_BR: The title of the spreadsheet
+            zh_Hans: 电子表格的标题
+          label:
+            en_US: Spreadsheet Title
+            ja_JP: Spreadsheet Title
+            pt_BR: Spreadsheet Title
+            zh_Hans: 电子表格标题
+          llm_description: 电子表格的标题
+          max: null
+          min: null
+          name: title
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The token of the folder, supports folder URL input, e.g., https://bytedance.larkoffice.com/drive/folder/CxHEf4DCSlNkL2dUTCJcPRgentg
+            ja_JP: The token of the folder, supports folder URL input, e.g., https://bytedance.larkoffice.com/drive/folder/CxHEf4DCSlNkL2dUTCJcPRgentg
+            pt_BR: The token of the folder, supports folder URL input, e.g., https://bytedance.larkoffice.com/drive/folder/CxHEf4DCSlNkL2dUTCJcPRgentg
+            zh_Hans: 文件夹 token，支持文件夹 URL 输入，如：https://bytedance.larkoffice.com/drive/folder/CxHEf4DCSlNkL2dUTCJcPRgentg
+          label:
+            en_US: Folder Token
+            ja_JP: Folder Token
+            pt_BR: Folder Token
+            zh_Hans: 文件夹 token
+          llm_description: 文件夹 token，支持文件夹 URL 输入，如：https://bytedance.larkoffice.com/drive/folder/CxHEf4DCSlNkL2dUTCJcPRgentg
+          max: null
+          min: null
+          name: folder_token
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          folder_token: ''
+          title: ''
+        provider_id: langgenius/feishu_spreadsheet/feishu_spreadsheet
+        provider_name: langgenius/feishu_spreadsheet/feishu_spreadsheet
+        provider_type: builtin
+        selected: false
+        title: 创建电子表格
+        tool_configurations: {}
+        tool_label: 创建电子表格
+        tool_name: create_spreadsheet
+        tool_parameters:
+          title:
+            type: mixed
+            value: 发票信息
+        type: tool
+      height: 54
+      id: '1745473006246'
+      position:
+        x: 2766
+        y: 1049
+      positionAbsolute:
+        x: 2766
+        y: 1049
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Spreadsheet token, supports input of spreadsheet URL.
+            ja_JP: Spreadsheet token, supports input of spreadsheet URL.
+            pt_BR: Spreadsheet token, supports input of spreadsheet URL.
+            zh_Hans: 电子表格 token，支持输入电子表格 url。
+          label:
+            en_US: spreadsheet_token
+            ja_JP: spreadsheet_token
+            pt_BR: spreadsheet_token
+            zh_Hans: 电子表格 token
+          llm_description: 电子表格 token，支持输入电子表格 url。
+          max: null
+          min: null
+          name: spreadsheet_token
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Sheet ID, either sheet_id or sheet_name must be filled.
+            ja_JP: Sheet ID, either sheet_id or sheet_name must be filled.
+            pt_BR: Sheet ID, either sheet_id or sheet_name must be filled.
+            zh_Hans: 工作表 ID，与 sheet_name 二者其一必填。
+          label:
+            en_US: sheet_id
+            ja_JP: sheet_id
+            pt_BR: sheet_id
+            zh_Hans: 工作表 ID
+          llm_description: 工作表 ID，与 sheet_name 二者其一必填。
+          max: null
+          min: null
+          name: sheet_id
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Sheet name, either sheet_id or sheet_name must be filled.
+            ja_JP: Sheet name, either sheet_id or sheet_name must be filled.
+            pt_BR: Sheet name, either sheet_id or sheet_name must be filled.
+            zh_Hans: 工作表名称，与 sheet_id 二者其一必填。
+          label:
+            en_US: sheet_name
+            ja_JP: sheet_name
+            pt_BR: sheet_name
+            zh_Hans: 工作表名称
+          llm_description: 工作表名称，与 sheet_id 二者其一必填。
+          max: null
+          min: null
+          name: sheet_name
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: form
+          human_description:
+            en_US: Number of rows to add, range (0-5000].
+            ja_JP: Number of rows to add, range (0-5000].
+            pt_BR: Number of rows to add, range (0-5000].
+            zh_Hans: 要增加行数，范围(0-5000]。
+          label:
+            en_US: length
+            ja_JP: length
+            pt_BR: length
+            zh_Hans: 要增加行数
+          llm_description: 要增加行数，范围(0-5000]。
+          max: null
+          min: null
+          name: length
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: number
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: 'Content of the new rows, array of objects in string format, each
+              array represents a row of table data, format like: [ [ "ID","Name","Age"
+              ],[ 1,"Zhang San",10 ],[ 2,"Li Si",11 ] ].
+
+              '
+            ja_JP: 'Content of the new rows, array of objects in string format, each
+              array represents a row of table data, format like: [ [ "ID","Name","Age"
+              ],[ 1,"Zhang San",10 ],[ 2,"Li Si",11 ] ].
+
+              '
+            pt_BR: 'Content of the new rows, array of objects in string format, each
+              array represents a row of table data, format like: [ [ "ID","Name","Age"
+              ],[ 1,"Zhang San",10 ],[ 2,"Li Si",11 ] ].
+
+              '
+            zh_Hans: 新增行的表格内容，数组对象字符串，每个数组一行表格数据，格式,如：[["编号","姓名","年龄"],[1,"张三",10],[2,"李四",11]]。
+          label:
+            en_US: values
+            ja_JP: values
+            pt_BR: values
+            zh_Hans: 新增行的表格内容
+          llm_description: 新增行的表格内容，数组对象字符串，每个数组一行表格数据，格式,如：[["编号","姓名","年龄"],[1,"张三",10],[2,"李四",11]]。
+          max: null
+          min: null
+          name: values
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          length: ''
+          sheet_id: ''
+          sheet_name: ''
+          spreadsheet_token: ''
+          values: ''
+        provider_id: langgenius/feishu_spreadsheet/feishu_spreadsheet
+        provider_name: langgenius/feishu_spreadsheet/feishu_spreadsheet
+        provider_type: builtin
+        selected: false
+        title: 新增多行至工作表最后
+        tool_configurations:
+          length: 1
+        tool_label: 新增多行至工作表最后
+        tool_name: add_rows
+        tool_parameters:
+          spreadsheet_token:
+            type: mixed
+            value: '{{#1745473055687.token#}}'
+          values:
+            type: mixed
+            value: '{{#1745495955745.text#}}'
+        type: tool
+      height: 90
+      id: '1745473034959'
+      position:
+        x: 3374
+        y: 1049
+      positionAbsolute:
+        x: 3374
+        y: 1049
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "def main(data: object) -> dict:\n    import json\n    # data = json.loads(data)\n\
+          \    url1 = data[0][\"spreadsheet\"][\"url\"]\n    token1 = data[0][\"spreadsheet\"\
+          ][\"spreadsheet_token\"]\n    title1 = data[0][\"spreadsheet\"][\"title\"\
+          ]\n\n    \n    return {\"url\": url1,\"token\": token1,\"title\": title1}\n\
+          \n"
+        code_language: python3
+        desc: ''
+        outputs:
+          title:
+            children: null
+            type: string
+          token:
+            children: null
+            type: string
+          url:
+            children: null
+            type: string
+        selected: false
+        title: 创建电子表格-结果
+        type: code
+        variables:
+        - value_selector:
+          - '1745473006246'
+          - json
+          variable: data
+      height: 54
+      id: '1745473055687'
+      position:
+        x: 3070
+        y: 1049
+      positionAbsolute:
+        x: 3070
+        y: 1049
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1745472765185'
+          - output
+          variable: a1
+        - value_selector:
+          - '1745473055687'
+          - title
+          variable: a3
+        - value_selector:
+          - '1745473055687'
+          - url
+          variable: a4
+        selected: false
+        title: 结束 2
+        type: end
+      height: 142
+      id: '1745473216611'
+      position:
+        x: 3678
+        y: 1049
+      positionAbsolute:
+        x: 3678
+        y: 1049
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "def main(arg1: str) -> dict:\n    result_str = arg1.replace(\"'\",\
+          \ \"\\\"\")\n    return {\n        \"result\": result_str,\n    }"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 飞书Excel输入格式
+        type: code
+        variables:
+        - value_selector:
+          - '1745472895676'
+          - result
+          variable: arg1
+      height: 54
+      id: '1745478567101'
+      position:
+        x: 2158
+        y: 1049
+      positionAbsolute:
+        x: 2158
+        y: 1049
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 792a4f9c-34b7-4f3a-ac36-72a5ab65e60e
+          role: system
+          text: '将{{#1745472765185.output#}}提取核心内容，以 JSON 的形式输出，输出的 JSON 需遵守以下的格式：
+
+            {
+
+            "text": "<核心内容>"
+
+            }
+
+
+
+
+            注意：
+
+            1.不要有多余的解释，去掉多余的转义符号，
+
+            2.检查句首句尾出现的内容如果包含```字符，请删除，
+
+            3.检查句首句尾出现的内容如果包含json\n字符，请删除，
+
+            4.检查句首句尾出现的内容如果包含json字符，请删除，
+
+            只要以上格式的包含的整体内容数据。
+
+
+
+
+            '
+        selected: false
+        title: json数据处理
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1745489885495'
+      position:
+        x: 1550
+        y: 1049
+      positionAbsolute:
+        x: 1550
+        y: 1049
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 6904017a-2bbe-4978-b4c1-e58f26eeda22
+          role: system
+          text: "将{{#1745478567101.result#}}转化成以下json格式：\n[\n  [\"名称1\", \"值1\"],\n\
+              [\"名称2\", \"值2\"],\n  ......\n]\n\n\n注意：\n1.不要有多余的解释，去掉多余的转义符号，\n2.检查句首句尾出现的内容如果包含```字符，请删除，\n\
+            3.检查句首句尾出现的内容如果包含json\\n字符，请删除，\n4.检查句首句尾出现的内容如果包含json字符，请删除，\n只要以上格式的包含的整体内容数据。\n"
+        selected: false
+        title: LLM 10
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1745495955745'
+      position:
+        x: 2462
+        y: 1049
+      positionAbsolute:
+        x: 2462
+        y: 1049
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -3482.306066917661
+      y: -823.3217881441527
+      zoom: 1.0610015965572792

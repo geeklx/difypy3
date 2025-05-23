@@ -1,0 +1,332 @@
+app:
+  description: 根据职位信息生成职位JD
+  icon: face_vomiting
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: 职位描述润色工具
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: package
+  value:
+    plugin_unique_identifier: langgenius/tongyi:0.0.18@ca40ec06ff35ca611fa5fdf99a15eeb007a9fe3bd725c9ff6d0436469ab0edc9
+kind: app
+version: 0.2.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: llm
+      id: 1719024828554-source-1719024838077-target
+      source: '1719024828554'
+      sourceHandle: source
+      target: '1719024838077'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: code
+      id: 1719024838077-source-1719028193404-target
+      source: '1719024838077'
+      sourceHandle: source
+      target: '1719028193404'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: template-transform
+      id: 1719028193404-source-1740010963763-target
+      source: '1719028193404'
+      sourceHandle: source
+      target: '1740010963763'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: template-transform
+        targetType: llm
+      id: 1740010963763-source-1740011386002-target
+      source: '1740010963763'
+      sourceHandle: source
+      target: '1740011386002'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: end
+      id: 1740011386002-source-1719028267819-target
+      source: '1740011386002'
+      sourceHandle: source
+      target: '1719028267819'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: 职位描述
+          max_length: 256
+          options: []
+          required: true
+          type: text-input
+          variable: description
+      height: 90
+      id: '1719024828554'
+      position:
+        x: 30
+        y: 258
+      positionAbsolute:
+        x: 30
+        y: 258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 1.25
+          mode: chat
+          name: qwen-vl-max-0809
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 93959ec1-6e64-430b-b6ad-eb1c36d4de77
+          role: system
+          text: '作为一位资深的招聘专员，您深知一份精准且吸引人的职位描述对于吸引合适候选人的重要性。通过运用自动润色技术，您可以进一步优化职位信息，使其更加清晰、生动，从而更有效地传达岗位需求与期望。以下是关于如何根据职位信息自动润色职位描述的提示词：
+
+
+            1、明确岗位核心要点：首先，深入理解并分析职位的核心职责、技能要求、教育背景及工作经验等关键要素。确保在润色过程中，这些核心要点得到准确且突出的展现。
+
+
+            2、精炼语言，增强可读性：使用简洁明了的语言描述职位要求，避免冗长和晦涩的表述。通过自动润色工具，检查并修正语法错误、拼写错误，确保职位描述的流畅性和专业性。
+
+
+            3、突出亮点，吸引眼球：在职位描述中，运用生动具体的语言描述岗位的独特之处、发展机会及团队氛围等亮点，以吸引目标候选人的注意。自动润色过程中，可尝试添加一些积极向上的词汇或短语，提升整体吸引力。
+
+
+            4、强调公司文化与价值观：在润色职位描述时，融入公司文化和价值观的元素，使候选人能够感受到公司的独特魅力和工作环境。这有助于筛选出与公司文化相契合的候选人。
+
+
+            5、优化格式与结构：通过自动润色工具，调整职位描述的格式和结构，使其更加清晰易读。合理划分段落，使用列表或标题来突出重要信息，帮助候选人快速捕捉岗位要点。
+
+
+            6、适应不同受众：考虑目标候选人的背景和需求，对职位描述进行适当调整。例如，对于技术岗位，可以更多地强调技术要求和挑战；对于管理岗位，则可能更关注领导力和团队协作能力。
+
+
+            7、定期更新与评估：随着公司发展和市场需求的变化，定期回顾并更新职位描述。同时，评估自动润色后的职位描述效果，收集反馈意见，不断优化润色策略。
+
+
+            通过以上步骤，您可以利用自动润色技术，将职位信息打造成为吸引优秀人才的有力工具。这不仅能够提升招聘效率，还能为公司吸引更多符合岗位需求的高素质人才。'
+        - id: 60fb9206-2040-4ecb-9ab1-7baf3c1c8c8d
+          role: user
+          text: 根据以下的职位信息，从核心职责、技能要求、教育背景及工作经验要求等方面输出职位的描述：{{#1719024828554.description#}}
+        selected: false
+        title: 职位描述润色操作
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1719024838077'
+      position:
+        x: 340.42857142857133
+        y: 244.42857142857144
+      positionAbsolute:
+        x: 340.42857142857133
+        y: 244.42857142857144
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "\ndef main(titles: str) -> dict:\n    title_list = titles.replace(\"\
+          \\\\n\", \"\\n\").split(\"\\n\")\n    return {\n        \"result\": title_list,\n\
+          \    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: array[string]
+        selected: false
+        title: 代码执行
+        type: code
+        variables:
+        - value_selector:
+          - '1719024838077'
+          - text
+          variable: titles
+      height: 54
+      id: '1719028193404'
+      position:
+        x: 638
+        y: 258
+      positionAbsolute:
+        x: 638
+        y: 258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1740011386002'
+          - text
+          variable: title_list
+        selected: false
+        title: 结束
+        type: end
+      height: 90
+      id: '1719028267819'
+      position:
+        x: 1569.8571428571431
+        y: 258
+      positionAbsolute:
+        x: 1569.8571428571431
+        y: 258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: 模板转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1719028193404'
+          - result
+          variable: arg1
+      height: 54
+      id: '1740010963763'
+      position:
+        x: 958.4285714285716
+        y: 258
+      positionAbsolute:
+        x: 958.4285714285716
+        y: 258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: qwen2.5-72b-instruct
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 7bf2b510-6a8b-47b0-be94-0d75f770ad3a
+          role: system
+          text: '{{#1740010963763.output#}}
+
+            ---
+
+            检查这段话中有没有在句首句尾出现中括号，单引号，如果有，请删除；
+
+            如果有 emoji，也要删除；
+
+            但不能删除原文的正文文字内容；
+
+            不要有多余的解释，只需要输出修改后的正确句子。
+
+            你的输出是：'
+        selected: false
+        title: LLM 2
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1740011386002'
+      position:
+        x: 1269.8571428571431
+        y: 258
+      positionAbsolute:
+        x: 1269.8571428571431
+        y: 258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -65.97124291583305
+      y: -137.96787184197262
+      zoom: 1.405834560534563

@@ -243,7 +243,8 @@ async def create_video_with_scenes(task_dir: str, task_id: str, scenes: List[Sto
 
     logger.info(f"Writing video to {video_file}")
     final_clip.write_videofile(video_file, fps=24, codec='libx264', audio_codec='aac')
-    local_url = f"http://localhost:{port2}/tasks/{task_id}/{video_filename}"
+    # local_url = f"http://localhost:{port2}/tasks/{task_id}/{video_filename}"
+    local_url = f"http://g19.geekaiapp.icu/tasks/{task_id}/{video_filename}"
     # 上传视频到腾讯云COS
     logger.info("Uploading video to Tencent COS")
     try:

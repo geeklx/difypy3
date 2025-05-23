@@ -4,8 +4,7 @@ import sys
 import uuid
 from pathlib import Path
 from typing import List
-from typing import Optional
-import random
+
 # 将项目根目录添加到 Python 路径
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -18,21 +17,26 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt
 from fastapi.staticfiles import StaticFiles
-from fastapi import FastAPI, HTTPException, APIRouter, Request, Form, UploadFile, File, Depends, Header
+from fastapi import FastAPI, HTTPException, APIRouter, Request, Form, UploadFile, File, Depends
 from fastapi.routing import APIRoute, Mount
 from fastapi.responses import FileResponse
 from fastapi.responses import JSONResponse
 from openai import OpenAI
+from google import genai
+from google.genai import types
+from PIL import Image
+from io import BytesIO
+
 from geekaiapp.g_model import TTSRequest, VideoSubmission, AudioSubmission, VideoRequest, VideoResponse, JMRequest, \
-    Item1, VideoRequest2
+    Item1, VideoRequest2, HTMLRequest, GenerateImageRequest, EditImageRequest
 from geekaiapp.g_utils import save_audio_file, upload_cos, tencent_region, tencent_secret_id, \
     tencent_secret_key, tencent_bucket, siliconflow_api_url, siliconflow_auth_token, gjld_submit_video_job, \
     gjld_check_video_status, siliconflow_videomodel, siliconflow_audiomodel, siliconflow_voice, zpai_video_job, \
     zpai_check_video_status, microsoft_api_key, microsoft_base_url, ai_api_key, ai_base_url, ip, ip_tts, \
     ai_model, generate_clip, marp_path, ip_md, ip_html, port, generate_image, generate_tts, system_prompt, \
     system_prompt2, current_directory, verify_auth_token, jimeng_cookie, jimeng_sign, download_video, ip_video, \
-    product_serial, ip_img, download_image
-
+    ip_img, download_image, save_html_file, generate_timestamp_filename_for_png, gemini_download_image, \
+    FaceSwapService
 
 app = FastAPI(debug=True)
 
@@ -739,148 +743,10 @@ async def generate_video(request: VideoRequest2, auth_token: str = Depends(verif
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# g换脸beart1
-class FaceSwapService:
-    # 默认请求头
-    API_HEADERS = {
-        "accept": "*/*",
-        "accept-language": "zh-CN,zh;q=0.9",
-        "origin": "https://beart.ai",
-        "priority": "u=1, i",
-        "product-code": "067003",
-        "referer": "https://beart.ai/",
-        "sec-ch-ua": '"Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"Windows"',
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-site",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
-    }
-
-    # 从配置文件获取产品序列号
-    PRODUCT_SERIAL = product_serial
-
-    @staticmethod
-    def _validate_image(image_data: bytes) -> bool:
-        """验证图片格式"""
-        try:
-            header = image_data[:12]
-            if any([
-                header.startswith(b'\xFF\xD8\xFF'),  # JPEG
-                header.startswith(b'\x89PNG\r\n\x1a\n'),  # PNG
-                header.startswith(b'GIF87a') or header.startswith(b'GIF89a'),  # GIF
-                header.startswith(b'RIFF') and header[8:12] == b'WEBP',  # WEBP
-                header.startswith(b'BM')  # BMP
-            ]):
-                return True
-            return False
-        except:
-            return False
-
-    @staticmethod
-    def _get_mime_type(image_data: bytes) -> str:
-        """获取图片MIME类型"""
-        header = image_data[:12]
-        if header.startswith(b'\xFF\xD8\xFF'):
-            return 'image/jpeg'
-        elif header.startswith(b'\x89PNG\r\n\x1a\n'):
-            return 'image/png'
-        elif header.startswith(b'GIF87a') or header.startswith(b'GIF89a'):
-            return 'image/gif'
-        elif header.startswith(b'RIFF') and header[8:12] == b'WEBP':
-            return 'image/webp'
-        elif header.startswith(b'BM'):
-            return 'image/bmp'
-        return 'image/jpeg'
-
-    @classmethod
-    async def create_face_swap_job(cls, source_image: bytes, target_image: bytes) -> Optional[str]:
-        """创建换脸任务"""
-        try:
-            url = "https://api.beart.ai/api/beart/face-swap/create-job"
-            headers = cls.API_HEADERS.copy()
-            headers.update({
-                "product-serial": cls.PRODUCT_SERIAL
-            })
-
-            # 获取MIME类型
-            source_mime = cls._get_mime_type(source_image)
-            target_mime = cls._get_mime_type(target_image)
-
-            # 生成随机文件名
-            source_name = f"n_v{random.getrandbits(64):016x}.jpg"
-            target_name = f"n_v{random.getrandbits(64):016x}.jpg"
-
-            # 构建multipart/form-data请求
-            files = {
-                "target_image": (target_name, source_image, target_mime),
-                "swap_image": (source_name, target_image, source_mime)
-            }
-
-            logger.info("开始上传图片...")
-            response = requests.post(url, headers=headers, files=files, timeout=30)
-
-            if response.status_code == 200:
-                data = response.json()
-                if data.get("code") == 100000:
-                    job_id = data["result"]["job_id"]
-                    logger.info(f"任务创建成功: {job_id}")
-                    return job_id
-                else:
-                    logger.error(f"服务器返回错误: {data.get('message', {}).get('zh', '未知错误')}")
-            else:
-                logger.error(f"创建任务失败: HTTP {response.status_code}")
-            return None
-
-        except Exception as e:
-            logger.error(f"创建任务失败: {e}")
-            return None
-
-    @classmethod
-    async def get_face_swap_result(cls, job_id: str, max_retries: int = 30, interval: int = 2) -> Optional[str]:
-        """获取换脸结果"""
-        try:
-            url = f"https://api.beart.ai/api/beart/face-swap/get-job/{job_id}"
-            headers = cls.API_HEADERS.copy()
-            headers["content-type"] = "application/json; charset=UTF-8"
-
-            logger.info(f"等待处理结果，最多等待 {max_retries * interval} 秒...")
-            for attempt in range(1, max_retries + 1):
-                try:
-                    response = requests.get(url, headers=headers, timeout=15)
-                    if response.status_code == 200:
-                        data = response.json()
-                        if data.get("code") == 100000:
-                            logger.info("处理完成")
-                            return data["result"]["output"][0]
-                        elif data.get("code") == 300001:  # 处理中
-                            logger.info(f"处理中... {attempt}/{max_retries}")
-                            time.sleep(interval)
-                            continue
-
-                    logger.error(f"获取结果失败: {response.text}")
-                    return None
-
-                except Exception as e:
-                    logger.error(f"获取结果出错: {e}")
-                    time.sleep(interval)
-
-            logger.error("超过最大重试次数")
-            return None
-
-        except Exception as e:
-            logger.error(f"获取结果失败: {e}")
-            return None
-
-
 # 修改face_swap接口，添加鉴权
 @router.post("/beartAI/face-swap")
-async def face_swap(
-        source_image: UploadFile = File(...),
-        target_image: UploadFile = File(...),
-        auth_token: str = Depends(verify_auth_token)
-):
+async def face_swap(source_image: UploadFile = File(...), target_image: UploadFile = File(...),
+                    auth_token: str = Depends(verify_auth_token)):
     """
     换脸API接口
     - source_image: 源图片（包含要提取的人脸）
@@ -945,6 +811,163 @@ async def face_swap(
     except Exception as e:
         logger.error(f"处理失败: {str(e)}")
         raise HTTPException(status_code=500, detail=f"处理失败: {str(e)}")
+
+
+# g上市公司文件转html财报写法
+@router.post("/generate-html/")
+async def generate_html(request: HTMLRequest, auth_token: str = Depends(verify_auth_token)):
+    try:
+        logger.info("开始处理HTML生成请求")
+        start_time = time.time()
+
+        # 保存HTML文件
+        filename, file_path = save_html_file(request.html_content, request.filename)
+
+        # 上传到腾讯云COS
+        html_url = upload_cos('test', tencent_region, tencent_secret_id, tencent_secret_key,
+                              tencent_bucket, filename,
+                              current_directory / ip_html)
+        elapsed_time = time.time() - start_time
+        logger.info(f"HTML生成和上传完成，耗时 {elapsed_time:.2f} 秒，返回 URL: {html_url}")
+        local_url = f"{ip}{ip_html}/{filename}"
+        if html_url:
+            result = {
+                "success": True,
+                "html_url": html_url,
+                "local_url": local_url,
+                "filename": filename
+            }
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+            return result
+        else:
+            raise HTTPException(status_code=500, detail="上传HTML文件到COS失败")
+    except Exception as e:
+        logger.error(f"处理HTML生成请求时发生错误: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Gemini文生图1
+@router.post("/gemini/generate-image")
+async def generate_image(request: GenerateImageRequest):
+    try:
+        logger.info("开始处理图片生成请求")
+        start_time = time.time()
+
+        client = genai.Client(api_key=request.api_key)
+
+        response = client.models.generate_content(
+            model=request.model,
+            contents=request.prompt,
+            config=types.GenerateContentConfig(
+                response_modalities=['Text', 'Image']
+            )
+        )
+
+        result = {"success": True, "data": []}
+
+        for part in response.candidates[0].content.parts:
+            if part.text is not None:
+                result["data"].append({"type": "text", "content": part.text})
+            elif part.inline_data is not None:
+                try:
+                    # 生成文件名
+                    filename = generate_timestamp_filename_for_png()
+                    file_path = os.path.join(ip_img, filename)
+
+                    # 解码并保存图片
+                    # decoded_data = base64.b64decode(part.inline_data.data)
+                    image = Image.open(BytesIO(part.inline_data.data))
+                    image.save(file_path)
+
+                    # 上传到腾讯云COS
+                    image_url = upload_cos('test', tencent_region, tencent_secret_id, tencent_secret_key,
+                                           tencent_bucket, filename,
+                                           current_directory / ip_img)
+                    if image_url:
+                        result["data"].append({
+                            "type": "image",
+                            "url": image_url,
+                            "filename": filename
+                        })
+                    else:
+                        raise HTTPException(status_code=500, detail="上传图片到COS失败")
+
+                except Exception as e:
+                    raise HTTPException(status_code=500, detail=f"处理图像时出现错误: {str(e)}")
+
+        elapsed_time = time.time() - start_time
+        logger.info(f"图片生成和上传完成，耗时 {elapsed_time:.2f} 秒")
+
+        return result
+
+    except Exception as e:
+        logger.error(f"处理图片生成请求时发生错误: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Gemini图生图1
+@router.post("/gemini/generate-editimage")
+async def generate_edit_image(request: EditImageRequest):
+    try:
+        logger.info("开始处理图片编辑请求")
+        start_time = time.time()
+
+        # 下载原始图片
+        original_image = gemini_download_image(request.image_url, current_directory / ip_img)
+
+        client = genai.Client(api_key=request.api_key)
+
+        # 准备输入内容
+        contents = [request.prompt, original_image]
+
+        response = client.models.generate_content(
+            model=request.model,
+            contents=contents,
+            config=types.GenerateContentConfig(
+                response_modalities=['Text', 'Image']
+            )
+        )
+
+        result = {"success": True, "data": []}
+
+        for part in response.candidates[0].content.parts:
+            if part.text is not None:
+                result["data"].append({"type": "text", "content": part.text})
+            elif part.inline_data is not None:
+                try:
+                    # 生成文件名
+                    filename = generate_timestamp_filename_for_png()
+                    file_path = os.path.join(ip_img, filename)
+
+                    # 解码并保存图片
+                    # decoded_data = base64.b64decode(part.inline_data.data)
+                    image = Image.open(BytesIO(part.inline_data.data))
+                    image.save(file_path)
+
+                    # 上传到腾讯云COS
+                    image_url = upload_cos('test', tencent_region, tencent_secret_id, tencent_secret_key,
+                                           tencent_bucket, filename,
+                                           current_directory / ip_img)
+                    if image_url:
+                        result["data"].append({
+                            "type": "image",
+                            "url": image_url,
+                            "filename": filename
+                        })
+                    else:
+                        raise HTTPException(status_code=500, detail="上传图片到COS失败")
+
+                except Exception as e:
+                    raise HTTPException(status_code=500, detail=f"处理图像时出现错误: {str(e)}")
+
+        elapsed_time = time.time() - start_time
+        logger.info(f"图片编辑和上传完成，耗时 {elapsed_time:.2f} 秒")
+
+        return result
+
+    except Exception as e:
+        logger.error(f"处理图片编辑请求时发生错误: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 

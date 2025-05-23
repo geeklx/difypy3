@@ -1,0 +1,302 @@
+app:
+  description: 硅基流动-文生图2
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: 硅基流动-文生图2
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/siliconflow:0.0.11@616842815705a8e2ecf221f1c4b6956fede54d66915286cdbed97a5405fe821d
+kind: app
+version: 0.2.0
+workflow:
+  conversation_variables: []
+  environment_variables:
+  - description: ''
+    id: 4147fb23-50ee-4fc5-86c4-ddfdcf869830
+    name: apikey
+    selector:
+    - env
+    - apikey
+    value: sk-zkzjdebhrphvgbxnawhnfdlibizlovdlhpqmpmbjlsnvismc
+    value_type: string
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: llm
+      id: 1740130232481-source-1740130484186-target
+      source: '1740130232481'
+      sourceHandle: source
+      target: '1740130484186'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: code
+      id: 1740130484186-source-1740357313712-target
+      source: '1740130484186'
+      sourceHandle: source
+      target: '1740357313712'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: end
+      id: 1740357313712-source-1740359803577-target
+      source: '1740357313712'
+      sourceHandle: source
+      target: '1740359803577'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: 欢迎使用绘画机器人
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: 关键字
+          max_length: 256
+          options: []
+          required: true
+          type: text-input
+          variable: prompt
+      height: 118
+      id: '1740130232481'
+      position:
+        x: 109
+        y: 207
+      positionAbsolute:
+        x: 109
+        y: 207
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: internlm/internlm2_5-20b-chat
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 6dbbe931-a83b-4d61-85ec-17836996366a
+          role: system
+          text: "你是一个基于Flux.1模型的提示词生成机器人。根据用户的需求，自动生成符合Flux.1格式的绘画提示词。虽然你可以参考提供的模板来学习提示词结构和规律，但你必须具备灵活性来应对各种不同需求。最终输出应仅限提示词，无需任何其他解释或信息。你的回答必须全部使用英语进行回复我！\n\
+            \n### **提示词生成逻辑**：\n\n1. **需求解析**：从用户的描述中提取关键信息，包括：\n   - 角色：外貌、动作、表情等。\n\
+            \   - 场景：环境、光线、天气等。\n   - 风格：艺术风格、情感氛围、配色等。\n   - 其他元素：特定物品、背景或特效。\n\n\
+            2. **提示词结构规律**：\n   - **简洁、精确且具象**：提示词需要简单、清晰地描述核心对象，并包含足够细节以引导生成出符合需求的图像。\n\
+            \   - **灵活多样**：参考下列模板和已有示例，但需根据具体需求生成多样化的提示词，避免固定化或过于依赖模板。\n   - **符合Flux.1风格的描述**：提示词必须遵循Flux.1的要求，尽量包含艺术风格、视觉效果、情感氛围的描述，使用与Flux.1模型生成相符的关键词和描述模式。\n\
+            \n3. **仅供你参考和学习的几种场景提示词**（你需要学习并灵活调整,\"[ ]\"中内容视用户问题而定）：\n   - **角色表情集**：\n\
+            场景说明：适合动画或漫画创作者为角色设计多样的表情。这些提示词可以生成展示同一角色在不同情绪下的表情集，涵盖快乐、悲伤、愤怒等多种情感。\n\
+            \n提示词：An anime [SUBJECT], animated expression reference sheet, character\
+            \ design, reference sheet, turnaround, lofi style, soft colors, gentle\
+            \ natural linework, key art, range of emotions, happy sad mad scared nervous\
+            \ embarrassed confused neutral, hand drawn, award winning anime, fully\
+            \ clothed\n\n[SUBJECT] character, animation expression reference sheet\
+            \ with several good animation expressions featuring the same character\
+            \ in each one, showing different faces from the same person in a grid\
+            \ pattern: happy sad mad scared nervous embarrassed confused neutral,\
+            \ super minimalist cartoon style flat muted kawaii pastel color palette,\
+            \ soft dreamy backgrounds, cute round character designs, minimalist facial\
+            \ features, retro-futuristic elements, kawaii style, space themes, gentle\
+            \ line work, slightly muted tones, simple geometric shapes, subtle gradients,\
+            \ oversized clothing on characters, whimsical, soft puffy art, pastels,\
+            \ watercolor\n\n   - **全角度角色视图**：\n场景说明：当需要从现有角色设计中生成不同角度的全身图时，如正面、侧面和背面，适用于角色设计细化或动画建模。\n\
+            \n提示词：A character sheet of [SUBJECT] in different poses and angles, including\
+            \ front view, side view, and back view\n\n   - **80 年代复古风格**：\n场景说明：适合希望创造\
+            \ 80 年代复古风格照片效果的艺术家或设计师。这些提示词可以生成带有怀旧感的模糊宝丽来风格照片。\n\n提示词：blurry polaroid\
+            \ of [a simple description of the scene], 1980s.\n\n   - **智能手机内部展示**：\n\
+            场景说明：适合需要展示智能手机等产品设计的科技博客作者或产品设计师。这些提示词帮助生成展示手机外观和屏幕内容的图像。\n\n提示词：a iphone\
+            \ product image showing the iphone standing and inside the screen the\
+            \ image is shown\n\n   - **双重曝光效果**：\n场景说明：适合摄影师或视觉艺术家通过双重曝光技术创造深度和情感表达的艺术作品。\n\
+            \n提示词：[Abstract style waterfalls, wildlife] inside the silhouette of a\
+            \ [man]’s head that is a double exposure photograph . Non-representational,\
+            \ colors and shapes, expression of feelings, imaginative, highly detailed\n\
+            \n   - **高质感电影海报**：\n场景说明：适合需要为电影创建引人注目海报的电影宣传或平面设计师。\n\n提示词：A digital\
+            \ illustration of a movie poster titled [‘Sad Sax: Fury Toad’], [Mad Max]\
+            \ parody poster, featuring [a saxophone-playing toad in a post-apocalyptic\
+            \ desert, with a customized car made of musical instruments], in the background,\
+            \ [a wasteland with other musical vehicle chases], movie title in [a gritty,\
+            \ bold font, dusty and intense color palette].\n\n   - **镜面自拍效果**：\n场景说明：适合想要捕捉日常生活瞬间的摄影师或社交媒体用户。\n\
+            \n提示词：Phone photo: A woman stands in front of a mirror, capturing a selfie.\
+            \ The image quality is grainy, with a slight blur softening the details.\
+            \ The lighting is dim, casting shadows that obscure her features. [The\
+            \ room is cluttered, with clothes strewn across the bed and an unmade\
+            \ blanket. Her expression is casual, full of concentration], while the\
+            \ old iPhone struggles to focus, giving the photo an authentic, unpolished\
+            \ feel. The mirror shows smudges and fingerprints, adding to the raw,\
+            \ everyday atmosphere of the scene.\n\n   - **像素艺术创作**：\n场景说明：适合像素艺术爱好者或复古游戏开发者创造或复刻经典像素风格图像。\n\
+            \n提示词：[Anything you want] pixel art style, pixels, pixel art\n\n   - **以上部分场景仅供你学习，一定要学会灵活变通，以适应任何绘画需求**：\n\
+            \n4. **Flux.1提示词要点总结**：\n   - **简洁精准的主体描述**：明确图像中核心对象的身份或场景。\n   - **风格和情感氛围的具体描述**：确保提示词包含艺术风格、光线、配色、以及图像的氛围等信息。\n\
+            \   - **动态与细节的补充**：提示词可包括场景中的动作、情绪、或光影效果等重要细节。\n   - **其他更多规律请自己寻找**\n\
+            ---\n\n**问答案例**：\n**用户输入**：一个80年代复古风格的照片。\n**你的输出**：`A blurry polaroid\
+            \ of a 1980s living room, with vintage furniture, soft pastel tones, and\
+            \ a nostalgic, grainy texture,  The sunlight filters through old curtains,\
+            \ casting long, warm shadows on the wooden floor, 1980s,`\n\n注意：你的生成内容绝对不允许含有“![ai](任意链接)”。哪怕你之前不小心含有“![ai](任意链接)”内容，请在下一次绝对不允许含有“![ai](任意链接)”内容。\n\
+            \n\n"
+        - id: a26fb173-d2db-4bdc-9b74-530e2ba86744
+          role: user
+          text: 一个赛博朋克风格的夜晚城市背景
+        - id: c5f21dab-0e46-45e6-87b6-a72ad46062d3
+          role: assistant
+          text: A futuristic cityscape at night, in a cyberpunk style, with neon lights
+            reflecting off wet streets, towering skyscrapers, and a glowing, high-tech
+            atmosphere. Dark shadows contrast with vibrant neon signs, creating a
+            dramatic, dystopian mood
+        - id: 811a4199-7ee7-4555-a096-86d9ca03d2d5
+          role: user
+          text: '{{#1740130232481.prompt#}}'
+        selected: true
+        title: 生成提示词
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1740130484186'
+      position:
+        x: 413.75785828325525
+        y: 207
+      positionAbsolute:
+        x: 413.75785828325525
+        y: 207
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import requests\nimport json\n\n\ndef main(prompt: str, apikey: str)\
+          \ -> dict:\n    # 设置请求的URL和Headers\n    url = \"https://api.siliconflow.cn/v1/image/generations\"\
+          \n    headers = {\n        \"accept\": \"application/json\",\n        \"\
+          authorization\": f\"Bearer {apikey}\",\n        \"content-type\": \"application/json\"\
+          \n    }\n\n    # 定义请求的payload数据\n    data = {\n        \"model\": \"black-forest-labs/FLUX.1-schnell\"\
+          ,\n        \"prompt\": prompt,\n        \"image_size\": \"1920x1080\"\n\
+          \    }\n\n    # 发送POST请求\n    response = requests.post(url, headers=headers,\
+          \ data=json.dumps(data))\n\n    # 提取结果并返回\n    if response.status_code ==\
+          \ 200:\n        result = response.json()[\"images\"][0][\"url\"]\n     \
+          \   markdown_result = f\"![ai]({result})\"\n        return {\"result\":\
+          \ markdown_result}\n    else:\n        return {\"error\": f\"Error: {response.status_code},\
+          \ {response.text}\"}\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: FLUX1绘画
+        type: code
+        variables:
+        - value_selector:
+          - '1740130484186'
+          - text
+          variable: prompt
+        - value_selector:
+          - env
+          - apikey
+          variable: apikey
+      height: 54
+      id: '1740357313712'
+      position:
+        x: 695
+        y: 207
+      positionAbsolute:
+        x: 695
+        y: 207
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1740357313712'
+          - result
+          variable: img
+        - value_selector:
+          - '1740130484186'
+          - text
+          variable: text
+        selected: false
+        title: 结束
+        type: end
+      height: 116
+      id: '1740359803577'
+      position:
+        x: 999
+        y: 207
+      positionAbsolute:
+        x: 999
+        y: 207
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -264.4859126572103
+      y: 189.17014553598506
+      zoom: 0.9125654885434525

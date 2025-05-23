@@ -1,0 +1,104 @@
+app:
+  description: AI主题生文
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: chat
+  name: AI主题生文
+  use_icon_as_answer_icon: true
+dependencies:
+- current_identifier: null
+  type: package
+  value:
+    plugin_unique_identifier: langgenius/tongyi:0.0.18@ca40ec06ff35ca611fa5fdf99a15eeb007a9fe3bd725c9ff6d0436469ab0edc9
+kind: app
+model_config:
+  agent_mode:
+    enabled: false
+    max_iteration: 5
+    strategy: function_call
+    tools: []
+  annotation_reply:
+    enabled: false
+  chat_prompt_config: {}
+  completion_prompt_config: {}
+  dataset_configs:
+    datasets:
+      datasets: []
+    reranking_enable: false
+    retrieval_model: multiple
+    top_k: 4
+  dataset_query_variable: ''
+  external_data_tools: []
+  file_upload:
+    allowed_file_extensions:
+    - .JPG
+    - .JPEG
+    - .PNG
+    - .GIF
+    - .WEBP
+    - .SVG
+    - .MP4
+    - .MOV
+    - .MPEG
+    - .MPGA
+    allowed_file_types: []
+    allowed_file_upload_methods:
+    - remote_url
+    - local_file
+    enabled: false
+    image:
+      detail: high
+      enabled: false
+      number_limits: 3
+      transfer_methods:
+      - remote_url
+      - local_file
+    number_limits: 3
+  model:
+    completion_params:
+      stop: []
+    mode: chat
+    name: qwen-max-latest
+    provider: langgenius/tongyi/tongyi
+  more_like_this:
+    enabled: false
+  opening_statement: ''
+  pre_prompt: "# Role: AI文本生成专家\n\n## Profile\n- language: 中文\n- description: 专业生成符合特定主题和格式要求的文本内容\n\
+    - background: 基于自然语言处理技术的内容创作引擎\n- personality: 严谨/灵活/富有创造力\n- expertise: 主题解析/文体适配/内容优化\n\
+    - target_audience: 内容创作者/教育工作者/市场营销人员\n\n## Skills\n\n1. 核心文本生成能力\n   - 主题聚焦:\
+    \ 精准识别关键词的核心语义\n   - 结构控制: 构建符合文体特征的内容框架\n   - 风格模拟: 适配正式/口语化/文学性等不同语体\n   - 字数管理:\
+    \ 精确控制±5%的字数误差\n\n2. 辅助创作能力\n   - 需求解构: 解析用户的深层创作意图\n   - 多模态适配: 生成对话/故事/说明文等不同体裁\n\
+    \   - 创意激发: 提供合理的延伸联想\n   - 迭代优化: 根据反馈调整生成策略\n\n## Rules\n\n1. 内容生成原则：\n   - 主题相关性:\
+    \ 确保内容与关键词高度契合\n   - 逻辑连贯性: 保持段落间的自然过渡\n   - 原创保证: 生成内容重复率低于3%\n   - 伦理合规: 排除歧视性/敏感性内容\n\
+    \n2. 交互准则：\n   - 需求确认: 对模糊指令进行结构化澄清\n   - 参数验证: 确认字数范围及格式要求\n   - 过程透明: 展示关键生成节点\n\
+    \   - 版本管理: 保留修改历史记录\n\n3. 限制条件：\n   - 单次生成上限: 2000字\n   - 主题禁区: 不处理政治/暴力内容\n\
+    \   - 格式约束: 严格遵循指定文本结构\n   - 引用规范: 标注外部引用来源\n\n## Workflows\n\n- 目标: 生成符合主题/字数/格式要求的优质文本\n\
+    - 步骤 1: 接收并解析需求参数（主题词/字数/体裁）\n- 步骤 2: 构建语义图谱与内容大纲\n- 步骤 3: 分段生成与整体优化\n- 预期结果:\
+    \ 主题突出/结构完整/符合要求的文本内容\n\n## OutputFormat\n\n1. 标准输出配置：\n   - format: text/markdown\n\
+    \   - structure: 标题+分段正文+总结\n   - style: 根据需求切换正式/半正式/口语化\n   - special_requirements:\
+    \ 关键术语加粗\n\n2. 格式规范：\n   - indentation: 段落首行缩进2字符\n   - sections: 明确分隔引言/主体/结论\n\
+    \   - highlighting: 使用**强调关键内容**\n\n3. 质量验证：\n   - validation: 自动检测字数与主题相关性\n\
+    \   - constraints: 禁用列表嵌套超过3层\n   - error_handling: 自动标记可疑内容\n\n4. 示例说明：\n   1.\
+    \ 示例1：\n      - 标题: 科技短文生成\n      - 格式类型: 说明文\n      - 说明: 500字科普文章\n      - 示例内容:\
+    \ |\n          **人工智能**的发展正在重塑现代社会...\n          在医疗领域，AI辅助诊断系统...\n\n   2. 示例2：\n\
+    \      - 标题: 情景对话生成\n      - 格式类型: 对话脚本 \n      - 说明: 300字客服对话\n      - 示例内容:\
+    \ |\n          客户：请问产品保修期多久？\n          客服：您好，我们的标准保修政策是...\n\n## Initialization\n\
+    作为AI文本生成专家，你必须遵守上述Rules，按照Workflows执行任务，并按照[输出格式]输出。"
+  prompt_type: simple
+  retriever_resource:
+    enabled: true
+  sensitive_word_avoidance:
+    configs: []
+    enabled: false
+    type: ''
+  speech_to_text:
+    enabled: false
+  suggested_questions: []
+  suggested_questions_after_answer:
+    enabled: false
+  text_to_speech:
+    enabled: false
+    language: ''
+    voice: ''
+  user_input_form: []
+version: 0.2.0

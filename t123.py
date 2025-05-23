@@ -100,6 +100,64 @@ def main111(base_url: str = 'http://127.0.0.1:9090') -> dict:
             "data": None
         }
 
+import requests
+import json
+
+def main2222(imagerurl: str, apikey: str) -> dict:
+    imagerurl = "![ai](https://sc-maas.oss-cn-shanghai.aliyuncs.com/outputs%2F20250508%2Flv6c9v96wr.jpeg?Expires=1746686984&OSSAccessKeyId=LTAI5tQnPSzwAnR8NmMzoQq4&Signature=I9EFkQuyT14REbApA28x5lwG1%2FQ%3D)"
+    # 设置请求的URL和Headers
+    url = "https://api.siliconflow.cn/v1/chat/completions"
+    headers = {
+        "authorization": f"Bearer {apikey}",
+        "content-type": "application/json"
+    }
+
+    # 添加中文提示词
+    prompt_text = "请提取图片信息里面的内容，并使用中文回答。"
+    url1 = imagerurl.split('(', 1)[1].split(')', 1)[0]
+    payload = {
+        "model": "Pro/OpenGVLab/InternVL2-8B",
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image_url",
+                        "text": prompt_text,
+                        "image_url": {
+                            "url": url1,
+                            "detail": "auto"
+                        }
+                    }
+                ]
+            }
+        ],
+        "stream": False,
+        "max_tokens": 1024,
+        "temperature": 0.3,
+        "top_p": 0.7,
+        "top_k": 50,
+        "frequency_penalty": 0.5,
+        "n": 1,
+        "response_format": {"type": "text"}
+    }
+
+    # 发送POST请求
+    response = requests.post(url, headers=headers, json=json.dumps(payload, ensure_ascii=False))
+
+    # 提取结果并返回
+    if response.status_code == 200:
+        result = response.json()
+        # 检查result中是否有choices字段
+        if "choices" in result:
+            # 获取第一个choice的内容
+            content = result["choices"][0]["message"]["content"]
+            return {"result": content}
+        else:
+            return "Error: No choices found in the response."
+    else:
+        return f"Error: {response.status_code}, {response.text}"
+
 
 if __name__ == "__main__":
-    main111("http://127.0.0.1:9090")
+    main2222("http://127.0.0.1:9090","sk-mcqzdkchqbmrctzsldzjdoplcsnsqovbetjfwvkfaolalowr")

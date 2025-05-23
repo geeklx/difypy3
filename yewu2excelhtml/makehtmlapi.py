@@ -149,4 +149,4 @@ async def generate_html(request: HTMLRequest, auth_token: str = Depends(verify_a
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=15005)
+    uvicorn.run(app, host="0.0.0.0", port=15006)

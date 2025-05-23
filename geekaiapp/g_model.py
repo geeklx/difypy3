@@ -61,3 +61,21 @@ class JMRequest(BaseModel):
     width: int = 1080
     height: int = 720
     sample_strength: float = 0.5
+
+class HTMLRequest(BaseModel):
+    html_content: str
+    filename: str = None  # 可选参数，如果不提供则自动生成
+
+
+class GenerateImageRequest(BaseModel):
+    prompt: str
+    model: str = "gemini-2.0-flash-exp-image-generation"
+    api_key: str
+
+
+class EditImageRequest(BaseModel):
+    prompt: str
+    image_url: str
+    model: str = "gemini-2.0-flash-exp-image-generation"
+    api_key: str
+

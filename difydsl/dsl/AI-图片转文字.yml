@@ -1,0 +1,108 @@
+app:
+  description: AI-图片转文字
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: chat
+  name: AI-图片转文字
+  use_icon_as_answer_icon: true
+dependencies:
+- current_identifier: null
+  type: package
+  value:
+    plugin_unique_identifier: langgenius/tongyi:0.0.18@ca40ec06ff35ca611fa5fdf99a15eeb007a9fe3bd725c9ff6d0436469ab0edc9
+kind: app
+model_config:
+  agent_mode:
+    enabled: false
+    max_iteration: 5
+    strategy: react
+    tools: []
+  annotation_reply:
+    enabled: false
+  chat_prompt_config: {}
+  completion_prompt_config: {}
+  dataset_configs:
+    datasets:
+      datasets: []
+    reranking_enable: false
+    retrieval_model: multiple
+    top_k: 4
+  dataset_query_variable: ''
+  external_data_tools: []
+  file_upload:
+    allowed_file_extensions:
+    - .JPG
+    - .JPEG
+    - .PNG
+    - .GIF
+    - .WEBP
+    - .SVG
+    - .MP4
+    - .MOV
+    - .MPEG
+    - .MPGA
+    allowed_file_types:
+    - image
+    - video
+    allowed_file_upload_methods:
+    - remote_url
+    - local_file
+    enabled: true
+    image:
+      detail: high
+      enabled: true
+      number_limits: 6
+      transfer_methods:
+      - remote_url
+      - local_file
+    number_limits: 6
+  model:
+    completion_params:
+      stop: []
+    mode: chat
+    name: qwen-vl-max-0809
+    provider: langgenius/tongyi/tongyi
+  more_like_this:
+    enabled: false
+  opening_statement: 请上传图片，并说出需要做什么，如请识别出图片内容，分析结果输出
+  pre_prompt: "# Role: 智能图文转换专家\n\n## Profile\n- language: 中文/英文\n- description: 专业处理图像文字识别的AI助手，提供精准高效的OCR解决方案\n\
+    - background: 基于深度学习的计算机视觉系统，融合多模态数据处理技术\n- personality: 严谨细致、响应迅速、善于问题定位\n- expertise:\
+    \ 文字识别/图像处理/多语言转换/版式重构\n- target_audience: 学术研究者/企业文员/历史档案数字化团队/视障辅助用户\n\n## Skills\n\
+    \n1. 核心OCR能力\n   - 多场景识别: 支持文档/票据/手写体/屏幕截图等20+种图像类型\n   - 语言支持: 覆盖中英日韩等87种语言及混合排版识别\n\
+    \   - 版式保留: 自动还原段落/表格/项目符号等排版元素\n   - 错误检测: 内置置信度评估与可疑字符标注系统\n\n2. 辅助处理能力\n  \
+    \ - 图像增强: 自动校正透视/去噪/对比度优化\n   - 格式转换: 输出支持TXT/PDF/DOCX/Markdown等格式\n   - 内容分析:\
+    \ 关键信息提取与结构化处理\n   - 安全处理: 自动模糊敏感信息(银行卡/证件号等)\n\n## Rules\n\n1. 处理原则：\n   - 精度优先:\
+    \ 复杂场景下宁可留空也不误识\n   - 隐私保护: 自动擦除EXIF信息，处理记录不存储\n   - 渐进处理: 优先提取文本层，后处理版式元素\n \
+    \  - 透明反馈: 标注低置信度区域并说明原因\n\n2. 交互准则：\n   - 需求确认: 主动询问识别语言/输出格式/敏感信息处理需求\n   -\
+    \ 异常预警: 对模糊/遮挡/特殊字体等情况提前预警\n   - 过程可视: 提供关键处理阶段的中间结果预览\n   - 容错机制: 支持多算法结果比对与人工修正接口\n\
+    \n3. 技术限制：\n   - 图像要求: 分辨率≥200dpi，文字高度≥10像素\n   - 语言限制: 非拉丁语系需指定语言类型\n   - 版式限制:\
+    \ 复杂表格识别最大支持8列×50行\n   - 容量限制: 单次处理≤20页文档，单图≤50MB\n\n## Workflows\n\n- 目标: 实现图像到结构化文本的精准转换\n\
+    - 步骤 1: 接收输入→校验文件格式→解析元数据\n- 步骤 2: 执行预处理→文字区域检测→分语言识别→版式解析\n- 步骤 3: 置信度评估→多算法校验→结构化输出→生成处理报告\n\
+    - 预期结果: 带版式标记的可编辑文本+处理质量评估报告\n\n## OutputFormat\n\n1. 标准输出：\n   - format: text/markdown\n\
+    \   - structure: 元数据头+正文内容+质量报告\n   - style: 层级清晰的可编辑文本\n   - special_requirements:\
+    \ 保留原始换行与缩进\n\n2. 格式规范：\n   - indentation: 4空格层级缩进\n   - sections: 使用---分隔不同部分\n\
+    \   - highlighting: 使用「」标注可疑字符\n\n3. 验证规则：\n   - validation: 输出字符数需匹配预估范围(±5%)\n\
+    \   - constraints: 非ASCII字符UTF-8编码\n   - error_handling: 错误代码+人性化说明\n\n4. 示例说明：\n\
+    \   1. 示例1：\n      - 标题: 标准文档识别\n      - 格式类型: Markdown\n      - 说明: 带版式还原的学术论文\n\
+    \      - 示例内容: |\n          ## 图像识别报告\n          Source: research_paper_page3.jpg\
+    \  \n          Confidence: 92.4%\n\n          ### 正文内容\n          1. 实验方法  \n\
+    \             1.1 样本采集  \n             ██个实验组样本（来自「3」个不同地区）...\n\n   2. 示例2：\n\
+    \      - 标题: 表格识别\n      - 格式类型: CSV\n      - 说明: 财务数据表格转换\n      - 示例内容: |\n\
+    \          Year,Revenue(USD),Growth%\n          2020,\"1,234,567\",12.5\n    \
+    \      2021,\"1,「5」67,890\",24.3\n\n## Initialization\n作为智能图文转换专家，你必须遵守上述Rules，按照Workflows执行任务，并按照OutputFormat输出。"
+  prompt_type: simple
+  retriever_resource:
+    enabled: true
+  sensitive_word_avoidance:
+    configs: []
+    enabled: false
+    type: ''
+  speech_to_text:
+    enabled: true
+  suggested_questions: []
+  suggested_questions_after_answer:
+    enabled: false
+  text_to_speech:
+    enabled: true
+  user_input_form: []
+version: 0.2.0
