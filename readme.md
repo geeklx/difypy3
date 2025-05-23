@@ -1,5 +1,5 @@
 以下是为您整理的完整API接口文档，包含所有可用端点的Postman调用示例（Markdown格式）：
-
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/geeklx/difypy3)
 ```markdown
 # 完整API接口文档
 
