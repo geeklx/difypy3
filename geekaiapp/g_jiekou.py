@@ -35,7 +35,7 @@ from geekaiapp.g_utils import save_audio_file, upload_cos, tencent_region, tence
     zpai_check_video_status, microsoft_api_key, microsoft_base_url, ai_api_key, ai_base_url, ip, ip_tts, \
     ai_model, generate_clip, marp_path, ip_md, ip_html, port, generate_image, generate_tts, system_prompt, \
     system_prompt2, current_directory, verify_auth_token, jimeng_cookie, jimeng_sign, download_video, ip_video, \
-    ip_img, download_image, save_html_file, generate_timestamp_filename_for_png, gemini_download_image, \
+    ip_img, face_swapdownload_image, save_html_file, generate_timestamp_filename_for_png, gemini_download_image, \
     FaceSwapService
 
 app = FastAPI(debug=True)
@@ -783,7 +783,7 @@ async def face_swap(source_image: UploadFile = File(...), target_image: UploadFi
                 os.makedirs(output_path)
 
             # 下载图片
-            filename, file_path = download_image(result_url, current_directory / ip_img)
+            filename, file_path = face_swapdownload_image(result_url, current_directory / ip_img)
             logger.info(f"图片已下载到本地: {file_path}")
 
             # 上传到腾讯 COS
@@ -913,7 +913,7 @@ async def generate_edit_image(request: EditImageRequest):
         start_time = time.time()
 
         # 下载原始图片
-        original_image = gemini_download_image(request.image_url, current_directory / ip_img)
+        original_image = gemini_download_image(request.image_url)
 
         client = genai.Client(api_key=request.api_key)
 

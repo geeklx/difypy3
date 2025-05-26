@@ -575,7 +575,7 @@ def download_video(url, output_path):
     return filename, file_path
 
 
-def gemini_download_image(url, output_path):
+def face_swapdownload_image(url, output_path):
     response = requests.get(url, stream=True)
     response.raise_for_status()
 
@@ -590,7 +590,7 @@ def gemini_download_image(url, output_path):
     return filename, file_path
 
 
-def download_image(url: str) -> Image.Image:
+def gemini_download_image(url: str) -> Image.Image:
     try:
         response = requests.get(url)
         response.raise_for_status()
