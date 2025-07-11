@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>长安的荔枝 - 经典金句</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.15.1/dist/framer-motion.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B00',
+                        dark: '#0A0A0A',
+                        'primary-light': '#FF9E5C',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .gradient-mask {
+                mask-image: linear-gradient(to bottom, rgba(255,255,255,1) 85%, rgba(255,255,255,0));
+                -webkit-mask-image: linear-gradient(to bottom, rgba(255,255,255,1) 85%, rgba(255,255,255,0));
+            }
+            .bento-card {
+                @apply rounded-xl overflow-hidden transition-all duration-500 hover:shadow-lg hover:shadow-primary/20;
+            }
+            .animate-float {
+                animation: float 6s ease-in-out infinite;
+            }
+            @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+                100% { transform: translateY(0px); }
+            }
+        }
+    </style>
+</head>
+<body class="bg-dark text-white min-h-screen">
+    <!-- 页面标题 -->
+    <header class="relative py-20 px-6 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent opacity-30"></div>
+        <div class="max-w-6xl mx-auto relative z-10">
+            <h1 class="text-[clamp(2.5rem,8vw,5rem)] font-black leading-tight text-shadow mb-4">
+                长安的<span class="text-primary">荔枝</span>
+            </h1>
+            <p class="text-[clamp(1rem,3vw,1.5rem)] text-gray-300 max-w-3xl">
+                <span class="text-primary-light italic">The Legend of Longan</span> · 剧中蕴含人生哲理的经典金句
+            </p>
+        </div>
+        <div class="absolute top-1/2 right-0 transform translate-y-[-50%] w-1/3 h-1/3 opacity-10 animate-float">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#FF6B00" d="M45.5,-70.1C59.5,-62.3,72.9,-47.8,80.6,-31.2C88.3,-14.5,90.3,4.1,85.6,20.8C80.9,37.5,69.5,52.3,54.7,62.7C39.9,73,21.7,79,2.5,79.7C-16.7,80.4,-34.8,75.7,-48.6,64.9C-62.4,54,-71.9,37.1,-77.7,18.6C-83.5,-0,-85.6,-20.3,-79.6,-37.3C-73.6,-54.3,-59.4,-68,-42.7,-75.3C-26.1,-82.5,-6.9,-83.3,10.9,-83.2C28.7,-83.1,45.7,-82,59.5,-70.1Z" transform="translate(100 100)" />
+            </svg>
+        </div>
+    </header>
+
+    <!-- 主要内容区 - Bento Grid -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 金句卡片 1 -->
+            <motion.div 
+                class="bento-card bg-dark/50 border border-primary/20 p-6 col-span-1 md:col-span-2"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+            >
+                <div class="flex items-start gap-4">
+                    <div class="bg-primary/10 p-3 rounded-lg">
+                        <i class="fa fa-pagelines text-primary text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-primary-light text-sm uppercase tracking-wider mb-2">经典诗句</h3>
+                        <p class="text-[clamp(1.5rem,3vw,2rem)] font-bold leading-tight mb-3">
+                            "一骑红尘妃子笑，无人知是荔枝来。"
+                        </p>
+                        <p class="text-gray-400 text-sm italic">
+                            "A horse gallops through the red dust, bringing a smile to the concubine's face. None know it's lychees that come."
+                        </p>
+                    </div>
+                </div>
+            </motion.div>
+
+            <!-- 金句卡片 2 -->
+            <motion.div 
+                class="bento-card bg-dark/50 border border-primary/20 p-6 flex flex-col justify-between"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                viewport={{ once: true }}
+            >
+                <div>
+                    <h3 class="text-primary-light text-sm uppercase tracking-wider mb-2">生存意志</h3>
+                    <p class="text-[clamp(1.2rem,3vw,1.8rem)] font-bold leading-tight mb-4">
+                        "我想活下去，我想拼了命地活下去！"
+                    </p>
+                </div>
+                <div class="mt-auto pt-4 border-t border-primary/10">
+                    <div class="w-full bg-dark rounded-full h-2">
+                        <div class="bg-gradient-to-r from-primary to-primary-light h-2 rounded-full" style="width: 85%"></div>
+                    </div>
+                </div>
+            </motion.div>
+
+            <!-- 金句卡片 3 -->
+            <motion.div 
+                class="bento-card bg-dark/50 border border-primary/20 p-6 flex flex-col justify-between"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+            >
+                <div>
+                    <h3 class="text-primary-light text-sm uppercase tracking-wider mb-2">坚持探索</h3>
+                    <p class="text-[clamp(1.2rem,3vw,1.8rem)] font-bold leading-tight mb-4">
+                        "就算失败，我也想知道，自己倒在距离终点多远的地方。"
+                    </p>
+                </div>
+                <div class="mt-auto pt-4 border-t border-primary/10">
+                    <div class="flex items-center justify-between text-sm text-gray-400">
+                        <span>起点</span>
+                        <span class="text-primary">努力</span>
+                        <span>终点</span>
+                    </div>
+                </div>
+            </motion.div>
+
+            <!-- 图表卡片 -->
+            <motion.div 
+                class="bento-card bg-dark/50 border border-primary/20 p-6 col-span-1 md:col-span-2"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                viewport={{ once: true }}
+            >
+                <h3 class="text-primary-light text-sm uppercase tracking-wider mb-4">金句主题分析</h3>
+                <div class="h-64">
+                    <canvas id="themeChart"></canvas>
+                </div>
+            </motion.div>
+
+            <!-- 金句卡片 4 -->
+            <motion.div 
+                class="bento-card bg-dark/50 border border-primary/20 p-6"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                viewport={{ once: true }}
+            >
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-primary/10 p-2 rounded-lg">
+                        <i class="fa fa-briefcase text-primary"></i>
+                    </div>
+                    <h3 class="text-primary-light text-sm uppercase tracking-wider">做事艰难</h3>
+                </div>
+                <p class="text-[clamp(1.2rem,3vw,1.6rem)] font-bold leading-tight">
+                    "千古艰难唯做事，一事功成万头秃。"
+                </p>
+            </motion.div>
+
+            <!-- 金句卡片 5 -->
+            <motion.div 
+                class="bento-card bg-dark/50 border border-primary/20 p-6 col-span-1 md:col-span-3"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                viewport={{ once: true }}
+            >
+                <div class="flex flex-col md:flex-row md:items-center gap-6">
+                    <div class="md:w-1/4">
+                        <div class="bg-primary/10 p-6 rounded-xl flex justify-center">
+                            <i class="fa fa-university text-primary text-4xl"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-3/4">
+                        <h3 class="text-primary-light text-sm uppercase tracking-wider mb-3">为官之道</h3>
+                        <p class="text-[clamp(1.3rem,3vw,2rem)] font-bold leading-tight mb-4">
+                            "做官之道，其实就三句话：和光同尘，雨露均沾，花花轿子众人抬。"
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                            <div class="bg-dark/80 p-4 rounded-lg border border-primary/10">
+                                <h4 class="text-primary font-semibold mb-1">和光同尘</h4>
+                                <p class="text-gray-400 text-sm">融入环境，不露锋芒</p>
+                            </div>
+                            <div class="bg-dark/80 p-4 rounded-lg border border-primary/10">
+                                <h4 class="text-primary font-semibold mb-1">雨露均沾</h4>
+                                <p class="text-gray-400 text-sm">利益共享，平衡各方</p>
+                            </div>
+                            <div class="bg-dark/80 p-4 rounded-lg border border-primary/10">
+                                <h4 class="text-primary font-semibold mb-1">众人拾柴</h4>
+                                <p class="text-gray-400 text-sm">团结协作，共创成功</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </motion.div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="py-8 px-6 border-t border-primary/10">
+        <div class="max-w-6xl mx-auto text-center text-gray-500 text-sm">
+            <p>长安的荔枝 · 经典台词赏析 <span class="text-primary-light">The Legend of Longan</span></p>
+            <p class="mt-2">© 2023 剧中金句集锦</p>
+        </div>
+    </footer>
+
+    <script>
+        // 初始化图表
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('themeChart').getContext('2d');
+            
+            // 创建渐变
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(255, 107, 0, 0.6)');
+            gradient.addColorStop(1, 'rgba(255, 107, 0, 0.1)');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['生存', '坚持', '为官', '经典', '做事'],
+                    datasets: [{
+                        label: '主题共鸣度',
+                        data: [85, 92, 78, 95, 88],
+                        backgroundColor: gradient,
+                        borderColor: '#FF6B00',
+                        borderWidth: 1,
+                        borderRadius: 6,
+                        barThickness: 16,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.5)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
+
+        // 添加滚动监听，实现类似Apple官网的滚动动效
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY;
+            
+            // 视差滚动效果
+            const headerElements = document.querySelectorAll('header *');
+            headerElements.forEach((el, index) => {
+                const speed = 0.02 * (index + 1);
+                el.style.transform = `translateY(${scrollPosition * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>

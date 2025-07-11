@@ -9,9 +9,17 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/siliconflow:0.0.11@616842815705a8e2ecf221f1c4b6956fede54d66915286cdbed97a5405fe821d
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.0.21@cb32d252bc1ebc61437c9134e22db2be5ccdd48223e08b9ea0deff4f0df0a187
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/siliconflow:0.0.14@b45d5713c339854f5ae5528a746afca789fae6b306ce7a6c84e689000beffa73
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/volcengine_maas:0.0.16@5a2cb43f8d874c1cae8d0a975144b6bfed2d693e095340a49c4d7cb296ef157f
 kind: app
-version: 0.2.0
+version: 0.3.0
 workflow:
   conversation_variables:
   - description: AI绘画生成的图片URL
@@ -62,13 +70,6 @@ workflow:
       - local_file
       - remote_url
       enabled: false
-      fileUploadConfig:
-        audio_file_size_limit: 50
-        batch_count_limit: 5
-        file_size_limit: 15
-        image_file_size_limit: 10
-        video_file_size_limit: 100
-        workflow_file_upload_limit: 10
       image:
         enabled: false
         number_limits: 3
@@ -313,8 +314,8 @@ workflow:
           completion_params:
             temperature: 0.7
           mode: chat
-          name: deepseek-ai/DeepSeek-V3
-          provider: langgenius/siliconflow/siliconflow
+          name: DeepSeek-V3
+          provider: langgenius/volcengine_maas/volcengine_maas
         query_variable_selector:
         - '1742446598245'
         - sys.query
@@ -324,7 +325,7 @@ workflow:
         type: question-classifier
         vision:
           enabled: false
-      height: 178
+      height: 172
       id: '1742446787311'
       position:
         x: -38
@@ -343,10 +344,9 @@ workflow:
           variable_selector: []
         desc: ''
         model:
-          completion_params:
-            temperature: 0.7
+          completion_params: {}
           mode: chat
-          name: internlm/internlm2_5-20b-chat
+          name: internlm/internlm2_5-7b-chat
           provider: langgenius/siliconflow/siliconflow
         prompt_template:
         - edition_type: basic
@@ -359,7 +359,7 @@ workflow:
         variables: []
         vision:
           enabled: false
-      height: 96
+      height: 90
       id: '1742446898705'
       position:
         x: 257
@@ -386,10 +386,9 @@ workflow:
             enabled: false
             size: 50
         model:
-          completion_params:
-            temperature: 0.7
+          completion_params: {}
           mode: chat
-          name: deepseek-ai/DeepSeek-V2.5
+          name: deepseek-ai/DeepSeek-V3
           provider: langgenius/siliconflow/siliconflow
         prompt_template:
         - edition_type: basic
@@ -530,7 +529,7 @@ workflow:
         variables: []
         vision:
           enabled: false
-      height: 96
+      height: 90
       id: '1742448203649'
       position:
         x: 496.805795536957
@@ -667,11 +666,10 @@ workflow:
           variable_selector: []
         desc: ''
         model:
-          completion_params:
-            temperature: 0.7
+          completion_params: {}
           mode: chat
-          name: Qwen/Qwen2.5-72B-Instruct
-          provider: langgenius/siliconflow/siliconflow
+          name: qwen2.5-72b-instruct
+          provider: langgenius/tongyi/tongyi
         prompt_template:
         - edition_type: basic
           id: 21e29965-8201-47d4-ba64-41ce889982ea
@@ -686,7 +684,7 @@ workflow:
         variables: []
         vision:
           enabled: false
-      height: 96
+      height: 90
       id: '1742452621093'
       position:
         x: 489.44933052478734
@@ -843,13 +841,14 @@ workflow:
           retry_enabled: true
           retry_interval: 100
         selected: false
+        ssl_verify: true
         timeout:
           max_connect_timeout: 0
           max_read_timeout: 0
           max_write_timeout: 0
         title: 调用自定义google 文生图
         type: http-request
-        url: http://g18.geekaiapp.icu/gemini/generate-image
+        url: http://g13.geekaiapp.icu/api/gemini/generate-image
         variables: []
       height: 140
       id: '1742522006449'
@@ -896,15 +895,16 @@ workflow:
           retry_enabled: true
           retry_interval: 100
         selected: false
+        ssl_verify: true
         timeout:
           max_connect_timeout: 0
           max_read_timeout: 0
           max_write_timeout: 0
         title: 调用自定义google 图片修改
         type: http-request
-        url: http://g18.geekaiapp.icu/gemini/generate-editimage
+        url: http://g13.geekaiapp.icu/api/gemini/generate-editimage
         variables: []
-      height: 140
+      height: 156
       id: '1742522665480'
       position:
         x: 913.240781875015
@@ -918,6 +918,6 @@ workflow:
       type: custom
       width: 244
     viewport:
-      x: -78.82281055192311
-      y: -45.0306428769594
-      zoom: 0.7395429743660727
+      x: 32.329696059660364
+      y: 130.81123602383434
+      zoom: 0.8495117981039223

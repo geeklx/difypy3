@@ -7,11 +7,11 @@ app:
   use_icon_as_answer_icon: true
 dependencies:
 - current_identifier: null
-  type: package
+  type: marketplace
   value:
-    plugin_unique_identifier: langgenius/volcengine_maas:0.0.12@6ed25093d370ac09619f5351e1c3b46067abbe6e3b16ce8acc6e169cd3cf68d9
+    marketplace_plugin_unique_identifier: langgenius/volcengine_maas:0.0.16@5a2cb43f8d874c1cae8d0a975144b6bfed2d693e095340a49c4d7cb296ef157f
 kind: app
-version: 0.2.0
+version: 0.3.0
 workflow:
   conversation_variables: []
   environment_variables: []
@@ -54,7 +54,7 @@ workflow:
     suggested_questions:
     - 我要从济南东站到大明湖游玩，我要走公共交通，请给我规划最合理路线
     - 今天有什么好吃的
-    - 2025年4月26日最新科技新闻有哪些？
+    - 2025年4月26日最新科技新闻列出十条
     - 给我一个算法题，用中文来回答
     suggested_questions_after_answer:
       enabled: false
@@ -341,7 +341,7 @@ workflow:
         query_variable_selector:
         - '1745638761957'
         - sys.query
-        selected: true
+        selected: false
         title: 问题分类器
         topics: []
         type: question-classifier
@@ -355,7 +355,7 @@ workflow:
       positionAbsolute:
         x: -289.1159363046995
         y: 261.94113420076303
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -500,8 +500,7 @@ workflow:
           model:
             type: constant
             value:
-              completion_params:
-                max_tokens: 8192
+              completion_params: {}
               mode: chat
               model: DeepSeek-V3
               model_type: llm
@@ -594,7 +593,7 @@ workflow:
       positionAbsolute:
         x: 293
         y: 673
-      selected: false
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -750,6 +749,6 @@ workflow:
       type: custom
       width: 244
     viewport:
-      x: 1033.1388969046511
-      y: -257.77521000782144
+      x: -473.22403616296685
+      y: -532.1072290369465
       zoom: 1.299338906351758

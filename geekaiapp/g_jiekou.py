@@ -435,7 +435,84 @@ async def upload_markdown2map(request: Request):
         return f'Markdown文件已保存. 点击预览: {ip}{ip_html}/{html_file_name}'
     except subprocess.CalledProcessError as e:
         # 如果转换过程中出现错误，返回错误信息
-        return f"Error generating HTML file: {e.output}\n{e.stderr}", 500
+        return f"Error generating HTML file: {e.output}\n{e.stderr}"
+
+
+# g把laTex转换成word
+@router.post('/latextword')
+async def latextword(request: Request, output_path=None):
+    content = await request.body()
+    latex_content = content.decode('utf-8')
+    time_name = str(int(time.time()))  # 生成时间戳作为文件名
+    tex_file_name = time_name + ".tex"  # Markdown文件名
+    docx_file_name = time_name + ".docx"  # HTML文件名
+    # 创建markdown和html文件夹，如果它们不存在的话
+    os.makedirs('../static/markdown', exist_ok=True)
+    os.makedirs('../static/html', exist_ok=True)
+    # 创建临时目录
+    # temp_dir = tempfile.mkdtemp()
+    tex_file = os.path.join(temp_dir, tex_file_name)
+    # output_path = {ip_md}/{tex_file_name}
+    # 将Markdown内容写入文件
+    # with open(f'{ip_md}/{tex_file_name}', "w", encoding='utf-8') as f:
+    #     f.write(content)
+    with open(tex_file, 'w', encoding='utf-8') as f:
+        f.write(latex_content)
+    print(f"Markdown file created: {ip_md}/{tex_file_name}")
+
+    # 确定输出文件路径
+    if output_path is None:
+        docx_file = os.path.join(temp_dir, docx_file_name)
+    else:
+        docx_file = output_path
+
+    try:
+        # 使用pandoc转换LaTeX到Word
+        # 注意：需要先安装pandoc和LaTeX环境(MiKTeX或TeX Live)
+        # filter_script = './remove_italic.py'
+        # pandoc
+        # input.tex - o
+        # output.docx - -
+        # from=latex - -to = docx - -mathml - -filter
+        # D:\cursor\githubs\difypy3\geekaiapp\filters\remove_italic.py
+        filter_script = os.path.join(filters_dir, 'remove_italic.py')
+        cmd = [
+            'pandoc',
+            tex_file,
+            '-o', docx_file,
+            '--from=latex',
+            '--to=docx',
+            '--mathml',
+            '--filter', filter_script,
+            # '--reference-doc=custom-template.docx'
+        ]
+
+        result = subprocess.run(
+            cmd,
+            cwd=temp_dir,
+            capture_output=True,
+            shell=True,
+            text=True
+        )
+
+        if result.returncode != 0:
+            raise subprocess.CalledProcessError(result.returncode, result.args, output=result.stdout,
+                                                stderr=result.stderr)
+        # return f'点击预览: {ip}temp/{docx_file_name}'
+        # Upload to COS
+        etag = upload_cos('text12', tencent_region, tencent_secret_id, tencent_secret_key, tencent_bucket,
+                          docx_file_name,
+                          temp_dir)
+        if etag:
+            oss_url = f"https://{tencent_bucket}.cos.{tencent_region}.myqcloud.com/{docx_file_name}"
+            return {
+                "docx_file_name":docx_file_name,
+                "output_path": oss_url
+            }
+        else:
+            raise HTTPException(status_code=500, detail="Failed to upload audio to COS")
+    except subprocess.CalledProcessError as e:
+        return f"Error generating file: {e.output}\n{e.stderr}"
 
 
 # g提供HTML文件的路径
@@ -522,6 +599,7 @@ async def get_json1(request: Request):
 current_dir = os.path.dirname(os.path.abspath(__file__))
 temp_dir = os.path.join(current_dir, 'temp')
 output_dir = os.path.join(current_dir, 'static')
+filters_dir = os.path.join(current_dir, 'filters')
 os.makedirs(temp_dir, exist_ok=True)
 os.makedirs(output_dir, exist_ok=True)
 
@@ -970,8 +1048,6 @@ async def generate_edit_image(request: EditImageRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-
-
 app.include_router(router, prefix="/api")
 
 # 打印所有路由
@@ -987,3 +1063,36 @@ if __name__ == '__main__':
     # uvicorn.run(app, host='0.0.0.0', port=port)
     # 修改启动配置 # 禁用热重载以避免初始化问题
     uvicorn.run(app, host="0.0.0.0", port=port, log_level="info", reload=False)
+
+# 使用示例
+# if __name__ == "__main__":
+#     latex_sample = r"""
+#     \documentclass{article}
+#     \usepackage{xeCJK} % 支持中文
+#     \setCJKmainfont{SimSun} % 设置中文字体
+#     \title{测试文档}
+#     \author{作者名}
+#     \date{\today}
+#
+#     \begin{document}
+#     \maketitle
+#
+#     这是一段测试文本，包含了一些\textbf{加粗}和\textit{斜体}文字。
+#
+#     还有一个简单的数学公式：$E = mc^2$
+#
+#     \begin{enumerate}
+#         \item 第一项
+#         \item 第二项
+#         \item 第三项
+#     \end{enumerate}
+#     \end{document}
+#     """
+#
+#     # 转换并获取输出路径
+#     output_file = latextword(latex_sample)
+#
+#     if output_file:
+#         print(f"转换成功！Word文件已保存至: {output_file}")
+#     else:
+#         print("转换失败，请检查错误信息。")

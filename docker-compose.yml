@@ -63,7 +63,7 @@ services:
 #    working_dir: /app
 #    #    command: python geekaiapp/g_jiekou.py
 #    ports:
-#      - "15104:15104"
+#      - "15114:15114"
 #    env_file:
 #      - .env
 #  db1student:
