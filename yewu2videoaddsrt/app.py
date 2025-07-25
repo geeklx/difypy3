@@ -10,7 +10,7 @@ from waitress import serve
 
 HOST = '127.0.0.1'
 HOST2 = '192.168.2.2'
-PORT = 15012
+PORT = 15104
 API_KEY = 'AIzaSyDLV1CQQaIKETwIgrhQtu1Wn0B7nSgCS9U'
 PROXY = 'http://127.0.0.1:7897'
 

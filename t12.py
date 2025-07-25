@@ -1,10 +1,11 @@
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse
-from spire.doc import Document, FileFormat
+import logging
 import os
 import time
-import logging
+
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
+from spire.doc import Document, FileFormat
 from starlette.responses import JSONResponse
 
 app = FastAPI(title="Markdown to Word Converter")
@@ -77,6 +78,125 @@ async def download_file(filename: str):
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="File not found")
     return FileResponse(file_path, filename=filename)
+
+
+def main(arg1: str) -> str:
+    import json
+
+    # 解析输入的 JSON 数据
+    try:
+        data = json.loads(arg1)
+    except json.JSONDecodeError:
+        return "输入的字符串不是有效的 JSON 格式，请检查输入数据。"
+
+    # 确保解析后的数据包含 'data' 键
+    if not isinstance(data, dict) or 'data' not in data:
+        return "输入的数据格式不正确，请确保输入是一个包含 'data' 键的 JSON 对象。"
+
+    # 获取 'data' 键对应的数组数据
+    image_data = data.get('data', [])
+
+    # 确保 'data' 键的值是一个列表
+    if not isinstance(image_data, list):
+        return "输入的数据中 'data' 键的值不是一个数组，请确保其值是一个 JSON 数组对象。"
+
+    # 初始化结果字符串
+    markdown_result = ""
+
+    # 遍历每条图片数据
+    for index, item in enumerate(image_data, start=1):
+        # 检查每条数据是否是字典，并且包含 'url' 字段
+        if not isinstance(item, dict) or 'url' not in item:
+            markdown_result += f"图片第{index}条内容：无法提取 URL（缺少 'url' 字段）\n"
+            continue
+
+        # 提取 URL 并生成 Markdown 格式的图片链接
+        url = item['url']
+        markdown_result += f"![图片{index}]({url})\n"
+
+    # 返回最终的 Markdown 字符串
+    return {"result": markdown_result}
+
+
+def main(arg1: str) -> dict:
+    try:
+        # 解析外层的 JSON 字符串
+        data = json.loads(arg1)
+
+        # 检查 success 字段是否为 True
+        if not data.get("success", False):
+            return {"error": "操作失败，'success' 字段为 False"}
+
+        # 提取 data 字段中的 video_url
+        video_data = data.get("data")
+        if not video_data or "video_url" not in video_data:
+            return {"error": "JSON 中缺少 'data.video_url' 字段"}
+
+        video_url = video_data["video_url"]
+
+        # 定义文件名（可以根据需要调整）
+        filename = "生成视频"
+
+        # 生成 Markdown 格式的 HTML <video> 标签
+        markdown_result = f"<video controls><source src='{video_url}' type='video/mp4'>{filename}</video>"
+
+        # 返回结果字典
+        return {"result": markdown_result}
+
+    except json.JSONDecodeError:
+        return {"error": "无效的 JSON 字符串"}
+    except Exception as e:
+        return {"error": f"发生未知错误: {str(e)}"}
+
+
+import json
+
+
+def main(arg1: str) -> dict:
+    try:
+        data = json.loads(arg1)
+        video_url = data.get("video_url")
+        local_url = data.get("local_url")
+        markdown_result = f"{video_url}\n<video controls><source src='{video_url}' type='video/mp4'</video>"
+        return {"result": markdown_result}
+    except json.JSONDecodeError:
+        return {"error": "无效的 JSON 字符串"}
+    except Exception as e:
+        return {"error": f"发生未知错误: {str(e)}"}
+
+
+def main(arg1: str) -> dict:
+    import json
+    arg = arg1.replace("```json", "")
+    arg2 = arg.replace("```", "")
+    str2 = json.loads(arg2)
+    table = [[str2]]
+    result_str = str(table).replace("'", '"')
+    return {
+        "result": result_str,
+    }
+
+
+def main(arg1: str) -> dict:
+    import json
+    arg = arg1.replace("```json", "")
+    arg2 = arg.replace("```", "")
+    str2 = json.loads(arg2)
+    table = [str2]
+    result_str = str(table).replace("'", '"')
+    return {
+        "result": result_str,
+    }
+
+
+def main11(arg1: str) -> dict:
+    arg1 = "```json\n{\n  \"始发站\": \"南京南\",\n  \"终点站\": \"北京南\",\n  \"车次\": \"G124\",\n  \"出发时间\": \"2015年07月10日 10:21\",\n  \"票价\": \"¥435.5\",\n  \"身份证号\": \"3412261995********\",\n  \"姓名\": \"曹云\"\n}\n```"
+    table = [[arg1]]
+    result_str = str(table).replace("'", '"')
+    result_str = result_str.replace("\\n", "\n")
+    return {
+        "result": result_str,
+    }
 
 
 if __name__ == "__main__":

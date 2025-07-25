@@ -73,3 +73,15 @@ def main(arg1: str) -> dict:
     return {
         "result": result_str,
     }
+
+
+
+def main(arg1: str) -> dict:
+    import json
+    data = json.loads(arg1)
+    str1 = data['url']
+    result_str = f"![图片]({str1})"
+    # 返回结果
+    return {
+        "result": result_str,
+    }

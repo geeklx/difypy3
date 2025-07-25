@@ -3,7 +3,7 @@ import configparser
 from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
 
-from api.video import router as video_router
+from yewu2story.videostart import router as video_router
 
 app = FastAPI()
 # 先挂载静态文件

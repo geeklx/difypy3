@@ -6,10 +6,12 @@ from typing import Optional
 
 import requests
 import uvicorn
-from fastapi import FastAPI, UploadFile, File, HTTPException, Depends
+from fastapi import FastAPI, UploadFile, File, HTTPException, Depends, Header
+from fastapi_mcp import add_mcp_server
 
+from geekaiapp.g_model import VideoRequest3
 from geekaiapp.g_utils import verify_auth_token, product_serial, download_image, ip_img, current_directory, upload_cos, \
-    tencent_region, tencent_secret_id, tencent_secret_key, tencent_bucket
+    tencent_region, tencent_secret_id, tencent_secret_key, tencent_bucket, ip
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)
@@ -20,6 +22,42 @@ app = FastAPI(
     description="AI换脸服务API",
     version="0.1"
 )
+
+# 修改 MCP 服务器配置
+mcp_server = add_mcp_server(
+    app,
+    mount_path="/mcp",
+    name="BeArt Image MCP",
+    description="集成了照片视频换脸功能的 MCP 服务",
+    base_url="http://localhost:15124"
+)
+
+
+# 添加自定义 MCP 工具
+@mcp_server.tool()
+async def generate_mcp(
+        source_image: UploadFile = File(...),
+        target_image: UploadFile = File(...),
+        authorization: str = Header(...)
+) -> dict:
+    """
+    换脸工具。
+
+    Args:
+        source_image: 源图片（包含要提取的人脸）
+        target_image: 目标图片（需要被替换人脸的图片）
+
+    Returns:
+        dict: 包含以下字段的字典：
+            - success: 接口返回成功是否,true是成功，false是失败
+            - image_url: 图片的远程地址
+            - original_url: 视频预览的 markdown 代码
+    """
+    request = VideoRequest3(
+        source_image=source_image,
+        target_image=target_image
+    )
+    return await face_swap(request, auth_token=verify_auth_token(authorization))
 
 
 class FaceSwapService:
@@ -206,14 +244,15 @@ async def face_swap(
             cos_url = upload_cos('test', tencent_region, tencent_secret_id, tencent_secret_key,
                                  tencent_bucket, filename,
                                  current_directory / ip_img)
+            local_url = f"{ip}{ip_img}/{filename}"
             if cos_url:
                 logger.info(f"图片已上传到 COS: {cos_url}")
                 # 删除本地文件
-                os.remove(file_path)
+                # os.remove(file_path)
                 return {
                     "success": True,
                     "image_url": cos_url,
-                    "original_url": result_url
+                    "original_url": local_url
                 }
             else:
                 raise HTTPException(status_code=500, detail="上传图片到 COS 失败")
