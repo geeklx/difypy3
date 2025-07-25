@@ -7,10 +7,13 @@ import time
 import urllib.parse
 import urllib.request
 import uuid
+from io import BytesIO
 from pathlib import Path
+from typing import Optional
 
 import requests
 import websocket  # NOTE: websocket-client (https://github.com/websocket-client/websocket-client)
+from PIL import Image
 from fastapi import HTTPException, Header
 from openai import OpenAI
 from qcloud_cos import CosConfig
@@ -55,15 +58,14 @@ zhipu_api_url = os.getenv('ZHIPU_API_URL', 'https://open.bigmodel.cn/api/paas/v4
 # jimeng
 image_generation_url = "http://g10.geekaiapp.icu/v1/images/generations"
 # image_generation_url = os.getenv('IMAGE_GENERATION_URL', 'https://jimeng.duckcloud.fun/v1/images/generations')
-image_api_key = os.getenv('IMAGE_API_KEY', '78cd3c79c4a37eb995c26c097a49edb0')
+image_api_key = os.getenv('IMAGE_API_KEY', 'b3a89660598cf06f119006b36ca9ed47')
 
 aaa = 's_v_web_id=verify_m7hrfrk1_W0ACdmeB_k89D_4WM5_BMkI_ItsZ1r0jjHWk; fpk1=071537a5f44ffe9828fa3c3f3720ddb6f690ce1a31dec9195a5050a2e422ceaf66873ae89433b8927b9d79b320cff2bc; passport_csrf_token=88010597f29256c6e871d8f69de44346; passport_csrf_token_default=88010597f29256c6e871d8f69de44346; n_mh=9W8N-rCI2hHkh4_ypK0jtwSCbLvpXyAXJg5USgpyWj8; sid_guard=1dcca7b8288e820e2eb5fe568d1d7d01%7C1740323109%7C5184000%7CThu%2C+24-Apr-2025+15%3A05%3A09+GMT; uid_tt=2d4e477727dca209c00afe09c382e0dc; uid_tt_ss=2d4e477727dca209c00afe09c382e0dc; sid_tt=1dcca7b8288e820e2eb5fe568d1d7d01; sessionid=1dcca7b8288e820e2eb5fe568d1d7d01; sessionid_ss=1dcca7b8288e820e2eb5fe568d1d7d01; is_staff_user=false; sid_ucp_v1=1.0.0-KGRmZmE0NGQ1MDQ0ZjQwMGFiYzQ5MzdkZWZlNTYxNzkwMzhhMGRlNGMKHQiUpbLthgMQpfLsvQYYn60fIAww_77H3QU4CEAmGgJobCIgMWRjY2E3YjgyODhlODIwZTJlYjVmZTU2OGQxZDdkMDE; ssid_ucp_v1=1.0.0-KGRmZmE0NGQ1MDQ0ZjQwMGFiYzQ5MzdkZWZlNTYxNzkwMzhhMGRlNGMKHQiUpbLthgMQpfLsvQYYn60fIAww_77H3QU4CEAmGgJobCIgMWRjY2E3YjgyODhlODIwZTJlYjVmZTU2OGQxZDdkMDE; store-region=cn-sd; store-region-src=uid; user_spaces_idc={"6978791533491257632":"lf"}; dm_auid=XApD3A/sZyrF4TvjREKyDA==; uifid_temp=eb4cf30a1e214892386aad17783b4da3e8c567e98302b4f5cd097635bdd000401ca8adf79f821d114df4456b3641b1fbeae2857ca8eae157e7340d38644b2834683a746b636664facef62797a8f2d0f3; uifid=eb4cf30a1e214892386aad17783b4da3e8c567e98302b4f5cd097635bdd0004085ef01f05c190064c1bd3d7ff72eb4423e0506e85c28b7c03cf15278fad814c1e745744fb35b912f4339195814a570ae23a6e029255eb7f1865f4fe4ef139a0b97b5e6961bc56a4a166ad3f03f5d00701020b74a02dc45b2192cd8dc34c132d36ed56c32be0217f6297f1c3908310026786139de693df5b0b7574c6fbfc299c9c5f91316901a9d5194d0a11254bd4f4b; ttwid=1|SChiu1bgf_QkYVnddGBcJB2YNbsqLTfRgVGuacolOKU|1744339167|f0d01735b8f52a02043000ce5426c307d984cdd931cf62952d292386281fadbd; _tea_web_id=7474630679444358697; _uetsid=310d97b0167e11f09971ebe035a96e4b; _uetvid=8b1a0960f1f711efb1f4df19de2660c1; odin_tt=be6983f454455495d96ca5b071fff27fb4c56600d2838c7dae031bc6d6b37a1a86f8d9e80de3b828b78d1510d70671eed28f19eae449139e4ee5f3264d8eabaf'
-jimeng_cookie = os.getenv('JIMENG_COOKIE',aaa)
-jimeng_sign = os.getenv('JIMENG_SIGN',aaa)
+jimeng_cookie = os.getenv('JIMENG_COOKIE', aaa)
+jimeng_sign = os.getenv('JIMENG_SIGN', aaa)
 
 #
 valid_tokens1 = ["sk-geekaiapp", "geekaiapp"]
-
 
 product_serial = os.getenv('product_serial', '9ec0216f0796254c92dbc2be605a11bb')
 
@@ -116,7 +118,10 @@ print("完整路径-current_directory", current_directory)
 # marp_path = path5
 
 # 设置工作目录和项目相关的路径
-comfyui_endpoit = os.getenv('COMFYUI_ENDPOIT', '127.0.0.1:8188')
+# comfyui_endpoit = os.getenv('COMFYUI_ENDPOIT', '127.0.0.1:8188')
+# comfyui_endpoit = os.getenv('COMFYUI_ENDPOIT', 'localhost:8188')
+comfyui_endpoit = os.getenv('COMFYUI_ENDPOIT', 'localhost:8188')
+# comfyui_endpoit = "g24.geekaiapp.icu"
 WORKING_DIR = current_directory / ip_comfyui
 SageMaker_ComfyUI = WORKING_DIR
 workflowfile = current_directory / ip_comfyui
@@ -569,7 +574,8 @@ def download_video(url, output_path):
 
     return filename, file_path
 
-def download_image(url, output_path):
+
+def face_swapdownload_image(url, output_path):
     response = requests.get(url, stream=True)
     response.raise_for_status()
 
@@ -584,8 +590,190 @@ def download_image(url, output_path):
     return filename, file_path
 
 
+def gemini_download_image(url: str) -> Image.Image:
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        return Image.open(BytesIO(response.content))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"下载图片失败: {str(e)}")
+
+
 def generate_timestamp_filename_for_image(extension='jpg'):
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     random_number = random.randint(1000, 9999)
     filename = f"faceswap_{timestamp}_{random_number}.{extension}"
     return filename
+
+
+def generate_timestamp_filename(extension='html'):
+    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    random_number = random.randint(1000, 9999)
+    filename = f"{timestamp}_{random_number}.{extension}"
+    return filename
+
+
+def generate_timestamp_filename_for_png(extension='png'):
+    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    random_number = random.randint(1000, 9999)
+    filename = f"{timestamp}_{random_number}.{extension}"
+    return filename
+
+
+def save_html_file(html_content, filename=None, output_dir=None):
+    # 如果没有提供文件名，则生成一个
+    if not filename:
+        filename = generate_timestamp_filename()
+
+    # 如果没有提供输出目录，则使用默认目录
+    if not output_dir:
+        output_dir = ip_html
+
+    # 确保输出目录存在
+    os.makedirs(output_dir, exist_ok=True)
+
+    # 组合完整的输出路径
+    file_path = os.path.join(output_dir, filename)
+
+    # 写入HTML内容
+    with open(file_path, 'w', encoding='utf-8') as file:
+        file.write(html_content)
+
+    # 返回文件名和输出路径
+    return filename, file_path
+
+
+# g换脸beart1
+class FaceSwapService:
+    # 默认请求头
+    API_HEADERS = {
+        "accept": "*/*",
+        "accept-language": "zh-CN,zh;q=0.9",
+        "origin": "https://beart.ai",
+        "priority": "u=1, i",
+        "product-code": "067003",
+        "referer": "https://beart.ai/",
+        "sec-ch-ua": '"Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"Windows"',
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
+    }
+
+    # 从配置文件获取产品序列号
+    PRODUCT_SERIAL = product_serial
+
+    @staticmethod
+    def _validate_image(image_data: bytes) -> bool:
+        """验证图片格式"""
+        try:
+            header = image_data[:12]
+            if any([
+                header.startswith(b'\xFF\xD8\xFF'),  # JPEG
+                header.startswith(b'\x89PNG\r\n\x1a\n'),  # PNG
+                header.startswith(b'GIF87a') or header.startswith(b'GIF89a'),  # GIF
+                header.startswith(b'RIFF') and header[8:12] == b'WEBP',  # WEBP
+                header.startswith(b'BM')  # BMP
+            ]):
+                return True
+            return False
+        except:
+            return False
+
+    @staticmethod
+    def _get_mime_type(image_data: bytes) -> str:
+        """获取图片MIME类型"""
+        header = image_data[:12]
+        if header.startswith(b'\xFF\xD8\xFF'):
+            return 'image/jpeg'
+        elif header.startswith(b'\x89PNG\r\n\x1a\n'):
+            return 'image/png'
+        elif header.startswith(b'GIF87a') or header.startswith(b'GIF89a'):
+            return 'image/gif'
+        elif header.startswith(b'RIFF') and header[8:12] == b'WEBP':
+            return 'image/webp'
+        elif header.startswith(b'BM'):
+            return 'image/bmp'
+        return 'image/jpeg'
+
+    @classmethod
+    async def create_face_swap_job(cls, source_image: bytes, target_image: bytes) -> Optional[str]:
+        """创建换脸任务"""
+        try:
+            url = "https://api.beart.ai/api/beart/face-swap/create-job"
+            headers = cls.API_HEADERS.copy()
+            headers.update({
+                "product-serial": cls.PRODUCT_SERIAL
+            })
+
+            # 获取MIME类型
+            source_mime = cls._get_mime_type(source_image)
+            target_mime = cls._get_mime_type(target_image)
+
+            # 生成随机文件名
+            source_name = f"n_v{random.getrandbits(64):016x}.jpg"
+            target_name = f"n_v{random.getrandbits(64):016x}.jpg"
+
+            # 构建multipart/form-data请求
+            files = {
+                "target_image": (target_name, source_image, target_mime),
+                "swap_image": (source_name, target_image, source_mime)
+            }
+
+            logger.info("开始上传图片...")
+            response = requests.post(url, headers=headers, files=files, timeout=30)
+
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("code") == 100000:
+                    job_id = data["result"]["job_id"]
+                    logger.info(f"任务创建成功: {job_id}")
+                    return job_id
+                else:
+                    logger.error(f"服务器返回错误: {data.get('message', {}).get('zh', '未知错误')}")
+            else:
+                logger.error(f"创建任务失败: HTTP {response.status_code}")
+            return None
+
+        except Exception as e:
+            logger.error(f"创建任务失败: {e}")
+            return None
+
+    @classmethod
+    async def get_face_swap_result(cls, job_id: str, max_retries: int = 30, interval: int = 2) -> Optional[str]:
+        """获取换脸结果"""
+        try:
+            url = f"https://api.beart.ai/api/beart/face-swap/get-job/{job_id}"
+            headers = cls.API_HEADERS.copy()
+            headers["content-type"] = "application/json; charset=UTF-8"
+
+            logger.info(f"等待处理结果，最多等待 {max_retries * interval} 秒...")
+            for attempt in range(1, max_retries + 1):
+                try:
+                    response = requests.get(url, headers=headers, timeout=15)
+                    if response.status_code == 200:
+                        data = response.json()
+                        if data.get("code") == 100000:
+                            logger.info("处理完成")
+                            return data["result"]["output"][0]
+                        elif data.get("code") == 300001:  # 处理中
+                            logger.info(f"处理中... {attempt}/{max_retries}")
+                            time.sleep(interval)
+                            continue
+
+                    logger.error(f"获取结果失败: {response.text}")
+                    return None
+
+                except Exception as e:
+                    logger.error(f"获取结果出错: {e}")
+                    time.sleep(interval)
+
+            logger.error("超过最大重试次数")
+            return None
+
+        except Exception as e:
+            logger.error(f"获取结果失败: {e}")
+            return None
+

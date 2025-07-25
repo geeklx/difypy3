@@ -1,0 +1,285 @@
+app:
+  description: 即梦-AI出图2
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: 即梦-AI出图2
+  use_icon_as_answer_icon: false
+dependencies: []
+kind: app
+version: 0.2.0
+workflow:
+  conversation_variables: []
+  environment_variables:
+  - description: ''
+    id: dc0dee5b-786f-42e8-9e3f-b3ccdaf44db2
+    name: sid2
+    selector:
+    - env
+    - sid2
+    value: 1dcca7b8288e820e2eb5fe568d1d7d01
+    value_type: string
+  - description: ''
+    id: 25ccf348-c155-4a7f-97f0-da3edf92d2f1
+    name: sid
+    selector:
+    - env
+    - sid
+    value: 3f7bdce9c0ade617679566a804eb0ca5
+    value_type: string
+  - description: ''
+    id: afa5c448-1ec3-432b-8f14-c8f602c0ab5d
+    name: jimengsessionid
+    selector:
+    - env
+    - jimengsessionid
+    value: 793cc9014636d267d996441da25262e1
+    value_type: string
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: http-request
+      id: 1738651659789-source-1738651665284-target
+      source: '1738651659789'
+      sourceHandle: source
+      target: '1738651665284'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: code
+      id: 1738651665284-source-1738651805602-target
+      source: '1738651665284'
+      sourceHandle: source
+      target: '1738651805602'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: end
+      id: 1738651805602-source-1738651831615-target
+      source: '1738651805602'
+      sourceHandle: source
+      target: '1738651831615'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: 提示词
+          max_length: 100000
+          options: []
+          required: true
+          type: paragraph
+          variable: prompt
+      height: 90
+      id: '1738651659789'
+      position:
+        x: 96
+        y: 282
+      positionAbsolute:
+        x: 96
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config:
+            api_key: '{{#env.sid2#}}'
+            type: bearer
+          type: no-auth
+        body:
+          data:
+          - id: key-value-1
+            key: ''
+            type: text
+            value: '{
+
+              "model":"jimeng-2.1",
+
+              "prompt":"{{#1738651659789.prompt#}}",
+
+              "negativePrompt":"",
+
+              "width":1080,
+
+              "height":720,
+
+              "sample_strength":0.5,
+
+              "image_api_key": "1dcca7b8288e820e2eb5fe568d1d7d01",
+
+              "image_generation_url": "http://g10.geekaiapp.icu/v1/images/generations"
+
+              }'
+          type: json
+        desc: ''
+        headers: ''
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求
+        type: http-request
+        url: http://192.168.31.115:15001/api/jimeng/img
+        variables: []
+      height: 136
+      id: '1738651665284'
+      position:
+        x: 383.1294494367039
+        y: 282
+      positionAbsolute:
+        x: 383.1294494367039
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "def main(arg1: str) -> dict:\n    import json\n    data = json.loads(arg1)\n\
+          \    str1 = data['url']\n    result_str = f\"![图片]({str1})\"\n    # 返回结果\n\
+          \    return {\n        \"result\": result_str,\n    }"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 代码执行
+        type: code
+        variables:
+        - value_selector:
+          - '1738651665284'
+          - body
+          variable: arg1
+      height: 54
+      id: '1738651805602'
+      position:
+        x: 688
+        y: 282
+      positionAbsolute:
+        x: 688
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1738651805602'
+          - result
+          variable: imageout
+        selected: false
+        title: 结束
+        type: end
+      height: 90
+      id: '1738651831615'
+      position:
+        x: 992
+        y: 282
+      positionAbsolute:
+        x: 992
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        author: sparkdify
+        desc: ''
+        height: 135
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"本工作流主要是使用开源","type":"text","version":1},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"jimeng-free-api","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"link","version":1,"rel":null,"target":null,"title":null,"url":"https://github.com/LLM-Red-Team/jimeng-free-api"},{"detail":0,"format":0,"mode":"normal","style":"","text":"项目实现即梦AI逆向API
+          通过http请求整合实现dify工作流上即梦AI绘画功能","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 273
+      height: 135
+      id: '1740356465971'
+      position:
+        x: 96
+        y: 447.57125301651325
+      positionAbsolute:
+        x: 96
+        y: 447.57125301651325
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-note
+      width: 273
+    viewport:
+      x: -833.3318188599835
+      y: 31.5915576595919
+      zoom: 1.0195976829981899

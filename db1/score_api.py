@@ -116,4 +116,4 @@ async def get_course_top_students(course_id: int, limit: int = 3, db: Session = 
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=9092)
+    uvicorn.run(app, host="0.0.0.0", port=9093)

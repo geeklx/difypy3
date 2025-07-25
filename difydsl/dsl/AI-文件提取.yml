@@ -1,0 +1,392 @@
+app:
+  description: AI-文件提取
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: AI-文件提取
+  use_icon_as_answer_icon: true
+dependencies:
+- current_identifier: null
+  type: package
+  value:
+    plugin_unique_identifier: langgenius/tongyi:0.0.18@ca40ec06ff35ca611fa5fdf99a15eeb007a9fe3bd725c9ff6d0436469ab0edc9
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/feishu_spreadsheet:0.0.1@6b4da2c3bcab1aace954e92a8120bf09692951bc68c993debbd64cfb398fd30d
+kind: app
+version: 0.2.0
+workflow:
+  conversation_variables: []
+  environment_variables:
+  - description: ''
+    id: 6814bf06-d2ba-4caf-82d8-08c3b4f38062
+    name: url
+    selector:
+    - env
+    - url
+    value: https://dnazimeelr.feishu.cn/wiki/QxgnwthaMiAY5Xk2R3Lc7NrPnFd
+    value_type: string
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 10
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: document-extractor
+      id: 1744075466660-source-1744075469946-target
+      source: '1744075466660'
+      sourceHandle: source
+      target: '1744075469946'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: document-extractor
+        targetType: llm
+      id: 1744075469946-source-1744076759037-target
+      source: '1744075469946'
+      sourceHandle: source
+      target: '1744076759037'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: llm
+      id: 1744076759037-source-1744082945014-target
+      source: '1744076759037'
+      sourceHandle: source
+      target: '1744082945014'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: code
+      id: 1744082945014-source-1744083501908-target
+      source: '1744082945014'
+      sourceHandle: source
+      target: '1744083501908'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: tool
+      id: 1744083501908-source-1744085436984-target
+      source: '1744083501908'
+      sourceHandle: source
+      target: '1744085436984'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: answer
+      id: 1744085436984-source-answer-target
+      source: '1744085436984'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - document
+          - image
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: 文件（文档 < 15.00MB, 图片 < 11.00MB, 音频 < 50.00MB, 视频 < 100.00MB）
+          max_length: 9
+          options: []
+          required: true
+          type: file-list
+          variable: wenjian
+      height: 90
+      id: '1744075466660'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1744082945014.text#}}
+
+          {{#env.url#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 105
+      id: answer
+      position:
+        x: 815.1673786406491
+        y: 282
+      positionAbsolute:
+        x: 815.1673786406491
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_array_file: true
+        selected: false
+        title: 文档提取器
+        type: document-extractor
+        variable_selector:
+        - '1744075466660'
+        - wenjian
+      height: 92
+      id: '1744075469946'
+      position:
+        x: 80
+        y: 458.7217643491132
+      positionAbsolute:
+        x: 80
+        y: 458.7217643491132
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: qwen-max-latest
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: e13935ad-7811-4f14-8b62-f2bf7f3dc9ee
+          role: system
+          text: "# Role: 文件内容排版提取专家\n\n## Profile\n- language: 中文/英文\n- description:\
+            \ 专业处理各类格式文件内容的结构化提取与排版还原\n- background: 具备十年文档处理经验的技术专家，精通文字识别与语义分析技术\n\
+            - personality: 严谨/细致/逻辑性强\n- expertise: 文档格式解析/排版语义分析/信息结构重建\n- target_audience:\
+            \ 法律/出版/科研领域的专业人士\n\n## Skills\n\n1. 核心处理能力\n   - 多格式兼容: 支持PDF/DOCX/PPTX/扫描件等格式解析\n\
+            \   - 层级识别: 自动识别标题/正文/图表/脚注等元素层级\n   - 语义关联: 建立段落/图表/注释间的逻辑关联\n   - 样式保留:\
+            \ 精确还原字体/颜色/缩进等排版特征\n\n2. 辅助处理能力\n   - 容错处理: 自动修正扫描件倾斜/污损问题\n   - 智能补全:\
+            \ 修复破损文档的缺失内容\n   - 多语言支持: 处理30+语种混合排版文件\n   - 安全处理: 自动过滤敏感信息与水印\n\n##\
+            \ Rules\n\n1. 处理原则：\n   - 完整性: 确保内容元素零丢失\n   - 保真度: 排版还原度不低于98%\n   -\
+            \ 可溯性: 保留原始文档修改轨迹\n   - 合规性: 遵守GDPR数据保护条例\n\n2. 执行标准：\n   - 采用ASTM/ISO文档处理标准\n\
+            \   - 实施三级质量校验机制\n   - 建立版本控制系统\n   - 输出符合TEI/XML标准\n\n3. 限制说明：\n   -\
+            \ 不处理加密/受DRM保护文件\n   - 不支持手写体识别\n   - 无法解析低分辨率扫描件(<300dpi)\n   - 拒绝处理侵权内容\n\
+            \n## Workflows\n\n- 目标: 将非结构化文档转化为标准化数字内容\n- 步骤 1: 文档预处理(去噪/纠偏/格式标准化)\n\
+            - 步骤 2: 多维度解析(版面/样式/语义)\n- 步骤 3: 构建结构化文档树\n- 步骤 4: 生成可编辑格式输出\n- 预期结果:\
+            \ 保留原始排版特征的结构化数字文档\n\n## Initialization\n作为文件内容排版提取专家，你必须遵守上述Rules，按照Workflows执行任务，分析{{#1744075469946.text#}}的数据。\n\
+            注意：\n不要其他任何数据，去掉多余的转义符号，只要以上任务格式的内容数据。"
+        selected: false
+        title: LLM 1
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1744076759037'
+      position:
+        x: 85.07402093158464
+        y: 618.9030679955999
+      positionAbsolute:
+        x: 85.07402093158464
+        y: 618.9030679955999
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: qwen-vl-max-0809
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: fdc52cd1-d228-4e94-95ac-52b555ad3675
+          role: system
+          text: '将{{#1744076759037.text#}}提取核心内容，以 JSON 的形式输出，输出的 JSON 需遵守以下的格式：
+
+            {
+
+            "text": <内容>
+
+            }
+
+
+            注意：
+
+            1.不要有多余的解释，去掉多余的转义符号，
+
+            2.检查句首句尾出现的内容如果包含```字符，请删除，
+
+            3.检查句首句尾出现的内容如果包含json\n字符，请删除，
+
+            4.检查句首句尾出现的内容如果包含json字符，请删除，
+
+            只要以上格式的包含{}的整体内容数据。
+
+
+
+
+            '
+        selected: true
+        title: LLM 2
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1744082945014'
+      position:
+        x: 467.43638010755365
+        y: 282
+      positionAbsolute:
+        x: 467.43638010755365
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "\ndef main(arg1: str) -> dict:\n    # 将输入字符串转换为表格格式\n    import json\n\
+          \    data = json.loads(arg1)\n    str1 = data['text']\n    table = [[str1]]\n\
+          \    # 将表格转换为字符串形式的嵌套列表，并添加转义字符\n    result_str = str(table).replace(\"\
+          '\", '\"')  # 将单引号替换为双引号\n    # 返回结果\n    return {\n        \"result\":\
+          \ result_str,\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 代码执行
+        type: code
+        variables:
+        - value_selector:
+          - '1744082945014'
+          - text
+          variable: arg1
+      height: 54
+      id: '1744083501908'
+      position:
+        x: 467.43638010755365
+        y: 443.05185420978285
+      positionAbsolute:
+        x: 467.43638010755365
+        y: 443.05185420978285
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        provider_id: feishu_spreadsheet
+        provider_name: feishu_spreadsheet
+        provider_type: builtin
+        selected: false
+        title: 新增多行至工作表最后
+        tool_configurations:
+          length: 1
+        tool_label: 新增多行至工作表最后
+        tool_name: add_rows
+        tool_parameters:
+          spreadsheet_token:
+            type: mixed
+            value: '{{#env.url#}}'
+          values:
+            type: mixed
+            value: '{{#1744083501908.result#}}'
+        type: tool
+      height: 90
+      id: '1744085436984'
+      position:
+        x: 467.43638010755365
+        y: 599.750955603085
+      positionAbsolute:
+        x: 467.43638010755365
+        y: 599.750955603085
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 43.79185289864074
+      y: -82.2925208375782
+      zoom: 0.8705505632961256

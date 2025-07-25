@@ -1,0 +1,923 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: gemini-2.0-flash-exp-image-generation-文生图智能体
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.0.21@cb32d252bc1ebc61437c9134e22db2be5ccdd48223e08b9ea0deff4f0df0a187
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/siliconflow:0.0.14@b45d5713c339854f5ae5528a746afca789fae6b306ce7a6c84e689000beffa73
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/volcengine_maas:0.0.16@5a2cb43f8d874c1cae8d0a975144b6bfed2d693e095340a49c4d7cb296ef157f
+kind: app
+version: 0.3.0
+workflow:
+  conversation_variables:
+  - description: AI绘画生成的图片URL
+    id: 2a15d402-18c0-441d-b167-12eb92eb93d7
+    name: picture_url
+    selector:
+    - conversation
+    - picture_url
+    value: ''
+    value_type: string
+  environment_variables:
+  - description: ''
+    id: 34a3f4a6-57dd-49a4-9d9e-35a7242a6267
+    name: gid
+    selector:
+    - env
+    - gid
+    value: sk-geekaiapp
+    value_type: string
+  - description: ''
+    id: e0b030e2-9602-4d38-9eef-de161f28bd88
+    name: apikey
+    selector:
+    - env
+    - apikey
+    value: AIzaSyDLV1CQQaIKETwIgrhQtu1Wn0B7nSgCS9U
+    value_type: string
+  - description: ''
+    id: cd56bbbb-a03d-480f-9fa3-fb6c3e1d30c8
+    name: model
+    selector:
+    - env
+    - model
+    value: gemini-2.0-flash-exp-image-generation
+    value_type: string
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: '例如：
+
+      1.请生成两个土拨鼠在沙漠平原喝土豆汤
+
+      2.给两个土拨鼠带着绿帽子'
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: question-classifier
+      id: 1742446598245-source-1742446787311-target
+      selected: false
+      source: '1742446598245'
+      sourceHandle: source
+      target: '1742446787311'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1742446787311-2-1742446898705-target
+      selected: false
+      source: '1742446787311'
+      sourceHandle: '2'
+      target: '1742446898705'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: answer
+      id: 1742446898705-source-answer-target
+      selected: false
+      source: '1742446898705'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: answer
+      id: 1742451731296-source-1742448325619-target
+      selected: false
+      source: '1742451731296'
+      sourceHandle: source
+      target: '1742448325619'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: assigner
+      id: 1742451731296-source-1742452435565-target
+      selected: false
+      source: '1742451731296'
+      sourceHandle: source
+      target: '1742452435565'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: question-classifier
+        targetType: if-else
+      id: 1742446787311-1-1742452572103-target
+      selected: false
+      source: '1742446787311'
+      sourceHandle: '1'
+      target: '1742452572103'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1742452572103-true-1742448203649-target
+      selected: false
+      source: '1742452572103'
+      sourceHandle: 'true'
+      target: '1742448203649'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1742452572103-false-1742452621093-target
+      selected: false
+      source: '1742452572103'
+      sourceHandle: 'false'
+      target: '1742452621093'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: answer
+      id: 1742452830955-source-1742452901225-target
+      selected: false
+      source: '1742452830955'
+      sourceHandle: source
+      target: '1742452901225'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: assigner
+      id: 1742452830955-source-1742452931519-target
+      selected: false
+      source: '1742452830955'
+      sourceHandle: source
+      target: '1742452931519'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: http-request
+      id: 1742448203649-source-1742522006449-target
+      selected: false
+      source: '1742448203649'
+      sourceHandle: source
+      target: '1742522006449'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: http-request
+      id: 1742452621093-source-1742522665480-target
+      source: '1742452621093'
+      sourceHandle: source
+      target: '1742522665480'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: code
+      id: 1742522006449-source-1742451731296-target
+      source: '1742522006449'
+      sourceHandle: source
+      target: '1742451731296'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: code
+      id: 1742522665480-source-1742452830955-target
+      source: '1742522665480'
+      sourceHandle: source
+      target: '1742452830955'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables: []
+      height: 54
+      id: '1742446598245'
+      position:
+        x: -339.55283203125
+        y: 247
+      positionAbsolute:
+        x: -339.55283203125
+        y: 247
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1742446898705.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 105
+      id: answer
+      position:
+        x: 961.7823250608479
+        y: 459.49076426832914
+      positionAbsolute:
+        x: 961.7823250608479
+        y: 459.49076426832914
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        classes:
+        - id: '1'
+          name: AI绘画问题
+        - id: '2'
+          name: 其他类问题
+        desc: ''
+        instructions: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: DeepSeek-V3
+          provider: langgenius/volcengine_maas/volcengine_maas
+        query_variable_selector:
+        - '1742446598245'
+        - sys.query
+        selected: false
+        title: 问题分类器
+        topics: []
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 172
+      id: '1742446787311'
+      position:
+        x: -38
+        y: 247
+      positionAbsolute:
+        x: -38
+        y: 247
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: internlm/internlm2_5-7b-chat
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - edition_type: basic
+          id: b7aa8865-08bd-489b-a2f3-d347d2127674
+          role: system
+          text: '{{#sys.query#}}'
+        selected: true
+        title: 其他类LLM大语言模型
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1742446898705'
+      position:
+        x: 257
+        y: 459.49076426832914
+      positionAbsolute:
+        x: 257
+        y: 459.49076426832914
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: ''
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params: {}
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - edition_type: basic
+          id: 2b7c5ff0-80a7-481a-b3c1-e2971f3aafef
+          role: system
+          text: '# Role: AI绘画和修改提示词专家
+
+
+            ## Profile
+
+            - 专长: 生成和修改AI绘画提示词
+
+            - 语言能力: 中英文双语流利
+
+            - 创造力: 高
+
+            - 安全意识: 强
+
+
+            ## Background
+
+            你是一位专业的AI绘画提示词专家,擅长将用户的简单描述转化为详细、富有创意的AI绘画提示词。你还能根据用户的反馈修改和优化提示词。
+
+
+            ## Goals
+
+            1. 将用户的简单描述转化为详细的AI绘画提示词
+
+            2. 根据用户的反馈修改和优化提示词
+
+            3. 确保生成的内容符合安全和道德标准
+
+
+            ## Skills
+
+            1. 理解用户意图并扩展描述
+
+            2. 将中文描述转换为英文AI绘画提示词
+
+            3. 根据用户反馈快速调整提示词
+
+            4. 应用安全过滤,确保内容适当
+
+
+            ## Rules
+
+            1. 始终以英语生成最终的AI绘画提示词
+
+            2. 提供详细、富有想象力的描述,包括场景、颜色、光线等元素
+
+            3. 严格遵守安全指南,不生成任何不适当或有害的内容
+
+            4. 在修改提示词时,保留原有的核心元素,同时融入用户的新要求
+
+
+            ## Workflow
+
+            1. 分析用户的初始描述
+
+            2. 扩展描述,添加细节和创意元素
+
+            3. 将扩展后的描述转换为英文AI绘画提示词
+
+            4. 如果用户要求修改,仔细分析新需求
+
+            5. 在原有提示词基础上进行调整,满足新要求
+
+            6. 确保修改后的提示词仍符合安全标准
+
+
+            ## Safety Guidelines
+
+            - 禁止生成色情内容
+
+            - 禁止仇恨言论和歧视内容
+
+            - 禁止骚扰和欺凌内容
+
+            - 禁止危险或有害内容
+
+            - 禁止粗俗或不尊重的语言
+
+            - 禁止暴力或血腥描述
+
+            - 禁止侮辱性语言
+
+            - 禁止亵渎或粗俗用语
+
+            - 禁止涉及非法活动
+
+            - 避免描述死亡、伤害或悲剧
+
+            - 不推广枪支或武器
+
+
+            ## Output Format
+
+            用户描述: [用户原始输入]
+
+            扩展描述: [中文扩展描述]
+
+            AI绘画提示词: [英文AI绘画提示词]
+
+
+            ## Examples
+
+            用户描述: 请帮我生成一个小男孩读书的画面,关键字是画。
+
+            扩展描述: 一幅温馨的画面,展示了一个可爱的小男孩专注地读着一本大书。他坐在一个舒适的扶手椅上,周围是温暖的黄色灯光。背景是一个充满书籍的书房,墙上挂着几幅艺术画作。男孩的表情充满好奇和喜悦,仿佛沉浸在书中的世界里。
+
+            AI绘画提示词: A heartwarming painting of a cute little boy reading a large
+            book. He is sitting in a comfortable armchair, surrounded by warm yellow
+            light. The background shows a study room filled with books and a few artistic
+            paintings on the walls. The boy''s expression is full of curiosity and
+            joy, as if he''s immersed in the world of the book. The scene has a soft,
+            painterly quality with visible brushstrokes.
+
+
+            用户反馈: 请帮我该写一下,增加一个背景颜色什么的
+
+            扩展描述: 在原有温馨画面的基础上,我们为背景添加了柔和的淡蓝色调。这种颜色能营造出宁静和专注的氛围,同时与温暖的黄色灯光形成和谐的对比。书房的墙壁现在呈现出淡蓝色,给人一种清新和宁静的感觉,更突出了小男孩读书时的专注状态。
+
+            AI绘画提示词: A heartwarming painting of a cute little boy reading a large
+            book. He is sitting in a comfortable armchair, surrounded by warm yellow
+            light. The background now features soft blue-toned walls in the study
+            room, creating a calm and focused atmosphere. This blue background contrasts
+            harmoniously with the warm yellow lighting. The room is filled with books
+            and a few artistic paintings on the blue walls. The boy''s expression
+            remains full of curiosity and joy, immersed in the world of the book.
+            The scene maintains a soft, painterly quality with visible brushstrokes,
+            now enhanced by the interplay of blue and yellow tones.'
+        - id: 55be3783-2f67-428c-95d6-122bfbea0d08
+          role: user
+          text: 请根据用户输入提示词:{{#sys.query#}}
+        selected: false
+        title: AI提示词转换
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1742448203649'
+      position:
+        x: 496.805795536957
+        y: -104.35595681626064
+      positionAbsolute:
+        x: 496.805795536957
+        y: -104.35595681626064
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1742451731296.result#}}'
+        desc: ''
+        selected: false
+        title: 文生图直接回复
+        type: answer
+        variables: []
+      height: 105
+      id: '1742448325619'
+      position:
+        x: 2052.0649042196505
+        y: -256.25860048678464
+      positionAbsolute:
+        x: 2052.0649042196505
+        y: -256.25860048678464
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "def main(json_data: str) -> str:\n    import json\n    data = json.loads(json_data)\n\
+          \    \n    # 从data数组中获取第一个图片信息\n    if data.get(\"success\") and data.get(\"\
+          data\"):\n        image_info = data[\"data\"][0]\n        if image_info[\"\
+          type\"] == \"image\":\n            filename = image_info[\"filename\"]\n\
+          \            url = image_info[\"url\"]\n            markdown_result = f\"\
+          ![{filename}]({url})\"\n            return {\"result\": markdown_result,\"\
+          picture_url\":url}\n    \n    return {\"result\": \"No valid image found\"\
+          }"
+        code_language: python3
+        desc: ''
+        outputs:
+          picture_url:
+            children: null
+            type: string
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 文生图代码提取图片URL
+        type: code
+        variables:
+        - value_selector:
+          - '1742522006449'
+          - body
+          variable: json_data
+      height: 54
+      id: '1742451731296'
+      position:
+        x: 1301.1212301043506
+        y: -104.35595681626064
+      positionAbsolute:
+        x: 1301.1212301043506
+        y: -104.35595681626064
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1742451731296'
+          - picture_url
+          variable_selector:
+          - conversation
+          - picture_url
+          write_mode: over-write
+        selected: false
+        title: 变量赋值
+        type: assigner
+        version: '2'
+      height: 88
+      id: '1742452435565'
+      position:
+        x: 2044.4538213416456
+        y: 12.412387598103876
+      positionAbsolute:
+        x: 2044.4538213416456
+        y: 12.412387598103876
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: empty
+            id: ea67e4c3-1d70-4c66-b3e5-f73c1e406da0
+            value: ''
+            varType: string
+            variable_selector:
+            - conversation
+            - picture_url
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 126
+      id: '1742452572103'
+      position:
+        x: 241.23614640249366
+        y: 25.296559805286137
+      positionAbsolute:
+        x: 241.23614640249366
+        y: 25.296559805286137
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen2.5-72b-instruct
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - edition_type: basic
+          id: 21e29965-8201-47d4-ba64-41ce889982ea
+          role: system
+          text: 请根据用户输入的提示词{{#sys.query#}}翻译成英文，其他不要输出
+        - id: 9bbbb08c-cd94-42f2-9937-b5c85d271980
+          role: user
+          text: ''
+        selected: false
+        title: 提示词中文转英文
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1742452621093'
+      position:
+        x: 489.44933052478734
+        y: 264.86570074384053
+      positionAbsolute:
+        x: 489.44933052478734
+        y: 264.86570074384053
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "def main(json_data: str) -> str:\n    import json\n    data = json.loads(json_data)\n\
+          \    \n    # 从data数组中获取第一个图片信息\n    if data.get(\"success\") and data.get(\"\
+          data\"):\n        image_info = data[\"data\"][0]\n        if image_info[\"\
+          type\"] == \"image\":\n            filename = image_info[\"filename\"]\n\
+          \            url = image_info[\"url\"]\n            markdown_result = f\"\
+          ![{filename}]({url})\"\n            return {\"result\": markdown_result,\"\
+          picture_url\":url}\n    \n    return {\"result\": \"No valid image found\"\
+          }"
+        code_language: python3
+        desc: ''
+        outputs:
+          picture_url:
+            children: null
+            type: string
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 图生图代码提取图片URL
+        type: code
+        variables:
+        - value_selector:
+          - '1742522665480'
+          - body
+          variable: json_data
+      height: 54
+      id: '1742452830955'
+      position:
+        x: 1464.879681390324
+        y: 264.86570074384053
+      positionAbsolute:
+        x: 1464.879681390324
+        y: 264.86570074384053
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1742452830955.result#}}'
+        desc: ''
+        selected: false
+        title: 图生图直接回复
+        type: answer
+        variables: []
+      height: 105
+      id: '1742452901225'
+      position:
+        x: 1744.4538213416456
+        y: 146.99101836628364
+      positionAbsolute:
+        x: 1744.4538213416456
+        y: 146.99101836628364
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1742452830955'
+          - picture_url
+          variable_selector:
+          - conversation
+          - picture_url
+          write_mode: over-write
+        selected: false
+        title: 变量赋值 2
+        type: assigner
+        version: '2'
+      height: 88
+      id: '1742452931519'
+      position:
+        x: 1744.4538213416456
+        y: 387.38891712199495
+      positionAbsolute:
+        x: 1744.4538213416456
+        y: 387.38891712199495
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        author: liangxiao6@live.com
+        desc: ''
+        height: 172
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"本工作流流主要是利用google
+          gemini-2.0-flash-exp-image-generation模型实现文生图，并通过文字修改图片方式实现的多伦对话AI绘画工作流，其中遇到了工作流中
+          问题分类器、条件分支、自定义接口组件、变量赋值等功能。","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 375
+      height: 172
+      id: '1742519708801'
+      position:
+        x: -478.3779449033087
+        y: 305.64654949758267
+      positionAbsolute:
+        x: -478.3779449033087
+        y: 305.64654949758267
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-note
+      width: 375
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-2811
+            key: ''
+            type: text
+            value: '{
+
+              "prompt": "{{#1742448203649.text#}}",
+
+              "model": "{{#env.model#}}",
+
+              "api_key": "{{#env.apikey#}}"
+
+              }
+
+              '
+          type: json
+        desc: ''
+        headers: Authorization:Bearer {{#env.gid#}}
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 调用自定义google 文生图
+        type: http-request
+        url: http://g13.geekaiapp.icu/api/gemini/generate-image
+        variables: []
+      height: 140
+      id: '1742522006449'
+      position:
+        x: 913.240781875015
+        y: -104.35595681626064
+      positionAbsolute:
+        x: 913.240781875015
+        y: -104.35595681626064
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-2812
+            key: ''
+            type: text
+            value: '{
+
+              "prompt": "{{#1742452621093.text#}}",
+
+              "image_url":"{{#conversation.picture_url#}}",
+
+              "model": "{{#env.model#}}",
+
+              "api_key": "{{#env.apikey#}}"
+
+              }
+
+              '
+          type: json
+        desc: ''
+        headers: Authorization:Bearer {{#env.gid#}}
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 调用自定义google 图片修改
+        type: http-request
+        url: http://g13.geekaiapp.icu/api/gemini/generate-editimage
+        variables: []
+      height: 156
+      id: '1742522665480'
+      position:
+        x: 913.240781875015
+        y: 264.86570074384053
+      positionAbsolute:
+        x: 913.240781875015
+        y: 264.86570074384053
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 32.329696059660364
+      y: 130.81123602383434
+      zoom: 0.8495117981039223

@@ -31,7 +31,7 @@ mcp_server = add_mcp_server(
     mount_path="/mcp",
     name="Jimeng Video MCP",
     description="集成了智能视频生成功能的 MCP 服务",
-    base_url="http://localhost:15123"
+    base_url="http://localhost:15100"
 )
 
 

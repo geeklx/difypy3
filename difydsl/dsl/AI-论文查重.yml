@@ -1,0 +1,442 @@
+app:
+  description: 本工作流主要是解决用户上传的文本类软件开发合同审查风险，提出审查意见，生成审查报告
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: AI-论文查重
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: package
+  value:
+    plugin_unique_identifier: langgenius/tongyi:0.0.18@ca40ec06ff35ca611fa5fdf99a15eeb007a9fe3bd725c9ff6d0436469ab0edc9
+- current_identifier: null
+  type: package
+  value:
+    plugin_unique_identifier: bowenliang123/md_exporter:0.5.0@7e9d1dd9aaac0e3206d44a90f5b1f993f27f0e6c4e6c61f0d937d28e386616a7
+- current_identifier: null
+  type: package
+  value:
+    plugin_unique_identifier: langgenius/wecom:0.0.2@13392834d29569db50915818a9bc93dae67260b29a98885945ecc35dc0e8aab4
+kind: app
+version: 0.2.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: document-extractor
+      id: 1745372262597-source-1745372422791-target
+      source: '1745372262597'
+      sourceHandle: source
+      target: '1745372422791'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: document-extractor
+        targetType: llm
+      id: 1745372422791-source-llm-target
+      source: '1745372422791'
+      sourceHandle: source
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: tool
+      id: llm-source-1745562656186-target
+      selected: false
+      source: llm
+      sourceHandle: source
+      target: '1745562656186'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: answer
+      id: 1745562656186-source-answer-target
+      source: '1745562656186'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: tool
+      id: 1745562656186-source-1745373309922-target
+      source: '1745562656186'
+      sourceHandle: source
+      target: '1745373309922'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: true
+        title: 开始
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: 论文文件
+          max_length: 48
+          options: []
+          required: true
+          type: file
+          variable: file
+      height: 90
+      id: '1745372262597'
+      position:
+        x: -333
+        y: 290
+      positionAbsolute:
+        x: -333
+        y: 290
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: ''
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 5f1efad3-e4e1-4c55-8836-49a4d2df5c50
+          role: system
+          text: "# Role: 学术诚信守护者\n\n## Profile\n- language: 中文\n- description: 专注检测学术论文原创性的专业角色，整合多维度查重技术保障学术规范\n\
+            - background: 拥有5年学术审查经验，参与研发3项查重系统专利\n- personality: 严谨审慎/客观中立/注重细节\n\
+            - expertise: 文本比对算法/学术写作规范/数据库管理\n- target_audience: 高校学生/研究生导师/学术期刊编辑\n\
+            \n## Skills\n\n1. 核心查重技术\n   - 多引擎交叉验证: 同步运行5个主流查重系统\n   - 语义片段分析: 识别改写/重组等隐蔽抄袭\n\
+            \   - 引用格式解析: 自动区分合理引用与不当复制\n   - 跨语言比对: 支持中英日等12种语言互译检测\n\n2. 辅助支撑能力\n\
+            \   - 学术规范指导: 提供格式标准化建议\n   - 重复率可视化: 生成热力图标注重复段落\n   - 数据安全管理: AES-256加密传输存储\n\
+            \   - 算法持续优化: 每月更新特征数据库\n\n## Rules\n\n1. 基本原则：\n   - 客观中立原则: 仅提供数据不作主观判断\n\
+            \   - 最小必要原则: 仅收集论文核心内容\n   - 透明可溯原则: 标注每个重复片段来源\n   - 动态校准原则: 根据最新学术标准调整阈值\n\
+            \n2. 行为准则：\n   - 禁止内容修改: 保持论文原始状态\n   - 即时反馈机制: 30分钟内返回完整报告\n   - 学术伦理优先:\
+            \ 自动过滤常识性内容\n   - 系统自检制度: 每日校验数据库完整性\n\n3. 限制条件：\n   - 不提供降重建议: 仅作事实性陈述\n\
+            \   - 不跨系统对比: 独立运行各查重引擎\n   - 不处理非文本内容: 图表/公式不在检测范围\n   - 不承诺绝对准确: 声明95%置信区间\n\
+            \n## Workflows\n\n- 目标: 提供权威可靠的学术原创性检测\n- 步骤 1: 论文预处理（格式标准化/引用剥离/分词处理）\n\
+            - 步骤 2: 分布式查重（同步启动知网/万方/Turnitin等系统）\n- 步骤 3: 结果聚合分析（去重加权/置信度计算）\n- 步骤\
+            \ 4: 生成三维报告（文字重复率/结构相似度/创新点评估）\n- 预期结果: 输出含212项检测指标的PDF报告（附可验证数字签名）\n\n\
+            ## Initialization\n作为学术诚信守护者，你必须遵守上述Rules，按照Workflows执行任务。当前系统时间：2023年12月，开始处理用户上传的毕业论文文件..."
+        - id: 580337bf-2217-4080-8bb1-cd1d8a2162f8
+          role: user
+          text: 请根据用户上传的文件{{#1745372422791.text#}}对该文件内容进行审查，提供文件的风险点
+        selected: false
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: llm
+      position:
+        x: 347
+        y: 290
+      positionAbsolute:
+        x: 347
+        y: 290
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: "{{#llm.text#}}\n <br>\n{{#1745562656186.files#}}"
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 124
+      id: answer
+      position:
+        x: 1036.68881727031
+        y: 170.25047900738548
+      positionAbsolute:
+        x: 1036.68881727031
+        y: 170.25047900738548
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_array_file: false
+        selected: false
+        title: 文档提取器
+        type: document-extractor
+        variable_selector:
+        - '1745372262597'
+        - file
+      height: 92
+      id: '1745372422791'
+      position:
+        x: 2
+        y: 290
+      positionAbsolute:
+        x: 2
+        y: 290
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: form
+          human_description:
+            en_US: Wecom Group bot webhook key
+            ja_JP: Wecom Group bot webhook key
+            pt_BR: Wecom Group bot webhook key
+            zh_Hans: 群机器人webhook的key
+          label:
+            en_US: Wecom Group bot webhook key
+            ja_JP: Wecom Group bot webhook key
+            pt_BR: Wecom Group bot webhook key
+            zh_Hans: 群机器人webhook的key
+          llm_description: ''
+          max: null
+          min: null
+          name: hook_key
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: secret-input
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Content to sent to the group.
+            ja_JP: Content to sent to the group.
+            pt_BR: Content to sent to the group.
+            zh_Hans: 群消息文本
+          label:
+            en_US: content
+            ja_JP: content
+            pt_BR: content
+            zh_Hans: 消息内容
+          llm_description: Content of the message
+          max: null
+          min: null
+          name: content
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: text
+          form: form
+          human_description:
+            en_US: Wecom Group bot message type
+            ja_JP: Wecom Group bot message type
+            pt_BR: Wecom Group bot message type
+            zh_Hans: 群机器人webhook的消息类型
+          label:
+            en_US: Wecom Group bot message type
+            ja_JP: Wecom Group bot message type
+            pt_BR: Wecom Group bot message type
+            zh_Hans: 群机器人webhook的消息类型
+          llm_description: ''
+          max: null
+          min: null
+          name: message_type
+          options:
+          - label:
+              en_US: Text
+              ja_JP: Text
+              pt_BR: Text
+              zh_Hans: 文本
+            value: text
+          - label:
+              en_US: Markdown
+              ja_JP: Markdown
+              pt_BR: Markdown
+              zh_Hans: Markdown
+            value: markdown
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: select
+        params:
+          content: ''
+          hook_key: ''
+          message_type: ''
+        provider_id: langgenius/wecom/wecom
+        provider_name: langgenius/wecom/wecom
+        provider_type: builtin
+        selected: false
+        title: 发送群消息
+        tool_configurations:
+          hook_key: 81620a86-d986-4509-ac0f-ac93aa7a9d4f
+          message_type: text
+        tool_label: 发送群消息
+        tool_name: wecom_group_bot
+        tool_parameters:
+          content:
+            type: mixed
+            value: '{{#llm.text#}}'
+        type: tool
+      height: 116
+      id: '1745373309922'
+      position:
+        x: 1050.296717383107
+        y: 385.001684452934
+      positionAbsolute:
+        x: 1050.296717383107
+        y: 385.001684452934
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Markdown text
+            ja_JP: Markdown text
+            pt_BR: Markdown text
+            zh_Hans: Markdown格式文本
+          label:
+            en_US: Markdown text
+            ja_JP: Markdown text
+            pt_BR: Markdown text
+            zh_Hans: Markdown格式文本
+          llm_description: ''
+          max: null
+          min: null
+          name: md_text
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        params:
+          md_text: ''
+        provider_id: bowenliang123/md_exporter/md_exporter
+        provider_name: bowenliang123/md_exporter/md_exporter
+        provider_type: builtin
+        selected: false
+        title: Markdown转Docx文件
+        tool_configurations: {}
+        tool_label: Markdown转Docx文件
+        tool_name: md_to_docx
+        tool_parameters:
+          md_text:
+            type: mixed
+            value: '{{#llm.text#}}'
+        type: tool
+      height: 54
+      id: '1745562656186'
+      position:
+        x: 651
+        y: 290
+      positionAbsolute:
+        x: 651
+        y: 290
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 457.2367737309196
+      y: -97.43762560827906
+      zoom: 1.1138504500668636

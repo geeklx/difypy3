@@ -1,5 +1,6 @@
 import requests
 import json
+import re
 
 def test_generate_html():
     # API端点
@@ -148,7 +149,7 @@ def test_generate_html():
 </body>
 </html>
     """
-    
+    html_content = re.sub(r'^```html\s*|\s*```$', '', html_content, flags=re.DOTALL).strip()
     # 请求数据
     payload = {
         "html_content": html_content,
