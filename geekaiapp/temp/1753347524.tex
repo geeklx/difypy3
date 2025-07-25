@@ -1,0 +1,23 @@
+请根据所以$\int_a^{\frac{a+b}{2}} |f(x)f'(x)|dx \le \frac{1}{2}g^2\left(\frac{a+b}{2}\right)$及
+$\int_{\frac{a+b}{2}}^b |f(x)f'(x)|dx \le \frac{1}{2}h^2\left(\frac{a+b}{2}\right).$
+
+再由柯西——施瓦兹不等式,可得:
+$g^2\left(\frac{a+b}{2}\right) = \left(\int_a^{\frac{a+b}{2}} |f'(t)|dt\right)^2$
+$\le \left(\int_a^{\frac{a+b}{2}} 1^2 dt\right)\left(\int_a^{\frac{a+b}{2}} |f'(t)|^2 dt\right) = \frac{b-a}{2}\int_a^{\frac{a+b}{2}} |f'(t)|^2 dt$
+
+以及$h^2\left(\frac{a+b}{2}\right) = \left(\int_{\frac{a+b}{2}}^b |f'(t)|dt\right)^2$
+$\le \left(\int_{\frac{a+b}{2}}^b 1^2 dt\right)\left(\int_{\frac{a+b}{2}}^b |f'(t)|^2 dt\right) = \frac{b-a}{2}\int_{\frac{a+b}{2}}^b |f'(t)|^2 dt$
+
+因此$\int_a^b |f(x)f'(x)|dx$
+$= \int_a^{\frac{a+b}{2}} |f(x)f'(x)|dx + \int_{\frac{a+b}{2}}^b |f(x)f'(x)|dx$
+$\le \frac{1}{2}g^2\left(\frac{a+b}{2}\right) + \frac{1}{2}h^2\left(\frac{a+b}{2}\right)$
+$\le \frac{b-a}{4}\int_a^{\frac{a+b}{2}} |f'(t)|^2 dt + \frac{b-a}{4}\int_{\frac{a+b}{2}}^b |f'(t)|^2 dt$
+$= \frac{b-a}{4}\int_a^b |f'(x)|^2 dx$
+
+即$\int_a^b |f(x)f'(x)|dx \le \frac{b-a}{4}\int_a^b |f'(x)|^2 dx$, 取$a = 0, b = 2$可得:
+$\int_0^2 |f(x)f'(x)|dx \le \frac{1}{2}\int_0^2 |f'(x)|^2 dx \le \int_0^2 |f'(x)|^2 dx.$
+
+即证出: $\int_0^2 |f(x)f'(x)|dx \le \int_0^2 |f'(x)|^2 dx.$
+
+4、【参考解答】:令$g(x) = \sum_{n=0}^\infty \frac{1}{n!}x^{n+2},$ 其中$x \in (-\infty,+\infty),$ 则利用
+幂级数的连续可微性可知:对这个数据内容进行完整的输出

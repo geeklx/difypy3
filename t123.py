@@ -326,6 +326,41 @@ def main(arg1: str) -> dict:
         }
 
 
+import json
+
+
+def main(arg1: str) -> dict:
+    # 按 ```json 分割，取后半部分
+    part = arg1.split('```json', 1)[-1]
+    # 再按 ``` 分割，取第一部分并去除首尾空白
+    json_content = part.split('```', 1)[0].strip()
+
+    try:
+        # 解析JSON内容
+        data = json.loads(json_content)
+        # 转换为表格格式
+        table = []
+        for item in data:
+            # 为每个发票创建记录，包含所有字段
+            invoice_data = [
+                item.get('发票代码', ''),
+                item.get('发票号码', ''),
+                item.get('开票日期', ''),
+                item.get('开票类目', ''),
+                str(item.get('金额', '')),
+                str(item.get('税额', '')),
+                item.get('发票类型', '')
+            ]
+            table.append(invoice_data)
+
+        return {
+            "result": str(table).replace("'", '"')
+        }
+    except json.JSONDecodeError:
+        # 若JSON解析失败，返回原始内容
+        return {
+            "result": [["错误", "JSON解析失败"]]
+        }
 
 
 if __name__ == "__main__":
