@@ -19,9 +19,11 @@ DB_NAME = 'student_score'
 # DB_NAME = 'os.getenv("DB_NAME")'
 
 # 构建数据库URL     mysql+mysqlconnector://root:123456@192.168.31.115:3306/student_score
+# 构建数据库URL     mysql+mysqlconnector://root:123456@192.168.31.115:3306/test_db
 # 构建数据库URL     mysql+pymysql://root:123456%40192.168.31.115:3306/student_score
-# 构建数据库URL     mysql+pymysql://root:123456@192.168.31.115:3306/student_score
-# 构建数据库URL     mysql+pymysql://root:123456@localhost:3306/student_score
+# 构建数据库URL     mysql+pymysql://root:123456%40192.168.31.115:3306/test_db
+# 构建数据库URL     mysql+pymysql://root:123456@192.168.31.115:3306/test_db
+# 构建数据库URL     mysql+pymysql://root:123456@localhost:3306/test_db
 DATABASE_URL = f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 # DATABASE_URL = f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST2}/{DB_NAME}"
 

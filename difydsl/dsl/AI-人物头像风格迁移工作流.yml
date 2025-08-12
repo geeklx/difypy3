@@ -7,7 +7,7 @@ app:
   use_icon_as_answer_icon: false
 dependencies: []
 kind: app
-version: 0.2.0
+version: 0.3.0
 workflow:
   conversation_variables: []
   environment_variables:
@@ -256,6 +256,6 @@ workflow:
       type: custom
       width: 244
     viewport:
-      x: -648.5897157658837
-      y: 11.042450895189916
+      x: -203.5897157658838
+      y: 7.042450895189916
       zoom: 1.0824389880881042

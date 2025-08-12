@@ -9,15 +9,15 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/siliconflow:0.0.12@2ab1fcd77138b7ecdd707790aa1936d5c187fca547ebd165728237b0630c3a44
-- current_identifier: null
-  type: marketplace
-  value:
-    marketplace_plugin_unique_identifier: langgenius/openai_api_compatible:0.0.16@77274df8fe2632cac66bfd153fcc75aa5e96abbe92b5c611b8984ad9f4cd4457
-- current_identifier: null
-  type: marketplace
-  value:
     marketplace_plugin_unique_identifier: allenwriter/doubao_image:0.0.1@d9cb638d96848452b8fc2296c61ce93082a5ffa6968a114c15d008cbd4b3730b
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai_api_compatible:0.0.19@219552f62b54919d6fd317c737956d3b2cc97719b85f0179bb995e5a512b7ebb
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/siliconflow:0.0.22@588c9f60178d37985626f1118347eb92bedcd8cb27d25bafc4ac929027ec51dc
 kind: app
 version: 0.3.0
 workflow:
@@ -39,11 +39,11 @@ workflow:
       - remote_url
       enabled: false
       fileUploadConfig:
-        audio_file_size_limit: 500
+        audio_file_size_limit: 50
         batch_count_limit: 5
         file_size_limit: 15
-        image_file_size_limit: 100
-        video_file_size_limit: 500
+        image_file_size_limit: 10
+        video_file_size_limit: 100
         workflow_file_upload_limit: 10
       image:
         enabled: false
@@ -433,7 +433,7 @@ workflow:
       positionAbsolute:
         x: 1649
         y: 465
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -1030,12 +1030,12 @@ workflow:
       positionAbsolute:
         x: 1028
         y: 622
-      selected: false
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
       width: 244
     viewport:
-      x: -345.0308800388141
-      y: -176.17314951873811
-      zoom: 0.8408964174250557
+      x: 104.49510382711105
+      y: -212.9455208541358
+      zoom: 1.109569474932947

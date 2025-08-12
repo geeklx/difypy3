@@ -1,0 +1,674 @@
+app:
+  description: AI-中小学英语生成同类型题3
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: AI-翻译集合
+  use_icon_as_answer_icon: true
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.0.37@9e635dd61046ede51c76c174a0c7dc723616cd6698b18c0273c0ee11aeb9accd
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/gemini:0.3.0@3d5be07581c53609a49d2bbb47be98c2e10820591bfc99f686b005d2c1ef95d9
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: bowenliang123/md_exporter:1.10.0@c75d120ab14b2bbc6f56d15f854cf2a2d1dfb464b6245ab9ce56a3e9f98b1273
+kind: app
+version: 0.3.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: '你可以这样说：
+
+
+      '
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+    - Translation, which is closely related to many disciplines, usually refers to
+      the process or result of transforming the content of one language or language
+      variant into another language or language variant, or reproducing a text composed
+      of one language material in another language. Its function is to enable readers
+      who do not understand the original text to understand its ideological content,
+      making it possible for social groups and ethnic groups speaking different languages
+      to communicate.
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: tool
+      id: 1748525958382-source-1748525975509-target
+      selected: false
+      source: '1748525958382'
+      sourceHandle: source
+      target: '1748525975509'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: answer
+      id: 1748525975509-source-1748530637671-target
+      selected: false
+      source: '1748525975509'
+      sourceHandle: source
+      target: '1748530637671'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1742961448129-source-17539403713780-target
+      source: '1742961448129'
+      sourceHandle: source
+      target: '17539403713780'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1742961448129-source-1754269793887-target
+      source: '1742961448129'
+      sourceHandle: source
+      target: '1754269793887'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1742961448129-source-1754269799983-target
+      source: '1742961448129'
+      sourceHandle: source
+      target: '1754269799983'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: template-transform
+        targetType: tool
+      id: 1754270277694-source-1748525958382-target
+      source: '1754270277694'
+      sourceHandle: source
+      target: '1748525958382'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: template-transform
+      id: 17539403713780-source-1754270277694-target
+      source: '17539403713780'
+      sourceHandle: source
+      target: '1754270277694'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: template-transform
+      id: 1754269793887-source-1754270277694-target
+      source: '1754269793887'
+      sourceHandle: source
+      target: '1754270277694'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: template-transform
+      id: 1754269799983-source-1754270277694-target
+      source: '1754269799983'
+      sourceHandle: source
+      target: '1754270277694'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables: []
+      height: 54
+      id: '1742961448129'
+      position:
+        x: 30
+        y: 244
+      positionAbsolute:
+        x: 30
+        y: 244
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: '%Y-%m-%d %H:%M:%S'
+          form: form
+          human_description:
+            en_US: Time format in strftime standard.
+            ja_JP: Time format in strftime standard.
+            pt_BR: Time format in strftime standard.
+            zh_Hans: strftime 标准的时间格式。
+          label:
+            en_US: Format
+            ja_JP: Format
+            pt_BR: Format
+            zh_Hans: 格式
+          llm_description: null
+          max: null
+          min: null
+          name: format
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: UTC
+          form: form
+          human_description:
+            en_US: Timezone
+            ja_JP: Timezone
+            pt_BR: Timezone
+            zh_Hans: 时区
+          label:
+            en_US: Timezone
+            ja_JP: Timezone
+            pt_BR: Timezone
+            zh_Hans: 时区
+          llm_description: null
+          max: null
+          min: null
+          name: timezone
+          options:
+          - label:
+              en_US: UTC
+              ja_JP: UTC
+              pt_BR: UTC
+              zh_Hans: UTC
+            value: UTC
+          - label:
+              en_US: America/New_York
+              ja_JP: America/New_York
+              pt_BR: America/New_York
+              zh_Hans: 美洲/纽约
+            value: America/New_York
+          - label:
+              en_US: America/Los_Angeles
+              ja_JP: America/Los_Angeles
+              pt_BR: America/Los_Angeles
+              zh_Hans: 美洲/洛杉矶
+            value: America/Los_Angeles
+          - label:
+              en_US: America/Chicago
+              ja_JP: America/Chicago
+              pt_BR: America/Chicago
+              zh_Hans: 美洲/芝加哥
+            value: America/Chicago
+          - label:
+              en_US: America/Sao_Paulo
+              ja_JP: America/Sao_Paulo
+              pt_BR: América/São Paulo
+              zh_Hans: 美洲/圣保罗
+            value: America/Sao_Paulo
+          - label:
+              en_US: Asia/Shanghai
+              ja_JP: Asia/Shanghai
+              pt_BR: Asia/Shanghai
+              zh_Hans: 亚洲/上海
+            value: Asia/Shanghai
+          - label:
+              en_US: Asia/Ho_Chi_Minh
+              ja_JP: Asia/Ho_Chi_Minh
+              pt_BR: Ásia/Ho Chi Minh
+              zh_Hans: 亚洲/胡志明市
+            value: Asia/Ho_Chi_Minh
+          - label:
+              en_US: Asia/Tokyo
+              ja_JP: Asia/Tokyo
+              pt_BR: Asia/Tokyo
+              zh_Hans: 亚洲/东京
+            value: Asia/Tokyo
+          - label:
+              en_US: Asia/Dubai
+              ja_JP: Asia/Dubai
+              pt_BR: Asia/Dubai
+              zh_Hans: 亚洲/迪拜
+            value: Asia/Dubai
+          - label:
+              en_US: Asia/Kolkata
+              ja_JP: Asia/Kolkata
+              pt_BR: Asia/Kolkata
+              zh_Hans: 亚洲/加尔各答
+            value: Asia/Kolkata
+          - label:
+              en_US: Asia/Seoul
+              ja_JP: Asia/Seoul
+              pt_BR: Asia/Seoul
+              zh_Hans: 亚洲/首尔
+            value: Asia/Seoul
+          - label:
+              en_US: Asia/Singapore
+              ja_JP: Asia/Singapore
+              pt_BR: Asia/Singapore
+              zh_Hans: 亚洲/新加坡
+            value: Asia/Singapore
+          - label:
+              en_US: Europe/London
+              ja_JP: Europe/London
+              pt_BR: Europe/London
+              zh_Hans: 欧洲/伦敦
+            value: Europe/London
+          - label:
+              en_US: Europe/Berlin
+              ja_JP: Europe/Berlin
+              pt_BR: Europe/Berlin
+              zh_Hans: 欧洲/柏林
+            value: Europe/Berlin
+          - label:
+              en_US: Europe/Moscow
+              ja_JP: Europe/Moscow
+              pt_BR: Europe/Moscow
+              zh_Hans: 欧洲/莫斯科
+            value: Europe/Moscow
+          - label:
+              en_US: Australia/Sydney
+              ja_JP: Australia/Sydney
+              pt_BR: Australia/Sydney
+              zh_Hans: 澳大利亚/悉尼
+            value: Australia/Sydney
+          - label:
+              en_US: Pacific/Auckland
+              ja_JP: Pacific/Auckland
+              pt_BR: Pacific/Auckland
+              zh_Hans: 太平洋/奥克兰
+            value: Pacific/Auckland
+          - label:
+              en_US: Africa/Cairo
+              ja_JP: Africa/Cairo
+              pt_BR: Africa/Cairo
+              zh_Hans: 非洲/开罗
+            value: Africa/Cairo
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: select
+        params:
+          format: ''
+          timezone: ''
+        provider_id: time
+        provider_name: time
+        provider_type: builtin
+        selected: false
+        title: 获取当前时间
+        tool_configurations:
+          format:
+            type: constant
+            value: '%Y-%m-%d %H:%M:%S'
+          timezone:
+            type: constant
+            value: Asia/Shanghai
+        tool_description: 一个用于获取当前时间的工具。
+        tool_label: 获取当前时间
+        tool_name: current_time
+        tool_node_version: '2'
+        tool_parameters: {}
+        type: tool
+      height: 116
+      id: '1748525958382'
+      position:
+        x: 1238
+        y: 372
+      positionAbsolute:
+        x: 1238
+        y: 372
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Markdown text
+            ja_JP: Markdown text
+            pt_BR: Markdown text
+            zh_Hans: Markdown格式文本
+          label:
+            en_US: Markdown text
+            ja_JP: Markdown text
+            pt_BR: Markdown text
+            zh_Hans: Markdown格式文本
+          llm_description: ''
+          max: null
+          min: null
+          name: md_text
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Filename of the output file
+            ja_JP: Filename of the output file
+            pt_BR: Filename of the output file
+            zh_Hans: 输出文件名
+          label:
+            en_US: Filename of the output file
+            ja_JP: Filename of the output file
+            pt_BR: Filename of the output file
+            zh_Hans: 输出文件名
+          llm_description: ''
+          max: null
+          min: null
+          name: output_filename
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          md_text: ''
+          output_filename: ''
+        provider_id: bowenliang123/md_exporter/md_exporter
+        provider_name: bowenliang123/md_exporter/md_exporter
+        provider_type: builtin
+        selected: false
+        title: Markdown转PDF文件
+        tool_configurations: {}
+        tool_description: 一个用于将Markdown转换为PDF文件的工具
+        tool_label: Markdown转PDF文件
+        tool_name: md_to_pdf
+        tool_node_version: '2'
+        tool_parameters:
+          md_text:
+            type: mixed
+            value: '{{#1754270277694.output#}}'
+          output_filename:
+            type: mixed
+            value: 翻译集合{{#1748525958382.text#}}
+        type: tool
+      height: 54
+      id: '1748525975509'
+      position:
+        x: 1540
+        y: 372
+      positionAbsolute:
+        x: 1540
+        y: 372
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1754270277694.output#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 105
+      id: '1748530637671'
+      position:
+        x: 1842
+        y: 372
+      positionAbsolute:
+        x: 1842
+        y: 372
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1748523986796'
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-plus
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 1bfba2c1-7f17-48f8-a5ba-167c03d33375
+          role: system
+          text: "你是一个专业的翻译助手，负责中英文互译。请遵循以下规则：\n1. 自动识别输入语言，如果是中文则翻译成英文，如果是英文则翻译成中文\n\
+            2. 保持原文的语气和风格\n3. 确保翻译准确、自然、地道\n4. 对于专业术语要准确把握\n5. 如果遇到不确定的内容，在翻译后用括号标注说明\n\
+            6. 输出格式：\n   通义千问的译文：[翻译结果]\n"
+        - id: 3f4d94db-fc0d-4b1d-b500-11d811f2ceea
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: 通义千问
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1742961448129'
+            - file
+          enabled: false
+      height: 90
+      id: '17539403713780'
+      position:
+        x: 332
+        y: 244
+      positionAbsolute:
+        x: 332
+        y: 244
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: c25aab16-4d6c-48e5-ba2e-f7d9912c23a9
+          role: system
+          text: "你是一个专业的翻译助手，负责中英文互译。请遵循以下规则：\n1. 自动识别输入语言，如果是中文则翻译成英文，如果是英文则翻译成中文\n\
+            2. 保持原文的语气和风格\n3. 确保翻译准确、自然、地道\n4. 对于专业术语要准确把握\n5. 如果遇到不确定的内容，在翻译后用括号标注说明\n\
+            6. 输出格式：\n   Google的译文：翻译结果\n"
+        - id: bea50e5a-a696-4375-a1fe-6ea62321a166
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: Gemini
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1754269793887'
+      position:
+        x: 332
+        y: 372
+      positionAbsolute:
+        x: 332
+        y: 372
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-v3
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 2ad9fec7-7cce-47e6-bfba-cea9e2ad5271
+          role: system
+          text: "你是一个专业的翻译助手，负责中英文互译。请遵循以下规则：\n1. 自动识别输入语言，如果是中文则翻译成英文，如果是英文则翻译成中文\n\
+            2. 保持原文的语气和风格\n3. 确保翻译准确、自然、地道\n4. 对于专业术语要准确把握\n5. 如果遇到不确定的内容，在翻译后用括号标注说明\n\
+            6. 输出格式：\n   DeepSeek的译文：翻译结果\n"
+        - id: b518c922-9e2e-466a-a640-96980aa8822b
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: DeepSeek
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1754269799983'
+      position:
+        x: 332
+        y: 500
+      positionAbsolute:
+        x: 332
+        y: 500
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        selected: false
+        template: "原文：{{ query }}\r\n{{ a1 }}\r\n{{ a2 }}\r\n{{ a3 }}"
+        title: 模板转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - sys
+          - query
+          variable: query
+        - value_selector:
+          - '17539403713780'
+          - text
+          value_type: string
+          variable: a1
+        - value_selector:
+          - '1754269793887'
+          - text
+          value_type: string
+          variable: a2
+        - value_selector:
+          - '1754269799983'
+          - text
+          value_type: string
+          variable: a3
+      height: 54
+      id: '1754270277694'
+      position:
+        x: 810.0227588330422
+        y: 372
+      positionAbsolute:
+        x: 810.0227588330422
+        y: 372
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 122.04093441530767
+      y: -122.99904832689731
+      zoom: 0.952553007895798

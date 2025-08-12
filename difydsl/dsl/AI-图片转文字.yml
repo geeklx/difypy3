@@ -7,9 +7,9 @@ app:
   use_icon_as_answer_icon: true
 dependencies:
 - current_identifier: null
-  type: package
+  type: marketplace
   value:
-    plugin_unique_identifier: langgenius/tongyi:0.0.18@ca40ec06ff35ca611fa5fdf99a15eeb007a9fe3bd725c9ff6d0436469ab0edc9
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.0.37@9e635dd61046ede51c76c174a0c7dc723616cd6698b18c0273c0ee11aeb9accd
 kind: app
 model_config:
   agent_mode:
@@ -105,4 +105,4 @@ model_config:
   text_to_speech:
     enabled: true
   user_input_form: []
-version: 0.2.0
+version: 0.3.0

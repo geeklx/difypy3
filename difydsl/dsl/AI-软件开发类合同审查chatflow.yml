@@ -7,19 +7,19 @@ app:
   use_icon_as_answer_icon: false
 dependencies:
 - current_identifier: null
-  type: package
+  type: marketplace
   value:
-    plugin_unique_identifier: langgenius/tongyi:0.0.18@ca40ec06ff35ca611fa5fdf99a15eeb007a9fe3bd725c9ff6d0436469ab0edc9
+    marketplace_plugin_unique_identifier: langgenius/wecom:0.0.3@7a90abb01f25de45d35f26b6bd57dd8d70e0e2c74703274df43d6b2f1c648603
 - current_identifier: null
-  type: package
+  type: marketplace
   value:
-    plugin_unique_identifier: bowenliang123/md_exporter:0.5.0@7e9d1dd9aaac0e3206d44a90f5b1f993f27f0e6c4e6c61f0d937d28e386616a7
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.0.37@9e635dd61046ede51c76c174a0c7dc723616cd6698b18c0273c0ee11aeb9accd
 - current_identifier: null
-  type: package
+  type: marketplace
   value:
-    plugin_unique_identifier: langgenius/wecom:0.0.2@13392834d29569db50915818a9bc93dae67260b29a98885945ecc35dc0e8aab4
+    marketplace_plugin_unique_identifier: bowenliang123/md_exporter:1.10.0@c75d120ab14b2bbc6f56d15f854cf2a2d1dfb464b6245ab9ce56a3e9f98b1273
 kind: app
-version: 0.2.0
+version: 0.3.0
 workflow:
   conversation_variables: []
   environment_variables: []
@@ -153,7 +153,7 @@ workflow:
       positionAbsolute:
         x: -333
         y: 290
-      selected: false
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -229,7 +229,7 @@ workflow:
       positionAbsolute:
         x: 1036.68881727031
         y: 170.25047900738548
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -435,6 +435,6 @@ workflow:
       type: custom
       width: 244
     viewport:
-      x: -623.7632262690806
-      y: -119.43762560827923
+      x: -653.7632262690806
+      y: -44.937625608279234
       zoom: 1.1138504500668636

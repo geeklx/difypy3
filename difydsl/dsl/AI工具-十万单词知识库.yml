@@ -1,0 +1,108 @@
+app:
+  description: 你是一个英语专业老师，有着二十年的教学经验，可以熟练的写出单词对应的音标，如果从知识库能找到，就输出，并且标注好来源。如果从知识库找不到，就从网络上找出来，返回给用户，并且标注好来源。
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: chat
+  name: AI工具-十万单词知识库
+  use_icon_as_answer_icon: true
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai_api_compatible:0.0.19@219552f62b54919d6fd317c737956d3b2cc97719b85f0179bb995e5a512b7ebb
+kind: app
+model_config:
+  agent_mode:
+    enabled: false
+    max_iteration: 5
+    strategy: function_call
+    tools: []
+  annotation_reply:
+    enabled: false
+  chat_prompt_config: {}
+  completion_prompt_config: {}
+  dataset_configs:
+    datasets:
+      datasets:
+      - dataset:
+          enabled: true
+          id: 775a1ea3-da48-4c4a-a75d-d48a2c47357b
+    reranking_enable: false
+    reranking_mode: reranking_model
+    reranking_model:
+      reranking_model_name: gte-rerank
+      reranking_provider_name: langgenius/tongyi/tongyi
+    retrieval_model: multiple
+    top_k: 4
+  dataset_query_variable: ''
+  external_data_tools: []
+  file_upload:
+    allowed_file_extensions:
+    - .JPG
+    - .JPEG
+    - .PNG
+    - .GIF
+    - .WEBP
+    - .SVG
+    - .MP4
+    - .MOV
+    - .MPEG
+    - .WEBM
+    allowed_file_types: []
+    allowed_file_upload_methods:
+    - remote_url
+    - local_file
+    enabled: false
+    image:
+      detail: high
+      enabled: false
+      number_limits: 3
+      transfer_methods:
+      - remote_url
+      - local_file
+    number_limits: 3
+  model:
+    completion_params:
+      stop: []
+      temperature: 0.1
+    mode: chat
+    name: gemini-2.5-flash-preview-05-20
+    provider: langgenius/openai_api_compatible/openai_api_compatible
+  more_like_this:
+    enabled: false
+  opening_statement: 你可以说：
+  pre_prompt: '你是一个英语专业老师，有着二十年的教学经验，可以熟练的写出单词对应的音标，如果从知识库能找到，就输出，并且标注好来源。如果从知识库找不到，就从网络上找出来，返回给用户，并且标注好来源。
+
+    显示格式示例如下：
+
+    ‘
+
+    单词：aaal
+
+    注释：American Academy of Arts and Letters 美国艺术和文学学会
+
+    音标：[ˌeɪ eɪ eɪ ˈɛl]
+
+    来源：知识库 (注释), 互联网 (音标)
+
+    ’'
+  prompt_type: simple
+  retriever_resource:
+    enabled: true
+  sensitive_word_avoidance:
+    configs: []
+    enabled: false
+    type: ''
+  speech_to_text:
+    enabled: false
+  suggested_questions:
+  - aaal
+  - good
+  suggested_questions_after_answer:
+    enabled: false
+  text_to_speech:
+    enabled: false
+    language: ''
+    voice: ''
+  user_input_form: []
+version: 0.3.0

@@ -7,13 +7,13 @@ app:
   use_icon_as_answer_icon: false
 dependencies:
 - current_identifier: null
-  type: package
-  value:
-    plugin_unique_identifier: langgenius/tongyi:0.0.14@8cf00feb266b4afcfb344df28eba85c6e20ac8f1c5cd755ce74aa69c92fc7550
-- current_identifier: null
   type: marketplace
   value:
     marketplace_plugin_unique_identifier: jaguarliuu/rookie_rss:0.0.1@77247c73a3a4ca3e9dd3831e2063f858d2eba64ba5f2dd1ee65b1383489d5920
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.0.37@9e635dd61046ede51c76c174a0c7dc723616cd6698b18c0273c0ee11aeb9accd
 kind: app
 version: 0.3.0
 workflow:
@@ -35,11 +35,11 @@ workflow:
       - remote_url
       enabled: false
       fileUploadConfig:
-        audio_file_size_limit: 500
+        audio_file_size_limit: 50
         batch_count_limit: 5
         file_size_limit: 15
-        image_file_size_limit: 100
-        video_file_size_limit: 500
+        image_file_size_limit: 10
+        video_file_size_limit: 100
         workflow_file_upload_limit: 10
       image:
         enabled: false
@@ -406,7 +406,7 @@ workflow:
           required: true
           type: select
           variable: type
-      height: 89
+      height: 90
       id: '1749448556847'
       position:
         x: -342
@@ -426,7 +426,7 @@ workflow:
         title: 直接回复
         type: answer
         variables: []
-      height: 140
+      height: 143
       id: answer
       position:
         x: 2011.3290917739064
@@ -434,7 +434,7 @@ workflow:
       positionAbsolute:
         x: 2011.3290917739064
         y: 346.47265570470717
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -447,19 +447,19 @@ workflow:
         model:
           completion_params: {}
           mode: chat
-          name: deepseek-v3
+          name: qwen-max-latest
           provider: langgenius/tongyi/tongyi
         prompt_template:
         - id: f2978539-e311-4ba9-ae7e-b17ea6374d60
           role: system
-          text: ' 请将输出的表格{{#1749458027152.output#}}转换成markdown表格输出'
-        selected: false
+          text: ' 请将输出的表格{{#1749458027152.output#}}转换成Markdown表格输出'
+        selected: true
         title: 数组转markdown(LLM)
         type: llm
         variables: []
         vision:
           enabled: false
-      height: 89
+      height: 90
       id: '1749453881785'
       position:
         x: 1568.866746752858
@@ -467,7 +467,7 @@ workflow:
       positionAbsolute:
         x: 1568.866746752858
         y: 346.47265570470717
-      selected: false
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -566,7 +566,7 @@ workflow:
         selected: false
         title: 条件分支
         type: if-else
-      height: 461
+      height: 462
       id: '1749456497750'
       position:
         x: 38
@@ -696,13 +696,13 @@ workflow:
         title: 掘金
         tool_configurations:
           platform: juejin
-          result_num: 5
+          result_num: 10
         tool_description: rookie rss 多平台新闻聚合插件
         tool_label: rookie_rss
         tool_name: rookie_rss
         tool_parameters: {}
         type: tool
-      height: 115
+      height: 116
       id: '17494569389000'
       position:
         x: 390
@@ -832,20 +832,20 @@ workflow:
         title: bilibili
         tool_configurations:
           platform: bilibili
-          result_num: 5
+          result_num: 10
         tool_description: rookie rss 多平台新闻聚合插件
         tool_label: rookie_rss
         tool_name: rookie_rss
         tool_parameters: {}
         type: tool
-      height: 115
+      height: 116
       id: '17494569627420'
       position:
         x: 390
-        y: 98.00390625
+        y: 98.8161586421615
       positionAbsolute:
         x: 390
-        y: 98.00390625
+        y: 98.8161586421615
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -968,13 +968,13 @@ workflow:
         title: ac_fun
         tool_configurations:
           platform: acfun
-          result_num: 5
+          result_num: 10
         tool_description: rookie rss 多平台新闻聚合插件
         tool_label: rookie_rss
         tool_name: rookie_rss
         tool_parameters: {}
         type: tool
-      height: 115
+      height: 116
       id: '17494569748970'
       position:
         x: 390
@@ -1104,13 +1104,13 @@ workflow:
         title: 微博
         tool_configurations:
           platform: weibo
-          result_num: 5
+          result_num: 10
         tool_description: rookie rss 多平台新闻聚合插件
         tool_label: rookie_rss
         tool_name: rookie_rss
         tool_parameters: {}
         type: tool
-      height: 115
+      height: 116
       id: '17494569871550'
       position:
         x: 390
@@ -1240,13 +1240,13 @@ workflow:
         title: 虎嗅
         tool_configurations:
           platform: huxiu
-          result_num: 5
+          result_num: 10
         tool_description: rookie rss 多平台新闻聚合插件
         tool_label: rookie_rss
         tool_name: rookie_rss
         tool_parameters: {}
         type: tool
-      height: 115
+      height: 116
       id: '17494569986520'
       position:
         x: 376.86475732840813
@@ -1376,13 +1376,13 @@ workflow:
         title: 今日头条
         tool_configurations:
           platform: toutiao
-          result_num: 5
+          result_num: 10
         tool_description: rookie rss 多平台新闻聚合插件
         tool_label: rookie_rss
         tool_name: rookie_rss
         tool_parameters: {}
         type: tool
-      height: 115
+      height: 116
       id: '17494570150800'
       position:
         x: 384
@@ -1512,13 +1512,13 @@ workflow:
         title: 36kr
         tool_configurations:
           platform: 36kr
-          result_num: 5
+          result_num: 10
         tool_description: rookie rss 多平台新闻聚合插件
         tool_label: rookie_rss
         tool_name: rookie_rss
         tool_parameters: {}
         type: tool
-      height: 115
+      height: 116
       id: '17494570406760'
       position:
         x: 376.86475732840813
@@ -1648,13 +1648,13 @@ workflow:
         title: hellogithub
         tool_configurations:
           platform: hellogithub
-          result_num: 5
+          result_num: 10
         tool_description: rookie rss 多平台新闻聚合插件
         tool_label: rookie_rss
         tool_name: rookie_rss
         tool_parameters: {}
         type: tool
-      height: 115
+      height: 116
       id: '17494570570600'
       position:
         x: 384
@@ -1725,7 +1725,7 @@ workflow:
           - '17494569389000'
           - json
           variable: arg1
-      height: 53
+      height: 54
       id: '17494577308300'
       position:
         x: 796
@@ -1796,7 +1796,7 @@ workflow:
           - '17494569627420'
           - json
           variable: arg1
-      height: 53
+      height: 54
       id: '17494577662390'
       position:
         x: 802.00390625
@@ -1867,7 +1867,7 @@ workflow:
           - '17494569748970'
           - json
           variable: arg1
-      height: 53
+      height: 54
       id: '17494577806740'
       position:
         x: 802.00390625
@@ -1938,7 +1938,7 @@ workflow:
           - '17494569871550'
           - json
           variable: arg1
-      height: 53
+      height: 54
       id: '17494577932030'
       position:
         x: 802.00390625
@@ -2009,7 +2009,7 @@ workflow:
           - '17494569986520'
           - json
           variable: arg1
-      height: 53
+      height: 54
       id: '17494578075360'
       position:
         x: 790.1118351306802
@@ -2080,7 +2080,7 @@ workflow:
           - '17494570150800'
           - json
           variable: arg1
-      height: 53
+      height: 54
       id: '17494578218320'
       position:
         x: 802.00390625
@@ -2151,7 +2151,7 @@ workflow:
           - '17494570406760'
           - json
           variable: arg1
-      height: 53
+      height: 54
       id: '17494578335950'
       position:
         x: 796
@@ -2222,7 +2222,7 @@ workflow:
           - '17494570570600'
           - json
           variable: arg1
-      height: 53
+      height: 54
       id: '17494579749080'
       position:
         x: 790.1118351306802
@@ -2258,7 +2258,7 @@ workflow:
           - result
         - - '17494577308300'
           - result
-      height: 261
+      height: 262
       id: '1749458027152'
       position:
         x: 1230.1279172700993
@@ -2448,7 +2448,7 @@ workflow:
         tool_name: current_time
         tool_parameters: {}
         type: tool
-      height: 115
+      height: 116
       id: '1749458610637'
       position:
         x: 1568.866746752858
@@ -2462,6 +2462,6 @@ workflow:
       type: custom
       width: 244
     viewport:
-      x: 434.5085249137561
-      y: 55.5093594515788
-      zoom: 0.7071067848382936
+      x: -146.5199773590573
+      y: 52.04264684585661
+      zoom: 0.8472973503628416

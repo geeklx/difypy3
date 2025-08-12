@@ -18,6 +18,21 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+
+# 【关键修改】替换为清华 APT 源（解决源不可用问题）
+RUN echo "\
+    deb https://mirrors.aliyun.com/debian/ bookworm main contrib non-free\n\
+    deb https://mirrors.aliyun.com/debian/ bookworm-updates main contrib non-free\n\
+    deb https://mirrors.aliyun.com/debian/ bookworm-backports main contrib non-free\n\
+    deb https://mirrors.aliyun.com/debian-security/ bookworm-security main contrib non-free\n\
+" > /etc/apt/sources.list
+# 更新包管理器并安装系统依赖（FFmpeg、ImageMagick、Python3 等）
+RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing \
+    libfuse2 \
+    ffmpeg \
+    imagemagick \
+    && rm -rf /var/lib/apt/lists/*
+
 # 运行应用程序
 #CMD ["python", "geekaiapp/g_jiekou.py"]
 #CMD ["python", "geekaiapp/jimeng_video_service.py"]
@@ -30,3 +45,4 @@ CMD ["/start.sh"]
 
 #pip install -r requirements.txt
 #docker-compose up --build
+#docker-compose up -d

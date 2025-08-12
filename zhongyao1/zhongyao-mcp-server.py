@@ -93,5 +93,5 @@ async def get_yaocai_image(yaocai: str):
 # http://192.168.31.115:15501/sse
 if __name__ == "__main__":
     mcp.settings.host  = "0.0.0.0"
-    mcp.settings.port = 15501
+    mcp.settings.port = 15803
     mcp.run(transport="sse")

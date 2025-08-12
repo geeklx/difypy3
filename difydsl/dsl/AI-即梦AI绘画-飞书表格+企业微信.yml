@@ -7,15 +7,15 @@ app:
   use_icon_as_answer_icon: false
 dependencies:
 - current_identifier: null
-  type: package
+  type: marketplace
   value:
-    plugin_unique_identifier: langgenius/dingtalk:0.0.4@fe34a564a52c3a295e60ed97280ef47abd459d96310239cf9df5f04a5b1681b3
+    marketplace_plugin_unique_identifier: langgenius/feishu_spreadsheet:0.0.1@4ebeeab495e1f764bc668e7131c721b7f086769f822088212eb78bae8bee7216
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/feishu_spreadsheet:0.0.1@6b4da2c3bcab1aace954e92a8120bf09692951bc68c993debbd64cfb398fd30d
+    marketplace_plugin_unique_identifier: langgenius/dingtalk:0.0.4@1a167a005bd3509142f45f7a771f887c75437ea367840dee9760782a1a1ef082
 kind: app
-version: 0.2.0
+version: 0.3.0
 workflow:
   conversation_variables: []
   environment_variables:
@@ -221,6 +221,7 @@ workflow:
           retry_enabled: true
           retry_interval: 100
         selected: false
+        ssl_verify: true
         timeout:
           max_connect_timeout: 0
           max_read_timeout: 0
@@ -229,7 +230,7 @@ workflow:
         type: http-request
         url: http://g10.geekaiapp.icu/v1/images/generations
         variables: []
-      height: 136
+      height: 140
       id: '1738645745761'
       position:
         x: 241
@@ -341,9 +342,12 @@ workflow:
         selected: false
         title: 新增多行至工作表最后
         tool_configurations:
-          length: 1
+          length:
+            type: constant
+            value: 1
         tool_label: 新增多行至工作表最后
         tool_name: add_rows
+        tool_node_version: '2'
         tool_parameters:
           sheet_id:
             type: mixed
@@ -400,11 +404,18 @@ workflow:
         selected: false
         title: 发送群消息
         tool_configurations:
-          access_token: 61e91b2bde245fd46d795eb86aecc9451911a8281ab554a700d5cb8fdcc92b3a
-          message_type: text
-          sign_secret: SEC00980a71fc4d0deab6a8b02a917db8982608724b1cd5d053babcbb729560e6b8
+          access_token:
+            type: constant
+            value: 61e91b2bde245fd46d795eb86aecc9451911a8281ab554a700d5cb8fdcc92b3a
+          message_type:
+            type: constant
+            value: text
+          sign_secret:
+            type: constant
+            value: SEC00980a71fc4d0deab6a8b02a917db8982608724b1cd5d053babcbb729560e6b8
         tool_label: 发送群消息
         tool_name: dingtalk_group_bot
+        tool_node_version: '2'
         tool_parameters:
           content:
             type: mixed
@@ -424,6 +435,6 @@ workflow:
       type: custom
       width: 244
     viewport:
-      x: -398.51737274741333
-      y: 18.605194816972812
+      x: 247.53249401558242
+      y: -178.1226281411184
       zoom: 0.9225099364294117

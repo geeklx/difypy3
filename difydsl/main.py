@@ -13,7 +13,7 @@ load_dotenv()
 # PASSWORD = os.getenv("PASSWORD")  # Login password
 DIFY_ORIGIN = "http://localhost"
 EMAIL = "liangxiao6@live.com"
-PASSWORD = "wuyusheng@2011"
+PASSWORD = "aa111111"
 
 BASE_URL = f"{DIFY_ORIGIN}/console/api"  # Base URL for API
 DSL_FOLDER_PATH = "./dsl"  # Folder to save YML files

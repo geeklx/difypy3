@@ -1,0 +1,1017 @@
+app:
+  description: AI-中小学英语生成同类型题3
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: AI-中小学英语单词生题
+  use_icon_as_answer_icon: true
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.0.37@9e635dd61046ede51c76c174a0c7dc723616cd6698b18c0273c0ee11aeb9accd
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: bowenliang123/md_exporter:1.10.0@c75d120ab14b2bbc6f56d15f854cf2a2d1dfb464b6245ab9ce56a3e9f98b1273
+kind: app
+version: 0.3.0
+workflow:
+  conversation_variables:
+  - description: 基于数据库检索到的错题
+    id: 7a3583bf-a8da-42a4-a396-224fa7ae9ae5
+    name: error_questions_result
+    selector:
+    - conversation
+    - error_questions_result
+    value: []
+    value_type: array[string]
+  environment_variables:
+  - description: ''
+    id: 0046558d-88ec-45ea-9ff5-4b0655e71752
+    name: offset
+    selector:
+    - env
+    - offset
+    value: '0'
+    value_type: string
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: '你可以这样说：
+
+      1. family
+
+      2. have
+
+      3. thing
+
+      4. mother'
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: tool
+      id: 1748525958382-source-1748525975509-target
+      selected: false
+      source: '1748525958382'
+      sourceHandle: source
+      target: '1748525975509'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: answer
+      id: 1748525975509-source-1748530637671-target
+      selected: false
+      source: '1748525975509'
+      sourceHandle: source
+      target: '1748530637671'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: tool
+      id: 1748531231325-source-1748525958382-target
+      selected: false
+      source: '1748531231325'
+      sourceHandle: source
+      target: '1748525958382'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: template-transform
+      id: 1742961448129-source-1753941131486-target
+      selected: false
+      source: '1742961448129'
+      sourceHandle: source
+      target: '1753941131486'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: template-transform
+        targetType: if-else
+      id: 1753941131486-source-1753941202596-target
+      selected: false
+      source: '1753941131486'
+      sourceHandle: source
+      target: '1753941202596'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: tool
+      id: 1753941202596-true-1753941320940-target
+      source: '1753941202596'
+      sourceHandle: 'true'
+      target: '1753941320940'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1753941202596-false-1753941755096-target
+      source: '1753941202596'
+      sourceHandle: 'false'
+      target: '1753941755096'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 17539403713780-source-1753941909866-target
+      source: '17539403713780'
+      sourceHandle: source
+      target: '1753941909866'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: variable-aggregator
+        targetType: code
+      id: 1753941909866-source-1748531231325-target
+      source: '1753941909866'
+      sourceHandle: source
+      target: '1748531231325'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 1753941202596-e39e6860-6581-42ad-9fb1-28e4c576c72f-1753953943206-target
+      source: '1753941202596'
+      sourceHandle: e39e6860-6581-42ad-9fb1-28e4c576c72f
+      target: '1753953943206'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 1753953943206-source-17539403713780-target
+      source: '1753953943206'
+      sourceHandle: source
+      target: '17539403713780'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: llm
+      id: 1753941320940-source-1753953943206-target
+      source: '1753941320940'
+      sourceHandle: source
+      target: '1753953943206'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: 图片或PDF(pdf 或图片类型(png、jpeg、jpg、bmp、tiff)
+          max_length: 48
+          options: []
+          required: true
+          type: file
+          variable: file
+        - label: 科目
+          max_length: 48
+          options:
+          - 数学
+          - 语文
+          - 英语
+          - 物理
+          - 化学
+          - 道德与法制
+          - 历史
+          - 地理
+          - 生物
+          required: true
+          type: select
+          variable: subject
+        - label: 题目类型
+          max_length: 48
+          options:
+          - 选择题
+          - 填空题
+          - 判断题
+          - 问答题
+          - 套题
+          required: true
+          type: select
+          variable: question_type
+        - label: 难度等级(1-5)
+          max_length: 48
+          options:
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          required: true
+          type: select
+          variable: difficulty
+        - label: 生成同类型题目的数据
+          max_length: 48
+          options:
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          required: true
+          type: select
+          variable: questionsCount
+      height: 194
+      id: '1742961448129'
+      position:
+        x: 30
+        y: 371
+      positionAbsolute:
+        x: 30
+        y: 371
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: '%Y-%m-%d %H:%M:%S'
+          form: form
+          human_description:
+            en_US: Time format in strftime standard.
+            ja_JP: Time format in strftime standard.
+            pt_BR: Time format in strftime standard.
+            zh_Hans: strftime 标准的时间格式。
+          label:
+            en_US: Format
+            ja_JP: Format
+            pt_BR: Format
+            zh_Hans: 格式
+          llm_description: null
+          max: null
+          min: null
+          name: format
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: UTC
+          form: form
+          human_description:
+            en_US: Timezone
+            ja_JP: Timezone
+            pt_BR: Timezone
+            zh_Hans: 时区
+          label:
+            en_US: Timezone
+            ja_JP: Timezone
+            pt_BR: Timezone
+            zh_Hans: 时区
+          llm_description: null
+          max: null
+          min: null
+          name: timezone
+          options:
+          - label:
+              en_US: UTC
+              ja_JP: UTC
+              pt_BR: UTC
+              zh_Hans: UTC
+            value: UTC
+          - label:
+              en_US: America/New_York
+              ja_JP: America/New_York
+              pt_BR: America/New_York
+              zh_Hans: 美洲/纽约
+            value: America/New_York
+          - label:
+              en_US: America/Los_Angeles
+              ja_JP: America/Los_Angeles
+              pt_BR: America/Los_Angeles
+              zh_Hans: 美洲/洛杉矶
+            value: America/Los_Angeles
+          - label:
+              en_US: America/Chicago
+              ja_JP: America/Chicago
+              pt_BR: America/Chicago
+              zh_Hans: 美洲/芝加哥
+            value: America/Chicago
+          - label:
+              en_US: America/Sao_Paulo
+              ja_JP: America/Sao_Paulo
+              pt_BR: América/São Paulo
+              zh_Hans: 美洲/圣保罗
+            value: America/Sao_Paulo
+          - label:
+              en_US: Asia/Shanghai
+              ja_JP: Asia/Shanghai
+              pt_BR: Asia/Shanghai
+              zh_Hans: 亚洲/上海
+            value: Asia/Shanghai
+          - label:
+              en_US: Asia/Ho_Chi_Minh
+              ja_JP: Asia/Ho_Chi_Minh
+              pt_BR: Ásia/Ho Chi Minh
+              zh_Hans: 亚洲/胡志明市
+            value: Asia/Ho_Chi_Minh
+          - label:
+              en_US: Asia/Tokyo
+              ja_JP: Asia/Tokyo
+              pt_BR: Asia/Tokyo
+              zh_Hans: 亚洲/东京
+            value: Asia/Tokyo
+          - label:
+              en_US: Asia/Dubai
+              ja_JP: Asia/Dubai
+              pt_BR: Asia/Dubai
+              zh_Hans: 亚洲/迪拜
+            value: Asia/Dubai
+          - label:
+              en_US: Asia/Kolkata
+              ja_JP: Asia/Kolkata
+              pt_BR: Asia/Kolkata
+              zh_Hans: 亚洲/加尔各答
+            value: Asia/Kolkata
+          - label:
+              en_US: Asia/Seoul
+              ja_JP: Asia/Seoul
+              pt_BR: Asia/Seoul
+              zh_Hans: 亚洲/首尔
+            value: Asia/Seoul
+          - label:
+              en_US: Asia/Singapore
+              ja_JP: Asia/Singapore
+              pt_BR: Asia/Singapore
+              zh_Hans: 亚洲/新加坡
+            value: Asia/Singapore
+          - label:
+              en_US: Europe/London
+              ja_JP: Europe/London
+              pt_BR: Europe/London
+              zh_Hans: 欧洲/伦敦
+            value: Europe/London
+          - label:
+              en_US: Europe/Berlin
+              ja_JP: Europe/Berlin
+              pt_BR: Europe/Berlin
+              zh_Hans: 欧洲/柏林
+            value: Europe/Berlin
+          - label:
+              en_US: Europe/Moscow
+              ja_JP: Europe/Moscow
+              pt_BR: Europe/Moscow
+              zh_Hans: 欧洲/莫斯科
+            value: Europe/Moscow
+          - label:
+              en_US: Australia/Sydney
+              ja_JP: Australia/Sydney
+              pt_BR: Australia/Sydney
+              zh_Hans: 澳大利亚/悉尼
+            value: Australia/Sydney
+          - label:
+              en_US: Pacific/Auckland
+              ja_JP: Pacific/Auckland
+              pt_BR: Pacific/Auckland
+              zh_Hans: 太平洋/奥克兰
+            value: Pacific/Auckland
+          - label:
+              en_US: Africa/Cairo
+              ja_JP: Africa/Cairo
+              pt_BR: Africa/Cairo
+              zh_Hans: 非洲/开罗
+            value: Africa/Cairo
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: select
+        params:
+          format: ''
+          timezone: ''
+        provider_id: time
+        provider_name: time
+        provider_type: builtin
+        selected: false
+        title: 获取当前时间
+        tool_configurations:
+          format:
+            type: constant
+            value: '%Y-%m-%d %H:%M:%S'
+          timezone:
+            type: constant
+            value: Asia/Shanghai
+        tool_description: 一个用于获取当前时间的工具。
+        tool_label: 获取当前时间
+        tool_name: current_time
+        tool_node_version: '2'
+        tool_parameters: {}
+        type: tool
+      height: 116
+      id: '1748525958382'
+      position:
+        x: 2597.482431337085
+        y: 556.1959477715247
+      positionAbsolute:
+        x: 2597.482431337085
+        y: 556.1959477715247
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Markdown text
+            ja_JP: Markdown text
+            pt_BR: Markdown text
+            zh_Hans: Markdown格式文本
+          label:
+            en_US: Markdown text
+            ja_JP: Markdown text
+            pt_BR: Markdown text
+            zh_Hans: Markdown格式文本
+          llm_description: ''
+          max: null
+          min: null
+          name: md_text
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Filename of the output file
+            ja_JP: Filename of the output file
+            pt_BR: Filename of the output file
+            zh_Hans: 输出文件名
+          label:
+            en_US: Filename of the output file
+            ja_JP: Filename of the output file
+            pt_BR: Filename of the output file
+            zh_Hans: 输出文件名
+          llm_description: ''
+          max: null
+          min: null
+          name: output_filename
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          md_text: ''
+          output_filename: ''
+        provider_id: bowenliang123/md_exporter/md_exporter
+        provider_name: bowenliang123/md_exporter/md_exporter
+        provider_type: builtin
+        selected: false
+        title: Markdown转PDF文件
+        tool_configurations: {}
+        tool_description: 一个用于将Markdown转换为PDF文件的工具
+        tool_label: Markdown转PDF文件
+        tool_name: md_to_pdf
+        tool_node_version: '2'
+        tool_parameters:
+          md_text:
+            type: mixed
+            value: '{{#1748531231325.markdown_text#}}'
+          output_filename:
+            type: mixed
+            value: 同类型题练习{{#1748525958382.text#}}
+        type: tool
+      height: 54
+      id: '1748525975509'
+      position:
+        x: 2932.6318623662587
+        y: 556.1959477715247
+      positionAbsolute:
+        x: 2932.6318623662587
+        y: 556.1959477715247
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1748525975509.files#}}'
+        desc: ''
+        selected: false
+        title: 同类型题型生成
+        type: answer
+        variables: []
+      height: 105
+      id: '1748530637671'
+      position:
+        x: 3301.3752243732883
+        y: 556.1959477715247
+      positionAbsolute:
+        x: 3301.3752243732883
+        y: 556.1959477715247
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import json\nimport re\n\ndef main(arg1: str) -> dict:\n    try:\n\
+          \        match = re.search(r'```json\\s*(.*?)\\s*```', arg1, re.DOTALL)\n\
+          \        inner_json_str = match.group(1).strip()\n        markdown_text1\
+          \ = \"\"\n        markdown_text = \"\"\n        original_questions_processed\
+          \ = {}\n        question_counter = {}\n        try:\n            question_data\
+          \ = json.loads(inner_json_str)\n            original_question = question_data.get(\"\
+          original_question\", \"\")\n            generated_questions = question_data.get(\"\
+          generated_questions\", [])\n            # 为每个原题分配一个编号\n            if original_question\
+          \ not in original_questions_processed:\n                original_questions_processed[original_question]\
+          \ = len(original_questions_processed) + 1\n                question_counter[original_question]\
+          \ = 0\n\n            original_question_num = original_questions_processed[original_question]\n\
+          \n            # 只有第一次遇到原题时才添加原题信息\n            if question_counter[original_question]\
+          \ == 0:\n                markdown_text1 = f\"## 原题{original_question_num}：{original_question}\\\
+          n\\n\"\n\n            for i, question in enumerate(generated_questions,\
+          \ 1):\n                # 更新同类型题的计数\n                question_counter[original_question]\
+          \ += 1\n                current_question_num = question_counter[original_question]\n\
+          \n                # 处理转义换行符（将JSON中的\\n转换为实际换行）\n                explanation\
+          \ = question.get(\"explanation\", \"\").replace(\"\\\\n\", \"\\n\")\n\n\
+          \                # # 如果不是第一个同类型题，再次显示原题信息\n                # if i > 1 or\
+          \ current_question_num > 1:\n                #     markdown_text1 = f\"\
+          ## 原题{original_question_num}：{original_question}\\n\\n\"\n\n           \
+          \     markdown_text += f\"### 同类型题{current_question_num}：{question.get('question_text',\
+          \ '')}\\n\\n\"\n                markdown_text += f\"**题目类型**：{question.get('question_type',\
+          \ '')}\\n\\n\"\n                markdown_text += f\"**学科**：{question.get('subject',\
+          \ '')}\\n\\n\"\n                markdown_text += f\"**难度等级(1-5)**：{question.get('difficulty_level',\
+          \ '')}\\n\\n\"\n                markdown_text += f\"**题目答案**：{question.get('answer',\
+          \ '')}\\n\\n\"\n                markdown_text += f\"**题目详解**：\\n\\n{explanation}\\\
+          n\\n---\\n\\n\"\n        except Exception as e:\n            return {\"\
+          error\": f\"发生未知错误: {e}\"}\n        return {\"markdown_text\": markdown_text1\
+          \ + markdown_text}\n    except Exception as e:\n        return {\"markdown_text\"\
+          : f\"处理过程中出错：{str(e)}\"}\n"
+        code_language: python3
+        default_value:
+        - key: markdown_text
+          type: string
+          value: ''
+        desc: ''
+        error_strategy: default-value
+        outputs:
+          markdown_text:
+            children: null
+            type: string
+        selected: false
+        title: JSON转markdown
+        type: code
+        variables:
+        - value_selector:
+          - '1753941909866'
+          - output
+          value_type: string
+          variable: arg1
+      height: 90
+      id: '1748531231325'
+      position:
+        x: 2266.532241680143
+        y: 556.1959477715247
+      positionAbsolute:
+        x: 2266.532241680143
+        y: 556.1959477715247
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1748523986796'
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-plus
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 1bfba2c1-7f17-48f8-a5ba-167c03d33375
+          role: system
+          text: "# Role: 英语词汇题目生成专家\n\n## Profile\n- language: 中文\n- description:\
+            \ 一位专门为英语学习者设计词汇题目的专家，能够根据给定单词生成高质量的填空题或选择题，确保用户提供的单词是唯一正确答案\n- background:\
+            \ 拥有语言学、教育学背景，精通英语词汇教学与题目设计，熟悉各类英语考试风格（如TOEFL、IELTS、GRE、CET等）\n- personality:\
+            \ 严谨、逻辑清晰、注重细节，具备教育者的耐心与创造力\n- expertise: 词汇题目设计、英语教学、语言评估、题项难度控制\n- target_audience:\
+            \ 英语教师、学生、考试培训机构、在线教育平台\n\n## Skills\n\n1. 题目设计\n   - 填空题设计: 根据指定单词构建语境明确、语法完整的句子，确保该词是唯一正确答案\n\
+            \   - 选择题设计: 创造明确、具干扰性的选项，保证目标单词为唯一正确选项\n   - 难度调控: 根据目标用户的语言水平，调整题目难度（初级/中级/高级）\n\
+            \   - 语境构建: 构造自然、真实、教学价值高的语境，提升题目教育意义\n\n2. 教学辅助技能\n   - 词性识别: 准确识别词性以构建语法结构合理的题干\n\
+            \   - 同义/反义词运用: 利用干扰项增强题目辨析性\n   - 语法搭配控制: 控制句子逻辑，使目标词与上下文搭配自然\n   - 语言风格匹配:\
+            \ 题目风格可匹配考试或练习场景，如学术、日常、正式、非正式等\n\n## Rules\n\n1. 基本原则：\n   - 明确目标词: 所有题目必须以用户提供的单词为唯一正确答案\n\
+            \   - 题型规范: 仅生成填空题或四选一选择题\n   - 上下文真实: 题干语句必须自然、通顺、语法正确\n   - 唯一正确: 所有干扰项必须不构成正确答案，确保答案唯一性\n\
+            \n2. 行为准则：\n   - 精准表达: 避免含糊或多义表达\n   - 教育导向: 所有题目应具有词汇学习或考察价值\n   - 语言地道:\
+            \ 使用标准美式或英式英语表达，避免生造句\n   - 逻辑一致: 保证题干与选项在语义和语法上的一致性\n\n3. 限制条件：\n   -\
+            \ 不生成含有多个正确答案的题目\n   - 不使用生僻或极不常见单词作为干扰项\n   - 不使用用户词汇在题干中直接出现（除非为选项）\n\
+            \   - 不生成开放性问题或主观题目\n\n## Workflows\n\n- 目标: 根据用户提供的英语单词，生成一道以该单词为正确答案的填空题或选择题\n\
+            \n- 步骤 1: 接收用户提供的目标单词（包含词性与含义）\n- 步骤 2: 判断生成题型（填空题或选择题），可随机或由用户指定\n- 步骤\
+            \ 3: 构造逻辑清晰、语法准确、语境自然的题干\n   - 若为填空题：构建完整句子，目标词为唯一正确答案\n   - 若为选择题：创建1个正确选项（目标词）与3个干扰选项（词性一致但含义不同）\n\
+            - 步骤 4: 确保题目难度适中，选项分布合理，避免歧义\n- 步骤 5: 输出题干、选项（如有）和答案标记\n\n- 预期结果: 一道符合教学用途的标准化词汇题目，用户提供的单词为唯一正确答案\n\
+            \n## 输出格式\n生成一份 JSON 格式的题目，结构如下：\n```json\n{\n  \"original_question\"\
+            : {{#sys.query#}},\n  \"generated_questions\": [\n    {\n      \"question_text\"\
+            : \"新生成的题目文本1及选项\",\n      \"question_type\": \"题目类型（如：选择题、填空题等）\",\n\
+            \      \"subject\": \"学科\",\n      \"difficulty_level\": \"难度等级（1 - 5）\"\
+            ,\n      \"answer\": \"正确答案\",\n      \"explanation\": \"详细的解答过程和解析（注意解析内容不能包含单引号，双引号）\"\
+            \n    },\n    {\n      \"question_text\": \"新生成的题目文本2及选项\",\n      \"\
+            question_type\": \"题目类型（如：选择题、填空题等）\",\n      \"subject\": \"学科\",\n \
+            \     \"difficulty_level\": \"难度等级（1 - 5）\",\n      \"answer\": \"正确答案\"\
+            ,\n      \"explanation\": \"详细的解答过程和解析（注意解析内容不能包含单引号，双引号）\"\n    },\n\
+            \    ......\n    {\n      \"question_text\": \"新生成的题目文本5及选项\",\n     \
+            \ \"question_type\": \"题目类型（如：选择题、填空题等）\",\n      \"subject\": \"学科\"\
+            ,\n      \"difficulty_level\": \"难度等级（1 - 5）\",\n      \"answer\": \"\
+            正确答案\",\n      \"explanation\": \"详细的解答过程和解析（注意解析内容不能包含单引号，双引号）\"\n  \
+            \  }\n  ]\n}\n```json\n\n## Initialization\n作为英语词汇题目生成专家，你必须遵守上述Rules，按照Workflows执行任务。"
+        - id: 3f4d94db-fc0d-4b1d-b500-11d811f2ceea
+          role: user
+          text: 请根据{{#sys.query#}}的数据，生成新题
+        selected: true
+        title: 出题（图片）
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1742961448129'
+            - file
+          enabled: false
+      height: 90
+      id: '17539403713780'
+      position:
+        x: 1586.7850865342732
+        y: 554.0963270854088
+      positionAbsolute:
+        x: 1586.7850865342732
+        y: 554.0963270854088
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ filetype }}'
+        title: 模板转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1742961448129'
+          - file
+          - mime_type
+          value_type: file
+          variable: filetype
+      height: 54
+      id: '1753941131486'
+      position:
+        x: 20.811638506155987
+        y: 676.4948098298727
+      positionAbsolute:
+        x: 20.811638506155987
+        y: 676.4948098298727
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 26b312f4-4967-453b-b0e6-376309e743a0
+            value: application/pdf
+            varType: string
+            variable_selector:
+            - '1753941131486'
+            - output
+          id: 'true'
+          logical_operator: and
+        - case_id: e39e6860-6581-42ad-9fb1-28e4c576c72f
+          conditions:
+          - comparison_operator: contains
+            id: 7d537b90-7fad-44dd-94e1-4eae6b4f1ff7
+            value: image
+            varType: string
+            variable_selector:
+            - '1753941131486'
+            - output
+          id: e39e6860-6581-42ad-9fb1-28e4c576c72f
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 174
+      id: '1753941202596'
+      position:
+        x: 372.75803502425765
+        y: 472.8316032766242
+      positionAbsolute:
+        x: 372.75803502425765
+        y: 472.8316032766242
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: PDF file to convert to PNG images
+            ja_JP: PDF file to convert to PNG images
+            pt_BR: PDF file to convert to PNG images
+            zh_Hans: 要转换为PNG图片的PDF文件
+          label:
+            en_US: PDF Content
+            ja_JP: PDF Content
+            pt_BR: PDF Content
+            zh_Hans: PDF 内容
+          llm_description: PDF file content to be converted to PNG images
+          max: null
+          min: null
+          name: pdf_content
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: file
+        - auto_generate: null
+          default: 2
+          form: llm
+          human_description:
+            en_US: Zoom factor for image quality (default is 2)
+            ja_JP: Zoom factor for image quality (default is 2)
+            pt_BR: Zoom factor for image quality (default is 2)
+            zh_Hans: 图像质量的缩放因子（默认为2）
+          label:
+            en_US: Zoom Factor
+            ja_JP: Zoom Factor
+            pt_BR: Zoom Factor
+            zh_Hans: 缩放因子
+          llm_description: Zoom factor to control the quality of output PNG images
+          max: null
+          min: null
+          name: zoom
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: number
+        params:
+          pdf_content: ''
+          zoom: ''
+        provider_id: kalochin/pdf_process/pdf_process
+        provider_name: kalochin/pdf_process/pdf_process
+        provider_type: builtin
+        selected: false
+        title: PDF转PNG转换器
+        tool_configurations: {}
+        tool_description: 一个将PDF文件转换为PNG图片的工具
+        tool_label: PDF转PNG转换器
+        tool_name: pdf_to_png
+        tool_node_version: '2'
+        tool_parameters:
+          pdf_content:
+            type: variable
+            value:
+            - '1742961448129'
+            - file
+          zoom:
+            type: constant
+            value: null
+        type: tool
+      height: 54
+      id: '1753941320940'
+      position:
+        x: 766.8832086059897
+        y: 363.65132759859415
+      positionAbsolute:
+        x: 766.8832086059897
+        y: 363.65132759859415
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: 您输入的文件类型不是pdf和图片，请重新上传
+        desc: ''
+        selected: false
+        title: 直接回复 2
+        type: answer
+        variables: []
+      height: 118
+      id: '1753941755096'
+      position:
+        x: 766.8832086059897
+        y: 758.1347580119456
+      positionAbsolute:
+        x: 766.8832086059897
+        y: 758.1347580119456
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        output_type: string
+        selected: false
+        title: 变量聚合器
+        type: variable-aggregator
+        variables:
+        - - '17539403713780'
+          - text
+      height: 108
+      id: '1753941909866'
+      position:
+        x: 1934.5322416801428
+        y: 556.1959477715247
+      positionAbsolute:
+        x: 1934.5322416801428
+        y: 556.1959477715247
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: qwen-vl-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 64ccd18b-0028-436d-8187-fd3f015e4e26
+          role: system
+          text: "# Role: OCR识别大师\n\n## Profile\n- language: 中文\n- description: 一位专精于图像文字识别（OCR）技术的专家，能够高效、精准地从各种类型的图像、文档或扫描文件中提取并结构化文字信息。\n\
+            - background: 拥有图像处理、深度学习和自然语言处理背景，熟悉主流OCR工具（如Tesseract、PaddleOCR、Google\
+            \ Vision OCR等）及其应用场景，能够根据需求定制OCR流程与后处理逻辑。\n- personality: 精确严谨、逻辑清晰、注重细节、响应高效\n\
+            - expertise: 图像文字识别、图像预处理、文档结构分析、字符纠错、语言模型辅助识别\n- target_audience: 需要从图像中提取文字的开发者、数据分析师、档案数字化人员、文档自动化处理人员\n\
+            \n## Skills\n\n1. 核心技能类别：OCR识别与优化\n   - 图像预处理: 熟练应用图像二值化、去噪、旋转校正等技术，提高OCR识别率\n\
+            \   - 多语言识别: 能识别中英文、数字、符号及多种语言混排文本\n   - 文档结构提取: 能识别表格、段落、标题、页眉页脚等结构化信息\n\
+            \   - 自定义训练: 能基于特定字体或场景微调OCR模型以提升识别效果\n\n2. 辅助技能类别：数据处理与输出优化\n   - 后处理纠错:\
+            \ 结合语言模型、拼写检查和上下文逻辑自动修正识别错误\n   - 格式转换: 将识别结果导出为TXT、DOCX、JSON、Excel等多种格式\n\
+            \   - 批量处理: 实现对大量文件的自动化OCR处理流程\n   - 模型选择与部署: 根据任务需求选择合适OCR模型并部署至本地或云端环境\n\
+            \n## Rules\n\n1. 基本原则：\n   - 准确性优先: 始终以最高识别准确率为目标，必要时进行多轮识别与校验\n   - 灵活应变:\
+            \ 根据图像质量、文字内容和识别目标动态调整处理策略\n   - 模块化设计: 所有OCR流程应具备可拆解性与可重用性\n   - 数据保护:\
+            \ 严格保障用户图像与识别内容的隐私安全\n\n2. 行为准则：\n   - 先分析后执行: 在识别前分析图像类型、内容密度与预处理需求\n\
+            \   - 反馈驱动优化: 根据用户反馈持续改进识别效果与输出格式\n   - 不做臆断: 不擅自填补识别缺失内容，除非明确指示进行推断\n\
+            \   - 保持一致性: 同一批文件识别策略、后处理逻辑保持一致\n\n3. 限制条件：\n   - 不识别非法或侵犯版权的图像内容\n \
+            \  - 不输出未经用户确认的自动推理内容\n   - 仅处理图像、PDF或扫描文档格式，不处理纯文字文件\n   - 不对图像进行内容伪造或篡改，仅用于识别与提取\n\
+            \n## Workflows\n\n- 目标: 高效、准确地从输入图像或文档中提取文字内容，并输出为结构化数据格式\n- 步骤 1: 接收图像或文档输入，识别文件类型与质量状况\n\
+            - 步骤 2: 进行图像预处理（如去噪、灰度化、倾斜矫正、分割）\n- 步骤 3: 使用合适的OCR引擎进行文字识别，并根据需要调用语言模型辅助解析\n\
+            - 步骤 4: 应用后处理逻辑进行纠错、结构重建、格式整理\n- 步骤 5: 输出识别结果为指定格式（如TXT、JSON、表格等），并根据结构需求进行分类整理\n\
+            - 预期结果: 得到高准确率、结构清晰、可读性强的文字识别输出结果，满足用户具体应用场景需求\n\n## Initialization\n\
+            作为OCR识别大师，你必须遵守上述Rules，按照Workflows执行任务。"
+        selected: false
+        title: OCR识别大师
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1742961448129'
+            - file
+          enabled: true
+      height: 90
+      id: '1753953943206'
+      position:
+        x: 1249.5360348189836
+        y: 556.1959477715247
+      positionAbsolute:
+        x: 1249.5360348189836
+        y: 556.1959477715247
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 58.17816448640929
+      y: -345.4089223803885
+      zoom: 0.9525530078957979

@@ -1,0 +1,359 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 快来帮我洗数据！(copy)
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.0.37@9e635dd61046ede51c76c174a0c7dc723616cd6698b18c0273c0ee11aeb9accd
+kind: app
+version: 0.3.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - remote_url
+      - local_file
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - remote_url
+        - local_file
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      configs: []
+      enabled: false
+      type: ''
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: answer
+      id: 1727679645155-source-answer-target
+      source: '1727679645155'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: code
+      id: start-source-1727679927101-target
+      source: start
+      sourceHandle: source
+      target: '1727679927101'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: knowledge-retrieval
+      id: 1727679927101-source-1752563013875-target
+      source: '1727679927101'
+      sourceHandle: source
+      target: '1752563013875'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1752563013875-source-1752563124966-target
+      source: '1752563013875'
+      sourceHandle: source
+      target: '1752563124966'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 1752563124966-source-1727679645155-target
+      source: '1752563124966'
+      sourceHandle: source
+      target: '1727679645155'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 开始处理
+        type: start
+        variables:
+        - default: ''
+          description: null
+          hint: null
+          label: content
+          max_length: null
+          options: null
+          required: true
+          type: paragraph
+          variable: content
+        - label: 内容类型
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: type
+      height: 116
+      id: start
+      position:
+        x: 30
+        y: 258
+      positionAbsolute:
+        x: 30
+        y: 258
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1727679645155.text#}}'
+        selected: false
+        title: 输出结果
+        type: answer
+      height: 105
+      id: answer
+      position:
+        x: 1770.0805449450481
+        y: 234.0801716950151
+      positionAbsolute:
+        x: 1770.0805449450481
+        y: 234.0801716950151
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen2.5-7b-instruct-1m
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 3411a24a-f57d-4f26-9078-67a01915df57
+          role: system
+          text: '你是资深的英语老师，擅长严谨客观的表达内容，只输出待处理内容中和 “{{#start.type#}}“ 相关的内容。
+
+
+            ## 待处理内容
+
+
+            `text
+
+            {{#1752563124966.text#}}
+
+            `
+
+
+            ## 处理结果
+
+
+
+
+            '
+        selected: false
+        title: 筛选内容
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1727679645155'
+      position:
+        x: 1397.441037635091
+        y: 246.56008211500722
+      positionAbsolute:
+        x: 1397.441037635091
+        y: 246.56008211500722
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "\nfunction main({arg1}) {\n    let input = arg1;\n    input = input.split(\"\
+          \\n\").filter((line)=>{\n        return !line.includes(\"热点精选\")\n    }).join(\"\
+          \\n\");\n    return { \n        result: input\n    }\n}\n"
+        code_language: javascript
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 处理输入内容
+        type: code
+        variables:
+        - value_selector:
+          - start
+          - content
+          variable: arg1
+      height: 54
+      id: '1727679927101'
+      position:
+        x: 334
+        y: 258
+      positionAbsolute:
+        x: 334
+        y: 258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - 48LTaA3X7qz+DGojQQAfwjY4Xc0CIFe3tetdQipkUwLBzLtu+IkPBAtcAlb1vp9d
+        desc: ''
+        metadata_filtering_mode: disabled
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: gte-rerank
+            provider: langgenius/tongyi/tongyi
+          top_k: 4
+        query_variable_selector:
+        - '1727679927101'
+        - result
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索
+        type: knowledge-retrieval
+      height: 92
+      id: '1752563013875'
+      position:
+        x: 713.9194550549521
+        y: 258
+      positionAbsolute:
+        x: 713.9194550549521
+        y: 258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-max-latest
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 7aa3a5e4-5ff8-461e-9ae3-11144882b476
+          role: system
+          text: '你是资深的英语老师，擅长严谨客观的表达内容，对下面的内容进行内容标题改写，使用陈述句表达。
+
+
+            # 示例
+
+
+            改写前
+
+
+            `
+
+            word: aaal;translation: American Academy of Arts and Letters 美国艺术和文学学会
+
+            `
+
+
+            改写后
+
+
+            `
+
+            [aachen] ：亚琛[德意志联邦共和国西部城市]
+
+            `
+
+
+            ## 待处理内容
+
+
+            `text
+
+            {{#1727679927101.result#}}
+
+            `
+
+
+            ## 处理结果
+
+
+            '
+        selected: true
+        title: 内容改写
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1752563124966'
+      position:
+        x: 1081.5189698299096
+        y: 258
+      positionAbsolute:
+        x: 1081.5189698299096
+        y: 258
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -506.8212751726551
+      y: -7.559835335929506
+      zoom: 0.9615453634007392

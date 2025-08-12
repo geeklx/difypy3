@@ -9,7 +9,7 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/volcengine_maas:0.0.16@5a2cb43f8d874c1cae8d0a975144b6bfed2d693e095340a49c4d7cb296ef157f
+    marketplace_plugin_unique_identifier: langgenius/volcengine_maas:0.0.25@69d479387c274399cdf967854fa2eab8b2ece3c1b28c702724402913639dcc24
 kind: app
 version: 0.3.0
 workflow:
@@ -306,7 +306,7 @@ workflow:
         selected: false
         title: 高德地图Agent
         type: agent
-      height: 226
+      height: 232
       id: '1745638786600'
       position:
         x: 293
@@ -347,7 +347,7 @@ workflow:
         type: question-classifier
         vision:
           enabled: false
-      height: 312
+      height: 318
       id: '1745644550052'
       position:
         x: -289.1159363046995
@@ -456,7 +456,7 @@ workflow:
         selected: false
         title: 好吃的推荐Agent
         type: agent
-      height: 226
+      height: 232
       id: '1745644910913'
       position:
         x: 283
@@ -585,7 +585,7 @@ workflow:
         selected: false
         title: Tavily智搜Agent
         type: agent
-      height: 226
+      height: 232
       id: '1745645505201'
       position:
         x: 293
@@ -715,7 +715,7 @@ workflow:
         selected: false
         title: LeetCode(力扣)Agent
         type: agent
-      height: 226
+      height: 232
       id: '1745645830732'
       position:
         x: 283
@@ -749,6 +749,6 @@ workflow:
       type: custom
       width: 244
     viewport:
-      x: -473.22403616296685
-      y: -532.1072290369465
+      x: -61.224036162966854
+      y: -383.1072290369466
       zoom: 1.299338906351758

@@ -7,7 +7,7 @@ app:
   use_icon_as_answer_icon: true
 dependencies: []
 kind: app
-version: 0.2.0
+version: 0.3.0
 workflow:
   conversation_variables: []
   environment_variables:
@@ -276,6 +276,7 @@ workflow:
           retry_enabled: false
           retry_interval: 100
         selected: false
+        ssl_verify: true
         timeout:
           connect: 300
           max_connect_timeout: 0
@@ -285,7 +286,7 @@ workflow:
           write: 600
         title: HTTP 请求后端服务接口
         type: http-request
-        url: http://192.168.31.115:15012/story/generatestory
+        url: http://g19.geekaiapp.icu/story/generatestory
         variables: []
       height: 110
       id: '1742287808790'
@@ -295,7 +296,7 @@ workflow:
       positionAbsolute:
         x: 299
         y: 282
-      selected: false
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -330,7 +331,7 @@ workflow:
       positionAbsolute:
         x: 603
         y: 282
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -359,6 +360,6 @@ workflow:
       type: custom-note
       width: 339
     viewport:
-      x: 218.79707768099297
-      y: -54.52254343564053
-      zoom: 0.8705505805600987
+      x: 141.18257096952175
+      y: -225.37540490649246
+      zoom: 1.3195079369401868
