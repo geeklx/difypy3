@@ -10,8 +10,8 @@ from fastapi import FastAPI, UploadFile, File, HTTPException, Depends, Header
 from fastapi_mcp import add_mcp_server
 
 from geekaiapp.g_model import VideoRequest3
-from geekaiapp.g_utils import verify_auth_token, product_serial, download_image, ip_img, current_directory, upload_cos, \
-    tencent_region, tencent_secret_id, tencent_secret_key, tencent_bucket, ip
+from geekaiapp.g_utils import verify_auth_token, product_serial, ip_img, current_directory, upload_cos, \
+    tencent_region, tencent_secret_id, tencent_secret_key, tencent_bucket, ip, face_swapdownload_image
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)
@@ -57,7 +57,7 @@ async def generate_mcp(
         source_image=source_image,
         target_image=target_image
     )
-    return await face_swap(request, auth_token=verify_auth_token(authorization))
+    return await face_swap(request=request, auth_token=verify_auth_token(authorization))
 
 
 class FaceSwapService:
@@ -134,12 +134,13 @@ class FaceSwapService:
 
             # 构建multipart/form-data请求
             files = {
-                "target_image": (target_name, source_image, target_mime),
-                "swap_image": (source_name, target_image, source_mime)
+                "target_image": (target_name, target_image, target_mime),
+                "swap_image": (source_name, source_image, source_mime)
             }
 
             logger.info("开始上传图片...")
-            response = requests.post(url, headers=headers, files=files, timeout=30)
+            # 禁用SSL验证以解决SSL连接错误
+            response = requests.post(url, headers=headers, files=files, timeout=30, verify=False)
 
             if response.status_code == 200:
                 data = response.json()
@@ -168,7 +169,8 @@ class FaceSwapService:
             logger.info(f"等待处理结果，最多等待 {max_retries * interval} 秒...")
             for attempt in range(1, max_retries + 1):
                 try:
-                    response = requests.get(url, headers=headers, timeout=15)
+                    # 禁用SSL验证以解决SSL连接错误
+                    response = requests.get(url, headers=headers, timeout=15, verify=False)
                     if response.status_code == 200:
                         data = response.json()
                         if data.get("code") == 100000:
@@ -195,10 +197,11 @@ class FaceSwapService:
 
 
 # 修改face_swap接口，添加鉴权
-@app.post("/beartAI/face-swap")
+@app.post("/api/beartAI/face-swap")
 async def face_swap(
-        source_image: UploadFile = File(...),
-        target_image: UploadFile = File(...),
+        request: VideoRequest3 = None,
+        source_image: UploadFile = File(None),
+        target_image: UploadFile = File(None),
         auth_token: str = Depends(verify_auth_token)
 ):
     """
@@ -207,6 +210,14 @@ async def face_swap(
     - target_image: 目标图片（需要被替换人脸的图片）
     """
     try:
+        # 处理请求参数，支持 VideoRequest3 和直接的 UploadFile 参数
+        if request is not None:
+            source_image = request.source_image
+            target_image = request.target_image
+        
+        if source_image is None or target_image is None:
+            raise HTTPException(status_code=422, detail="缺少必要的图片文件参数")
+            
         # 读取上传的图片数据
         source_data = await source_image.read()
         target_data = await target_image.read()
@@ -237,7 +248,7 @@ async def face_swap(
                 os.makedirs(output_path)
 
             # 下载图片
-            filename, file_path = download_image(result_url, current_directory / ip_img)
+            filename, file_path = face_swapdownload_image(result_url, current_directory / ip_img)
             logger.info(f"图片已下载到本地: {file_path}")
 
             # 上传到腾讯 COS

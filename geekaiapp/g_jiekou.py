@@ -475,7 +475,7 @@ async def latextword(request: Request, output_path=None):
         # output.docx - -
         # from=latex - -to = docx - -mathml - -filter
         # D:\cursor\githubs\difypy3\geekaiapp\filters\remove_italic.py
-        filter_script = os.path.join(filters_dir, 'remove_italic.py')
+        # filter_script = os.path.join(filters_dir, 'remove_italic.py')
         cmd = [
             'pandoc',
             tex_file,
@@ -483,7 +483,7 @@ async def latextword(request: Request, output_path=None):
             '--from=latex',
             '--to=docx',
             '--mathml',
-            '--filter', filter_script,
+            # '--filter', filter_script,
             # '--reference-doc=custom-template.docx'
         ]
 
@@ -595,13 +595,13 @@ async def get_json1(request: Request):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# 获取当前程序运行目录并创建必要的目录
-current_dir = os.path.dirname(os.path.abspath(__file__))
-temp_dir = os.path.join(current_dir, 'temp')
-output_dir = os.path.join(current_dir, 'static')
-filters_dir = os.path.join(current_dir, 'filters')
-os.makedirs(temp_dir, exist_ok=True)
-os.makedirs(output_dir, exist_ok=True)
+# # 获取当前程序运行目录并创建必要的目录
+# current_dir = os.path.dirname(os.path.abspath(__file__))
+# temp_dir = os.path.join(current_dir, 'temp')
+# output_dir = os.path.join(current_dir, 'static')
+# filters_dir = os.path.join(current_dir, 'filters')
+# os.makedirs(temp_dir, exist_ok=True)
+# os.makedirs(output_dir, exist_ok=True)
 
 
 # g把md to word

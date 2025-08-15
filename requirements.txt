@@ -39,3 +39,4 @@ spire-doc==13.3.8
 pydub==0.25.0
 sqlalchemy==2.0.40
 mysql-connector-python==9.3.0
+gradio==5.42.0

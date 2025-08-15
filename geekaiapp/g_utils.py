@@ -58,7 +58,7 @@ zhipu_api_url = os.getenv('ZHIPU_API_URL', 'https://open.bigmodel.cn/api/paas/v4
 # jimeng
 image_generation_url = "http://g10.geekaiapp.icu/v1/images/generations"
 # image_generation_url = os.getenv('IMAGE_GENERATION_URL', 'https://jimeng.duckcloud.fun/v1/images/generations')
-image_api_key = os.getenv('IMAGE_API_KEY', 'b3a89660598cf06f119006b36ca9ed47')
+image_api_key = os.getenv('IMAGE_API_KEY', '77368c766017f0b5afe148bb744e7c8b')
 
 aaa = 's_v_web_id=verify_m7hrfrk1_W0ACdmeB_k89D_4WM5_BMkI_ItsZ1r0jjHWk; fpk1=071537a5f44ffe9828fa3c3f3720ddb6f690ce1a31dec9195a5050a2e422ceaf66873ae89433b8927b9d79b320cff2bc; passport_csrf_token=88010597f29256c6e871d8f69de44346; passport_csrf_token_default=88010597f29256c6e871d8f69de44346; n_mh=9W8N-rCI2hHkh4_ypK0jtwSCbLvpXyAXJg5USgpyWj8; sid_guard=1dcca7b8288e820e2eb5fe568d1d7d01%7C1740323109%7C5184000%7CThu%2C+24-Apr-2025+15%3A05%3A09+GMT; uid_tt=2d4e477727dca209c00afe09c382e0dc; uid_tt_ss=2d4e477727dca209c00afe09c382e0dc; sid_tt=1dcca7b8288e820e2eb5fe568d1d7d01; sessionid=1dcca7b8288e820e2eb5fe568d1d7d01; sessionid_ss=1dcca7b8288e820e2eb5fe568d1d7d01; is_staff_user=false; sid_ucp_v1=1.0.0-KGRmZmE0NGQ1MDQ0ZjQwMGFiYzQ5MzdkZWZlNTYxNzkwMzhhMGRlNGMKHQiUpbLthgMQpfLsvQYYn60fIAww_77H3QU4CEAmGgJobCIgMWRjY2E3YjgyODhlODIwZTJlYjVmZTU2OGQxZDdkMDE; ssid_ucp_v1=1.0.0-KGRmZmE0NGQ1MDQ0ZjQwMGFiYzQ5MzdkZWZlNTYxNzkwMzhhMGRlNGMKHQiUpbLthgMQpfLsvQYYn60fIAww_77H3QU4CEAmGgJobCIgMWRjY2E3YjgyODhlODIwZTJlYjVmZTU2OGQxZDdkMDE; store-region=cn-sd; store-region-src=uid; user_spaces_idc={"6978791533491257632":"lf"}; dm_auid=XApD3A/sZyrF4TvjREKyDA==; uifid_temp=eb4cf30a1e214892386aad17783b4da3e8c567e98302b4f5cd097635bdd000401ca8adf79f821d114df4456b3641b1fbeae2857ca8eae157e7340d38644b2834683a746b636664facef62797a8f2d0f3; uifid=eb4cf30a1e214892386aad17783b4da3e8c567e98302b4f5cd097635bdd0004085ef01f05c190064c1bd3d7ff72eb4423e0506e85c28b7c03cf15278fad814c1e745744fb35b912f4339195814a570ae23a6e029255eb7f1865f4fe4ef139a0b97b5e6961bc56a4a166ad3f03f5d00701020b74a02dc45b2192cd8dc34c132d36ed56c32be0217f6297f1c3908310026786139de693df5b0b7574c6fbfc299c9c5f91316901a9d5194d0a11254bd4f4b; ttwid=1|SChiu1bgf_QkYVnddGBcJB2YNbsqLTfRgVGuacolOKU|1744339167|f0d01735b8f52a02043000ce5426c307d984cdd931cf62952d292386281fadbd; _tea_web_id=7474630679444358697; _uetsid=310d97b0167e11f09971ebe035a96e4b; _uetvid=8b1a0960f1f711efb1f4df19de2660c1; odin_tt=be6983f454455495d96ca5b071fff27fb4c56600d2838c7dae031bc6d6b37a1a86f8d9e80de3b828b78d1510d70671eed28f19eae449139e4ee5f3264d8eabaf'
 jimeng_cookie = os.getenv('JIMENG_COOKIE', aaa)
@@ -78,6 +78,11 @@ ip_md = os.getenv('IP_MD', 'static/markdown')
 ip_html = os.getenv('IP_HTML', 'static/html')
 ip_video = os.getenv('IP_VIDEO', 'static/video')
 ip_comfyui = os.getenv('IP_COMFYUI', 'static/comfyui')
+os.makedirs(ip_tts, exist_ok=True)
+os.makedirs(ip_img, exist_ok=True)
+os.makedirs(ip_md, exist_ok=True)
+os.makedirs(ip_video, exist_ok=True)  # 确保tts目录存在
+os.makedirs(ip_comfyui, exist_ok=True)  # 确保tts目录存在
 
 # current_dir = os.path.dirname(os.path.abspath(__file__))
 # static_dir = os.path.join(current_dir, "static")
@@ -92,6 +97,7 @@ ip_comfyui = os.getenv('IP_COMFYUI', 'static/comfyui')
 #
 # 设置默认的 MARP_PATH
 # os.environ.setdefault("MARP_PATH", "C:/Users/liang/AppData/Roaming/npm/node_modules/@marp-team/marp-cli")
+os.environ.setdefault("MARP_PATH", "C:\nvm4w\nodejs\node_modules\@marp-team\marp-cli")
 marp_path = os.getenv('MARP_PATH')
 # 检查是否获取到了路径
 if marp_path:
@@ -718,12 +724,13 @@ class FaceSwapService:
 
             # 构建multipart/form-data请求
             files = {
-                "target_image": (target_name, source_image, target_mime),
-                "swap_image": (source_name, target_image, source_mime)
+                "target_image": (target_name, target_image, target_mime),
+                "swap_image": (source_name, source_image, source_mime)
             }
 
             logger.info("开始上传图片...")
-            response = requests.post(url, headers=headers, files=files, timeout=30)
+            # 禁用SSL验证以解决SSL连接错误
+            response = requests.post(url, headers=headers, files=files, timeout=30, verify=False)
 
             if response.status_code == 200:
                 data = response.json()
@@ -752,7 +759,8 @@ class FaceSwapService:
             logger.info(f"等待处理结果，最多等待 {max_retries * interval} 秒...")
             for attempt in range(1, max_retries + 1):
                 try:
-                    response = requests.get(url, headers=headers, timeout=15)
+                    # 禁用SSL验证以解决SSL连接错误
+                    response = requests.get(url, headers=headers, timeout=15, verify=False)
                     if response.status_code == 200:
                         data = response.json()
                         if data.get("code") == 100000:

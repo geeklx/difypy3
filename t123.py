@@ -744,6 +744,24 @@ def main2254(arg1: str) -> dict:
     except Exception as e:
         return {"markdown_text": f"处理过程中出错：{str(e)}"}
 
+import re
+import json
+def main1222(body: str) -> dict:
+    match = re.search(r'```json\s*(.*?)\s*```', body, re.DOTALL)
+    if not match:
+        return {"error": "未找到有效的 JSON 数据块（需以 ```json 开头和 ``` 结尾）"}
+    try:
+        json_str = match.group(1)
+        data = json.loads(json_str)
+    except json.JSONDecodeError as e:
+        return {"error": f"JSON 解析失败。错误信息: {str(e)}"}
+    except Exception as e:
+        return {"error": f"其他错误: {str(e)}"}
+    if not isinstance(data, dict):
+        return {"error": "解析后的 JSON 内容不是对象类型"}
+    print("解析后的数据结构（缩进显示）：")
+    print(json.dumps(data, indent=2, ensure_ascii=False))
+    return {"result": data}
 
 if __name__ == "__main__":
     # main2222("http://127.0.0.1:9090","sk-mcqzdkchqbmrctzsldzjdoplcsnsqovbetjfwvkfaolalowr")
@@ -751,4 +769,5 @@ if __name__ == "__main__":
     # main2222("")
     # main222222("")
     # main22212("")
-    main2254("")
+    # main2254("")
+    main1222("")
